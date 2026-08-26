@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+    provider = "prisma-client"
+    output   = "../lib/generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+model User {
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+
+  // grupos em que este usuário é o devedor (ex: irmão mais novo)
+  debtorGroups    Group[] @relation("DebtorGroups")
+  // grupos em que este usuário é o credor (ex: você)
+  creditorGroups  Group[] @relation("CreditorGroups")
+  // compras que este usuário registrou (pode ser você registrando pro irmão, ou ele mesmo)
+  purchasesCreated Purchase[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountId             String
+  providerId            String
+  issuer                String
+  userId                String    @db.Uuid
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@unique([issuer, accountId])
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+// --- Seus modelos ---
+
+// Um "conjunto" credor <-> devedor. Ex: "Meus cartões" (credor = você, devedor = irmão)
+// e "Cartão do irmão mais velho" (credor externo, devedor = irmão) são dois grupos
+// separados, cada um com seu próprio total.
+model Group {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String // ex: "Cartões do Kaio", "Cartão do irmão mais velho"
+
+  debtorId     String   @db.Uuid
+  debtor       User     @relation("DebtorGroups", fields: [debtorId], references: [id], onDelete: Cascade)
+
+  // credor cadastrado no sistema (ex: você). Nulo quando o credor é externo.
+  creditorId   String?  @db.Uuid
+  creditor     User?    @relation("CreditorGroups", fields: [creditorId], references: [id], onDelete: SetNull)
+  // nome do credor quando ele não é um usuário do sistema (ex: "irmão mais velho")
+  creditorName String?
+
+  // dia de fechamento padrão da fatura (1-31). Pode ser sobrescrito por cartão.
+  closingDay   Int?
+
+  archived     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  cards        Card[]
+  purchases    Purchase[]
+
+  @@index([debtorId])
+  @@index([creditorId])
+  @@map("group")
+}
+
+model Card {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String // nome do banco/cartão, ex: "Nubank", "Inter"
+  color      String? // opcional, pra UI (cor/bandeira do banco)
+
+  // sobrescreve o closingDay do grupo, se definido
+  closingDay Int?
+
+  archived   Boolean  @default(false)
+  groupId    String   @db.Uuid
+  group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  purchases  Purchase[]
+
+  @@index([groupId])
+  @@map("card")
+}
+
+model Purchase {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  description String?
+  category    String // título exibido: "lanche", "parcela", etc
+  amount      Decimal  @db.Decimal(10, 2) // valor da parcela (se parcelado) ou valor total (se à vista)
+  purchasedAt DateTime @default(now()) // data personalizável, padrão = data de criação
+
+  groupId     String   @db.Uuid
+  group       Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  // null = compra avulsa / dinheiro emprestado (sem cartão)
+  cardId      String?  @db.Uuid
+  card        Card?    @relation(fields: [cardId], references: [id], onDelete: SetNull)
+
+  // parcelamento: todas as parcelas de uma mesma compra compartilham o mesmo installmentGroupId
+  installmentGroupId String? @db.Uuid
+  installmentNumber  Int? // parcela atual (1-based)
+  installmentTotal   Int? // total de parcelas
+
+  createdById String   @db.Uuid
+  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([groupId, purchasedAt])
+  @@index([cardId, purchasedAt])
+  @@index([installmentGroupId])
+  @@map("purchase")
+}
