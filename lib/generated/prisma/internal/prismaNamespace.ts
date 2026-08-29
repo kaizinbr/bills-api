@@ -1059,6 +1059,8 @@ export const CardScalarFieldEnum = {
   name: 'name',
   color: 'color',
   closingDay: 'closingDay',
+  ownerId: 'ownerId',
+  createdById: 'createdById',
   archived: 'archived',
   groupId: 'groupId',
   createdAt: 'createdAt',

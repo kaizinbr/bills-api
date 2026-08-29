@@ -30,6 +30,11 @@ model User {
   // compras que este usuário registrou (pode ser você registrando pro irmão, ou ele mesmo)
   purchasesCreated Purchase[]
 
+  // cartões que são de fato deste usuário (dono da fatura)
+  ownedCards       Card[] @relation("OwnedCards")
+  // cartões que este usuário cadastrou no app (pode ser dono de outra pessoa)
+  createdCards     Card[] @relation("CreatedCards")
+
   @@unique([email])
   @@map("user")
 }
@@ -122,6 +127,16 @@ model Card {
   // sobrescreve o closingDay do grupo, se definido
   closingDay Int?
 
+  // dono real do cartão (a quem a fatura pertence de fato).
+  // permite filtrar "meus cartões" direto, sem passar pelo grupo,
+  // e permite que outro usuário cadastre um cartão seu em nome dele.
+  ownerId     String   @db.Uuid
+  owner       User     @relation("OwnedCards", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  // quem de fato criou/cadastrou o cartão no app (pode ser diferente do owner)
+  createdById String   @db.Uuid
+  createdBy   User     @relation("CreatedCards", fields: [createdById], references: [id], onDelete: Cascade)
+
   archived   Boolean  @default(false)
   groupId    String   @db.Uuid
   group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
@@ -131,6 +146,7 @@ model Card {
   purchases  Purchase[]
 
   @@index([groupId])
+  @@index([ownerId])
   @@map("card")
 }
 
