@@ -57,7 +57,8 @@ export const ModelName = {
   Verification: 'Verification',
   Group: 'Group',
   Card: 'Card',
-  Purchase: 'Purchase'
+  Purchase: 'Purchase',
+  Category: 'Category'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -169,9 +170,9 @@ export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof Card
 export const PurchaseScalarFieldEnum = {
   id: 'id',
   description: 'description',
-  category: 'category',
   amount: 'amount',
   purchasedAt: 'purchasedAt',
+  categoryId: 'categoryId',
   groupId: 'groupId',
   cardId: 'cardId',
   installmentGroupId: 'installmentGroupId',
@@ -183,6 +184,20 @@ export const PurchaseScalarFieldEnum = {
 } as const
 
 export type PurchaseScalarFieldEnum = (typeof PurchaseScalarFieldEnum)[keyof typeof PurchaseScalarFieldEnum]
+
+
+export const CategoryScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  label: 'label',
+  icon: 'icon',
+  type: 'type',
+  createdById: 'createdById',
+  archived: 'archived',
+  createdAt: 'createdAt'
+} as const
+
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
 
 
 export const SortOrder = {

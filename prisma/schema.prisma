@@ -13,77 +13,80 @@ datasource db {
 }
 
 model User {
-  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
+    id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name          String
+    email         String
+    emailVerified Boolean
+    image         String?
+    createdAt     DateTime
+    updatedAt     DateTime
+    sessions      Session[]
+    accounts      Account[]
 
-  // grupos em que este usuário é o devedor (ex: irmão mais novo)
-  debtorGroups    Group[] @relation("DebtorGroups")
-  // grupos em que este usuário é o credor (ex: você)
-  creditorGroups  Group[] @relation("CreditorGroups")
-  // compras que este usuário registrou (pode ser você registrando pro irmão, ou ele mesmo)
-  purchasesCreated Purchase[]
+    // grupos em que este usuário é o devedor (ex: irmão mais novo)
+    debtorGroups     Group[]    @relation("DebtorGroups")
+    // grupos em que este usuário é o credor (ex: você)
+    creditorGroups   Group[]    @relation("CreditorGroups")
+    // compras que este usuário registrou (pode ser você registrando pro irmão, ou ele mesmo)
+    purchasesCreated Purchase[]
 
-  // cartões que são de fato deste usuário (dono da fatura)
-  ownedCards       Card[] @relation("OwnedCards")
-  // cartões que este usuário cadastrou no app (pode ser dono de outra pessoa)
-  createdCards     Card[] @relation("CreatedCards")
+    // cartões que são de fato deste usuário (dono da fatura)
+    ownedCards   Card[] @relation("OwnedCards")
+    // cartões que este usuário cadastrou no app (pode ser dono de outra pessoa)
+    createdCards Card[] @relation("CreatedCards")
 
-  @@unique([email])
-  @@map("user")
+    // categorias customizadas criadas por este usuário
+    createdCategories Category[]
+
+    @@unique([email])
+    @@map("user")
 }
 
 model Session {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  expiresAt DateTime
-  token     String
-  createdAt DateTime
-  updatedAt DateTime
-  ipAddress String?
-  userAgent String?
-  userId    String   @db.Uuid
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    expiresAt DateTime
+    token     String
+    createdAt DateTime
+    updatedAt DateTime
+    ipAddress String?
+    userAgent String?
+    userId    String   @db.Uuid
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
-  @@map("session")
+    @@unique([token])
+    @@map("session")
 }
 
 model Account {
-  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  accountId             String
-  providerId            String
-  issuer                String
-  userId                String    @db.Uuid
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime
-  updatedAt             DateTime
+    id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    accountId             String
+    providerId            String
+    issuer                String
+    userId                String    @db.Uuid
+    user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    accessToken           String?
+    refreshToken          String?
+    idToken               String?
+    accessTokenExpiresAt  DateTime?
+    refreshTokenExpiresAt DateTime?
+    scope                 String?
+    password              String?
+    createdAt             DateTime
+    updatedAt             DateTime
 
-  @@unique([issuer, accountId])
-  @@map("account")
+    @@unique([issuer, accountId])
+    @@map("account")
 }
 
 model Verification {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime?
-  updatedAt  DateTime?
+    id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    identifier String
+    value      String
+    expiresAt  DateTime
+    createdAt  DateTime?
+    updatedAt  DateTime?
 
-  @@map("verification")
+    @@map("verification")
 }
 
 // --- Seus modelos ---
@@ -92,90 +95,130 @@ model Verification {
 // e "Cartão do irmão mais velho" (credor externo, devedor = irmão) são dois grupos
 // separados, cada um com seu próprio total.
 model Group {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name         String // ex: "Cartões do Kaio", "Cartão do irmão mais velho"
+    id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name String // ex: "Cartões do Kaio", "Cartão do irmão mais velho"
 
-  debtorId     String   @db.Uuid
-  debtor       User     @relation("DebtorGroups", fields: [debtorId], references: [id], onDelete: Cascade)
+    debtorId String @db.Uuid
+    debtor   User   @relation("DebtorGroups", fields: [debtorId], references: [id], onDelete: Cascade)
 
-  // credor cadastrado no sistema (ex: você). Nulo quando o credor é externo.
-  creditorId   String?  @db.Uuid
-  creditor     User?    @relation("CreditorGroups", fields: [creditorId], references: [id], onDelete: SetNull)
-  // nome do credor quando ele não é um usuário do sistema (ex: "irmão mais velho")
-  creditorName String?
+    // credor cadastrado no sistema (ex: você). Nulo quando o credor é externo.
+    creditorId   String? @db.Uuid
+    creditor     User?   @relation("CreditorGroups", fields: [creditorId], references: [id], onDelete: SetNull)
+    // nome do credor quando ele não é um usuário do sistema (ex: "irmão mais velho")
+    creditorName String?
 
-  // dia de fechamento padrão da fatura (1-31). Pode ser sobrescrito por cartão.
-  closingDay   Int?
+    // dia de fechamento padrão da fatura (1-31). Pode ser sobrescrito por cartão.
+    closingDay Int?
 
-  archived     Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+    archived  Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  cards        Card[]
-  purchases    Purchase[]
+    cards     Card[]
+    purchases Purchase[]
 
-  @@index([debtorId])
-  @@index([creditorId])
-  @@map("group")
+    @@index([debtorId])
+    @@index([creditorId])
+    @@map("group")
 }
 
 model Card {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name       String // nome do banco/cartão, ex: "Nubank", "Inter"
-  color      String? // opcional, pra UI (cor/bandeira do banco)
+    id    String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name  String // nome do banco/cartão, ex: "Nubank", "Inter"
+    color String? // opcional, pra UI (cor/bandeira do banco)
 
-  // sobrescreve o closingDay do grupo, se definido
-  closingDay Int?
+    // sobrescreve o closingDay do grupo, se definido
+    closingDay Int?
 
-  // dono real do cartão (a quem a fatura pertence de fato).
-  // permite filtrar "meus cartões" direto, sem passar pelo grupo,
-  // e permite que outro usuário cadastre um cartão seu em nome dele.
-  ownerId     String   @db.Uuid
-  owner       User     @relation("OwnedCards", fields: [ownerId], references: [id], onDelete: Cascade)
+    // dono real do cartão (a quem a fatura pertence de fato).
+    // permite filtrar "meus cartões" direto, sem passar pelo grupo,
+    // e permite que outro usuário cadastre um cartão seu em nome dele.
+    ownerId String @db.Uuid
+    owner   User   @relation("OwnedCards", fields: [ownerId], references: [id], onDelete: Cascade)
 
-  // quem de fato criou/cadastrou o cartão no app (pode ser diferente do owner)
-  createdById String   @db.Uuid
-  createdBy   User     @relation("CreatedCards", fields: [createdById], references: [id], onDelete: Cascade)
+    // quem de fato criou/cadastrou o cartão no app (pode ser diferente do owner)
+    createdById String @db.Uuid
+    createdBy   User   @relation("CreatedCards", fields: [createdById], references: [id], onDelete: Cascade)
 
-  archived   Boolean  @default(false)
-  groupId    String   @db.Uuid
-  group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+    archived  Boolean  @default(false)
+    groupId   String   @db.Uuid
+    group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  purchases  Purchase[]
+    purchases Purchase[]
 
-  @@index([groupId])
-  @@index([ownerId])
-  @@map("card")
+    @@index([groupId])
+    @@index([ownerId])
+    @@map("card")
 }
 
 model Purchase {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  description String?
-  category    String // título exibido: "lanche", "parcela", etc
-  amount      Decimal  @db.Decimal(10, 2) // valor da parcela (se parcelado) ou valor total (se à vista)
-  purchasedAt DateTime @default(now()) // data personalizável, padrão = data de criação
+    id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    description String?
+    amount      Decimal  @db.Decimal(10, 2) // valor da parcela (se parcelado) ou valor total (se à vista)
+    purchasedAt DateTime @default(now()) // data personalizável, padrão = data de criação
 
-  groupId     String   @db.Uuid
-  group       Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+    categoryId String   @db.Uuid
+    category   Category @relation(fields: [categoryId], references: [id])
 
-  // null = compra avulsa / dinheiro emprestado (sem cartão)
-  cardId      String?  @db.Uuid
-  card        Card?    @relation(fields: [cardId], references: [id], onDelete: SetNull)
+    groupId String @db.Uuid
+    group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
-  // parcelamento: todas as parcelas de uma mesma compra compartilham o mesmo installmentGroupId
-  installmentGroupId String? @db.Uuid
-  installmentNumber  Int? // parcela atual (1-based)
-  installmentTotal   Int? // total de parcelas
+    // null = compra avulsa / dinheiro emprestado (sem cartão)
+    cardId String? @db.Uuid
+    card   Card?   @relation(fields: [cardId], references: [id], onDelete: SetNull)
 
-  createdById String   @db.Uuid
-  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+    // parcelamento: todas as parcelas de uma mesma compra compartilham o mesmo installmentGroupId
+    installmentGroupId String? @db.Uuid
+    installmentNumber  Int? // parcela atual (1-based)
+    installmentTotal   Int? // total de parcelas
 
-  @@index([groupId, purchasedAt])
-  @@index([cardId, purchasedAt])
-  @@index([installmentGroupId])
-  @@map("purchase")
+    createdById String   @db.Uuid
+    createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@index([groupId, purchasedAt])
+    @@index([cardId, purchasedAt])
+    @@index([installmentGroupId])
+    @@index([categoryId])
+    @@map("purchase")
+}
+
+enum CategoryType {
+    FOOD // lanche, mercado, restaurante
+    TRANSPORT // uber, combustível, transporte público
+    SHOPPING // compras em geral, roupas
+    HEALTH // farmácia, saúde
+    ENTERTAINMENT // lazer em geral (fora assinaturas)
+    SUBSCRIPTION // netflix, spotify, hbo etc
+    INSTALLMENT // "parcela" genérica
+    LOAN // dinheiro emprestado / compra avulsa
+    BILLS // contas fixas (internet, luz, etc)
+    OTHER
+
+    @@map("category_type")
+}
+
+// Categorias das compras. Vem populado com um seed padrão (lanche, spotify,
+// netflix, hbo, etc), mas o usuário pode criar as suas próprias.
+model Category {
+    id    String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    key   String       @unique // slug fixo usado no código, ex: "lanche", "spotify"
+    label String // nome exibido no app, ex: "Lanche", "Spotify"
+    icon  String? // nome do ícone (lucide) ou emoji, pro client renderizar
+    type  CategoryType @default(OTHER)
+
+    // null = categoria padrão do sistema (seed). Preenchido = categoria criada por um usuário.
+    createdById String? @db.Uuid
+    createdBy   User?   @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+    archived  Boolean  @default(false)
+    createdAt DateTime @default(now())
+
+    purchases Purchase[]
+
+    @@index([type])
+    @@map("category")
 }

@@ -52,3 +52,8 @@ export type Card = Prisma.CardModel
  * 
  */
 export type Purchase = Prisma.PurchaseModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
