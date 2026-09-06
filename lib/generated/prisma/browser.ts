@@ -48,6 +48,11 @@ export type Group = Prisma.GroupModel
  */
 export type Card = Prisma.CardModel
 /**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
  * Model Purchase
  * 
  */
@@ -57,3 +62,8 @@ export type Purchase = Prisma.PurchaseModel
  * 
  */
 export type Category = Prisma.CategoryModel
+/**
+ * Model Subscription
+ * 
+ */
+export type Subscription = Prisma.SubscriptionModel

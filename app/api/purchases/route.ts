@@ -1,35 +1,97 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getOrCreateInvoice } from "@/lib/invoices";
 
-import { auth } from "@/auth"
-import { headers } from "next/headers"
+import { auth } from "@/auth";
+import { headers } from "next/headers";
 
+function parseAmountInCents(value: unknown): string | null {
+    if (typeof value !== "string" && typeof value !== "number") return null;
+
+    const rawValue = String(value).trim();
+    if (!/^\d+$/.test(rawValue)) return null;
+
+    const cents = rawValue.padStart(3, "0");
+    return `${cents.slice(0, -2)}.${cents.slice(-2)}`;
+}
 
 export async function POST(request: NextRequest) {
     const session = await auth.api.getSession({
-        headers: await headers()
-    })
+        headers: await headers(),
+    });
 
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
-    const { name, color, ownerId, groupId } = body;
+    const {
+        id,
+        description,
+        amount,
+        purchasedDate,
+        cardId,
+        invoiceId,
+        groupId,
+        categoryId,
+    } = body;
 
-    if (!name || typeof name !== "string") {
-        return NextResponse.json({ error: "Group name is required" }, { status: 400 });
+    if (!categoryId || typeof categoryId !== "string") {
+        return NextResponse.json(
+            { error: "categoryId is required" },
+            { status: 400 },
+        );
     }
 
-    const newCard = await prisma.card.create({
-        data: {
-            name,
-            color,
-            ownerId: ownerId || session.user.id,
-            createdById: session.user.id,
-            groupId: groupId || null,
-        },
+    if (!groupId || typeof groupId !== "string") {
+        return NextResponse.json(
+            { error: "groupId is required" },
+            { status: 400 },
+        );
+    }
+
+    if (!invoiceId || typeof invoiceId !== "string") {
+        return NextResponse.json(
+            { error: "invoiceId is required" },
+            { status: 400 },
+        );
+    }
+
+    const normalizedAmount = parseAmountInCents(amount);
+    if (normalizedAmount === null) {
+        return NextResponse.json(
+            { error: "amount must contain only digits in cents" },
+            { status: 400 },
+        );
+    }
+
+    const purchasedAt = purchasedDate ? new Date(purchasedDate) : new Date();
+    const safeCardId =
+        typeof cardId === "string" && cardId.trim() ? cardId : null;
+
+    // resolve (ou cria) a fatura correspondente ao cartão/grupo + data da compra
+    const invoice = await getOrCreateInvoice({
+        groupId,
+        cardId: safeCardId,
+        targetDate: purchasedAt,
     });
 
-    return NextResponse.json(newCard, { status: 201 });
+    const baseData = {
+        description: description ?? null,
+        amount: normalizedAmount,
+        purchasedAt,
+        cardId: safeCardId,
+        invoiceId: invoice.id,
+        categoryId,
+        // groupId,
+    };
+
+    const purchase =
+        typeof id === "string" && id.trim()
+            ? await prisma.purchase.update({ where: { id }, data: baseData })
+            : await prisma.purchase.create({
+                  data: { ...baseData, createdById: session.user.id },
+              });
+
+    return NextResponse.json(purchase, { status: 201 });
 }

@@ -35,19 +35,32 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, color, ownerId, groupId } = body;
+    const { name, color, ownerId, groupId, digits } = body;
 
     if (!name || typeof name !== "string") {
         return NextResponse.json({ error: "Group name is required" }, { status: 400 });
     }
 
+    if (!color || typeof color !== "string") {
+        return NextResponse.json({ error: "Group color is required" }, { status: 400 });
+    }
+
+    let finalColor;
+
+    if (!color.startsWith("#")) {
+        finalColor = `#${color}`;
+    } else {
+        finalColor = color;
+    }
+
     const newCard = await prisma.card.create({
         data: {
             name,
-            color,
+            color: finalColor,
             ownerId: ownerId || session.user.id,
             createdById: session.user.id,
             groupId: groupId || null,
+            digits: digits || "0000",
         },
     });
 

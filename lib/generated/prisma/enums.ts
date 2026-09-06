@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const InvoiceStatus = {
+  OPEN: 'OPEN',
+  CLOSED: 'CLOSED',
+  PAID: 'PAID'
+} as const
+
+export type InvoiceStatus = (typeof InvoiceStatus)[keyof typeof InvoiceStatus]
+
+
 export const CategoryType = {
   FOOD: 'FOOD',
   TRANSPORT: 'TRANSPORT',

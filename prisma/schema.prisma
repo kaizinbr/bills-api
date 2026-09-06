@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
     provider = "prisma-client"
     output   = "../lib/generated/prisma"
@@ -23,20 +21,15 @@ model User {
     sessions      Session[]
     accounts      Account[]
 
-    // grupos em que este usuário é o devedor (ex: irmão mais novo)
     debtorGroups     Group[]    @relation("DebtorGroups")
-    // grupos em que este usuário é o credor (ex: você)
     creditorGroups   Group[]    @relation("CreditorGroups")
-    // compras que este usuário registrou (pode ser você registrando pro irmão, ou ele mesmo)
     purchasesCreated Purchase[]
 
-    // cartões que são de fato deste usuário (dono da fatura)
     ownedCards   Card[] @relation("OwnedCards")
-    // cartões que este usuário cadastrou no app (pode ser dono de outra pessoa)
     createdCards Card[] @relation("CreatedCards")
 
-    // categorias customizadas criadas por este usuário
-    createdCategories Category[]
+    createdCategories    Category[]
+    createdSubscriptions Subscription[]
 
     @@unique([email])
     @@map("user")
@@ -89,33 +82,25 @@ model Verification {
     @@map("verification")
 }
 
-// --- Seus modelos ---
-
-// Um "conjunto" credor <-> devedor. Ex: "Meus cartões" (credor = você, devedor = irmão)
-// e "Cartão do irmão mais velho" (credor externo, devedor = irmão) são dois grupos
-// separados, cada um com seu próprio total.
 model Group {
     id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    name String // ex: "Cartões do Kaio", "Cartão do irmão mais velho"
+    name String
 
     debtorId String @db.Uuid
     debtor   User   @relation("DebtorGroups", fields: [debtorId], references: [id], onDelete: Cascade)
 
-    // credor cadastrado no sistema (ex: você). Nulo quando o credor é externo.
     creditorId   String? @db.Uuid
     creditor     User?   @relation("CreditorGroups", fields: [creditorId], references: [id], onDelete: SetNull)
-    // nome do credor quando ele não é um usuário do sistema (ex: "irmão mais velho")
     creditorName String?
 
-    // dia de fechamento padrão da fatura (1-31). Pode ser sobrescrito por cartão.
     closingDay Int?
 
     archived  Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    cards     Card[]
-    purchases Purchase[]
+    cards    Card[]
+    invoices Invoice[]
 
     @@index([debtorId])
     @@index([creditorId])
@@ -123,20 +108,16 @@ model Group {
 }
 
 model Card {
-    id    String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    name  String // nome do banco/cartão, ex: "Nubank", "Inter"
-    color String? // opcional, pra UI (cor/bandeira do banco)
+    id     String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name   String
+    color  String?
+    digits String?
 
-    // sobrescreve o closingDay do grupo, se definido
     closingDay Int?
 
-    // dono real do cartão (a quem a fatura pertence de fato).
-    // permite filtrar "meus cartões" direto, sem passar pelo grupo,
-    // e permite que outro usuário cadastre um cartão seu em nome dele.
     ownerId String @db.Uuid
     owner   User   @relation("OwnedCards", fields: [ownerId], references: [id], onDelete: Cascade)
 
-    // quem de fato criou/cadastrou o cartão no app (pode ser diferente do owner)
     createdById String @db.Uuid
     createdBy   User   @relation("CreatedCards", fields: [createdById], references: [id], onDelete: Cascade)
 
@@ -146,79 +127,141 @@ model Card {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    purchases Purchase[]
+    invoices      Invoice[]
+    subscriptions Subscription[]
+    purchases     Purchase[]
 
     @@index([groupId])
     @@index([ownerId])
     @@map("card")
 }
 
-model Purchase {
-    id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    description String?
-    amount      Decimal  @db.Decimal(10, 2) // valor da parcela (se parcelado) ou valor total (se à vista)
-    purchasedAt DateTime @default(now()) // data personalizável, padrão = data de criação
+enum InvoiceStatus {
+    OPEN
+    CLOSED
+    PAID
 
-    categoryId String   @db.Uuid
-    category   Category @relation(fields: [categoryId], references: [id])
+    @@map("invoice_status")
+}
+
+model Invoice {
+    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
 
     groupId String @db.Uuid
     group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
-    // null = compra avulsa / dinheiro emprestado (sem cartão)
+    cardId String? @db.Uuid
+    card   Card?   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+    periodStart DateTime
+    closingDate DateTime
+    status      InvoiceStatus @default(OPEN)
+    paidAt      DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    purchases Purchase[]
+
+    @@unique([cardId, periodStart])
+    @@index([groupId, periodStart])
+    @@map("invoice")
+}
+
+model Purchase {
+    id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    description String?
+    amount      Decimal  @db.Decimal(10, 2)
+    purchasedAt DateTime @default(now())
+
+    categoryId String   @db.Uuid
+    category   Category @relation(fields: [categoryId], references: [id])
+
+    invoiceId String  @db.Uuid
+    invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
     cardId String? @db.Uuid
     card   Card?   @relation(fields: [cardId], references: [id], onDelete: SetNull)
 
-    // parcelamento: todas as parcelas de uma mesma compra compartilham o mesmo installmentGroupId
     installmentGroupId String? @db.Uuid
-    installmentNumber  Int? // parcela atual (1-based)
-    installmentTotal   Int? // total de parcelas
+    installmentNumber  Int?
+    installmentTotal   Int?
+
+    subscriptionId String?       @db.Uuid
+    subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
 
     createdById String   @db.Uuid
     createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
-    @@index([groupId, purchasedAt])
+    @@unique([invoiceId, subscriptionId])
+    @@index([invoiceId, purchasedAt])
     @@index([cardId, purchasedAt])
     @@index([installmentGroupId])
     @@index([categoryId])
+    @@index([subscriptionId])
     @@map("purchase")
 }
 
 enum CategoryType {
-    FOOD // lanche, mercado, restaurante
-    TRANSPORT // uber, combustível, transporte público
-    SHOPPING // compras em geral, roupas
-    HEALTH // farmácia, saúde
-    ENTERTAINMENT // lazer em geral (fora assinaturas)
-    SUBSCRIPTION // netflix, spotify, hbo etc
-    INSTALLMENT // "parcela" genérica
-    LOAN // dinheiro emprestado / compra avulsa
-    BILLS // contas fixas (internet, luz, etc)
+    FOOD
+    TRANSPORT
+    SHOPPING
+    HEALTH
+    ENTERTAINMENT
+    SUBSCRIPTION
+    INSTALLMENT
+    LOAN
+    BILLS
     OTHER
 
     @@map("category_type")
 }
 
-// Categorias das compras. Vem populado com um seed padrão (lanche, spotify,
-// netflix, hbo, etc), mas o usuário pode criar as suas próprias.
 model Category {
     id    String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    key   String       @unique // slug fixo usado no código, ex: "lanche", "spotify"
-    label String // nome exibido no app, ex: "Lanche", "Spotify"
-    icon  String? // nome do ícone (lucide) ou emoji, pro client renderizar
+    key   String       @unique
+    label String
+    icon  String?
     type  CategoryType @default(OTHER)
 
-    // null = categoria padrão do sistema (seed). Preenchido = categoria criada por um usuário.
     createdById String? @db.Uuid
     createdBy   User?   @relation(fields: [createdById], references: [id], onDelete: Cascade)
 
     archived  Boolean  @default(false)
     createdAt DateTime @default(now())
 
-    purchases Purchase[]
+    purchases     Purchase[]
+    subscriptions Subscription[]
 
     @@index([type])
     @@map("category")
+}
+
+model Subscription {
+    id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name       String
+    amount     Decimal   @db.Decimal(10, 2)
+    chargeDay  Int
+    startDate  DateTime  @default(now())
+    canceledAt DateTime?
+
+    categoryId String   @db.Uuid
+    category   Category @relation(fields: [categoryId], references: [id])
+
+    cardId String @db.Uuid
+    card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+    createdById String @db.Uuid
+    createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    purchases Purchase[]
+
+    @@index([cardId])
+    @@index([canceledAt])
+    @@map("subscription")
 }

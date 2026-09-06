@@ -57,8 +57,10 @@ export const ModelName = {
   Verification: 'Verification',
   Group: 'Group',
   Card: 'Card',
+  Invoice: 'Invoice',
   Purchase: 'Purchase',
-  Category: 'Category'
+  Category: 'Category',
+  Subscription: 'Subscription'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -155,6 +157,7 @@ export const CardScalarFieldEnum = {
   id: 'id',
   name: 'name',
   color: 'color',
+  digits: 'digits',
   closingDay: 'closingDay',
   ownerId: 'ownerId',
   createdById: 'createdById',
@@ -167,17 +170,33 @@ export const CardScalarFieldEnum = {
 export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof CardScalarFieldEnum]
 
 
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  cardId: 'cardId',
+  periodStart: 'periodStart',
+  closingDate: 'closingDate',
+  status: 'status',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
 export const PurchaseScalarFieldEnum = {
   id: 'id',
   description: 'description',
   amount: 'amount',
   purchasedAt: 'purchasedAt',
   categoryId: 'categoryId',
-  groupId: 'groupId',
+  invoiceId: 'invoiceId',
   cardId: 'cardId',
   installmentGroupId: 'installmentGroupId',
   installmentNumber: 'installmentNumber',
   installmentTotal: 'installmentTotal',
+  subscriptionId: 'subscriptionId',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -198,6 +217,23 @@ export const CategoryScalarFieldEnum = {
 } as const
 
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const SubscriptionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  amount: 'amount',
+  chargeDay: 'chargeDay',
+  startDate: 'startDate',
+  canceledAt: 'canceledAt',
+  categoryId: 'categoryId',
+  cardId: 'cardId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
 
 
 export const SortOrder = {

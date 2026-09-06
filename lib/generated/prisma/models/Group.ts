@@ -251,7 +251,7 @@ export type GroupWhereInput = {
   debtor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   creditor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   cards?: Prisma.CardListRelationFilter
-  purchases?: Prisma.PurchaseListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
 }
 
 export type GroupOrderByWithRelationInput = {
@@ -267,7 +267,7 @@ export type GroupOrderByWithRelationInput = {
   debtor?: Prisma.UserOrderByWithRelationInput
   creditor?: Prisma.UserOrderByWithRelationInput
   cards?: Prisma.CardOrderByRelationAggregateInput
-  purchases?: Prisma.PurchaseOrderByRelationAggregateInput
+  invoices?: Prisma.InvoiceOrderByRelationAggregateInput
 }
 
 export type GroupWhereUniqueInput = Prisma.AtLeast<{
@@ -286,7 +286,7 @@ export type GroupWhereUniqueInput = Prisma.AtLeast<{
   debtor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   creditor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   cards?: Prisma.CardListRelationFilter
-  purchases?: Prisma.PurchaseListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
 }, "id">
 
 export type GroupOrderByWithAggregationInput = {
@@ -332,7 +332,7 @@ export type GroupCreateInput = {
   debtor: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
   creditor?: Prisma.UserCreateNestedOneWithoutCreditorGroupsInput
   cards?: Prisma.CardCreateNestedManyWithoutGroupInput
-  purchases?: Prisma.PurchaseCreateNestedManyWithoutGroupInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateInput = {
@@ -346,7 +346,7 @@ export type GroupUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
-  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutGroupInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUpdateInput = {
@@ -360,7 +360,7 @@ export type GroupUpdateInput = {
   debtor?: Prisma.UserUpdateOneRequiredWithoutDebtorGroupsNestedInput
   creditor?: Prisma.UserUpdateOneWithoutCreditorGroupsNestedInput
   cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
-  purchases?: Prisma.PurchaseUpdateManyWithoutGroupNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateInput = {
@@ -374,7 +374,7 @@ export type GroupUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cards?: Prisma.CardUncheckedUpdateManyWithoutGroupNestedInput
-  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutGroupNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupCreateManyInput = {
@@ -576,18 +576,18 @@ export type GroupUpdateOneRequiredWithoutCardsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.GroupUpdateToOneWithWhereWithoutCardsInput, Prisma.GroupUpdateWithoutCardsInput>, Prisma.GroupUncheckedUpdateWithoutCardsInput>
 }
 
-export type GroupCreateNestedOneWithoutPurchasesInput = {
-  create?: Prisma.XOR<Prisma.GroupCreateWithoutPurchasesInput, Prisma.GroupUncheckedCreateWithoutPurchasesInput>
-  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutPurchasesInput
+export type GroupCreateNestedOneWithoutInvoicesInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutInvoicesInput, Prisma.GroupUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutInvoicesInput
   connect?: Prisma.GroupWhereUniqueInput
 }
 
-export type GroupUpdateOneRequiredWithoutPurchasesNestedInput = {
-  create?: Prisma.XOR<Prisma.GroupCreateWithoutPurchasesInput, Prisma.GroupUncheckedCreateWithoutPurchasesInput>
-  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutPurchasesInput
-  upsert?: Prisma.GroupUpsertWithoutPurchasesInput
+export type GroupUpdateOneRequiredWithoutInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutInvoicesInput, Prisma.GroupUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutInvoicesInput
+  upsert?: Prisma.GroupUpsertWithoutInvoicesInput
   connect?: Prisma.GroupWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.GroupUpdateToOneWithWhereWithoutPurchasesInput, Prisma.GroupUpdateWithoutPurchasesInput>, Prisma.GroupUncheckedUpdateWithoutPurchasesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GroupUpdateToOneWithWhereWithoutInvoicesInput, Prisma.GroupUpdateWithoutInvoicesInput>, Prisma.GroupUncheckedUpdateWithoutInvoicesInput>
 }
 
 export type GroupCreateWithoutDebtorInput = {
@@ -600,7 +600,7 @@ export type GroupCreateWithoutDebtorInput = {
   updatedAt?: Date | string
   creditor?: Prisma.UserCreateNestedOneWithoutCreditorGroupsInput
   cards?: Prisma.CardCreateNestedManyWithoutGroupInput
-  purchases?: Prisma.PurchaseCreateNestedManyWithoutGroupInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutDebtorInput = {
@@ -613,7 +613,7 @@ export type GroupUncheckedCreateWithoutDebtorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
-  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutGroupInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupCreateOrConnectWithoutDebtorInput = {
@@ -636,7 +636,7 @@ export type GroupCreateWithoutCreditorInput = {
   updatedAt?: Date | string
   debtor: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
   cards?: Prisma.CardCreateNestedManyWithoutGroupInput
-  purchases?: Prisma.PurchaseCreateNestedManyWithoutGroupInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutCreditorInput = {
@@ -649,7 +649,7 @@ export type GroupUncheckedCreateWithoutCreditorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
-  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutGroupInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupCreateOrConnectWithoutCreditorInput = {
@@ -719,7 +719,7 @@ export type GroupCreateWithoutCardsInput = {
   updatedAt?: Date | string
   debtor: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
   creditor?: Prisma.UserCreateNestedOneWithoutCreditorGroupsInput
-  purchases?: Prisma.PurchaseCreateNestedManyWithoutGroupInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutCardsInput = {
@@ -732,7 +732,7 @@ export type GroupUncheckedCreateWithoutCardsInput = {
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutGroupInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupCreateOrConnectWithoutCardsInput = {
@@ -761,7 +761,7 @@ export type GroupUpdateWithoutCardsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   debtor?: Prisma.UserUpdateOneRequiredWithoutDebtorGroupsNestedInput
   creditor?: Prisma.UserUpdateOneWithoutCreditorGroupsNestedInput
-  purchases?: Prisma.PurchaseUpdateManyWithoutGroupNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutCardsInput = {
@@ -774,10 +774,10 @@ export type GroupUncheckedUpdateWithoutCardsInput = {
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutGroupNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
 }
 
-export type GroupCreateWithoutPurchasesInput = {
+export type GroupCreateWithoutInvoicesInput = {
   id?: string
   name: string
   creditorName?: string | null
@@ -790,7 +790,7 @@ export type GroupCreateWithoutPurchasesInput = {
   cards?: Prisma.CardCreateNestedManyWithoutGroupInput
 }
 
-export type GroupUncheckedCreateWithoutPurchasesInput = {
+export type GroupUncheckedCreateWithoutInvoicesInput = {
   id?: string
   name: string
   debtorId: string
@@ -803,23 +803,23 @@ export type GroupUncheckedCreateWithoutPurchasesInput = {
   cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
 }
 
-export type GroupCreateOrConnectWithoutPurchasesInput = {
+export type GroupCreateOrConnectWithoutInvoicesInput = {
   where: Prisma.GroupWhereUniqueInput
-  create: Prisma.XOR<Prisma.GroupCreateWithoutPurchasesInput, Prisma.GroupUncheckedCreateWithoutPurchasesInput>
+  create: Prisma.XOR<Prisma.GroupCreateWithoutInvoicesInput, Prisma.GroupUncheckedCreateWithoutInvoicesInput>
 }
 
-export type GroupUpsertWithoutPurchasesInput = {
-  update: Prisma.XOR<Prisma.GroupUpdateWithoutPurchasesInput, Prisma.GroupUncheckedUpdateWithoutPurchasesInput>
-  create: Prisma.XOR<Prisma.GroupCreateWithoutPurchasesInput, Prisma.GroupUncheckedCreateWithoutPurchasesInput>
+export type GroupUpsertWithoutInvoicesInput = {
+  update: Prisma.XOR<Prisma.GroupUpdateWithoutInvoicesInput, Prisma.GroupUncheckedUpdateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.GroupCreateWithoutInvoicesInput, Prisma.GroupUncheckedCreateWithoutInvoicesInput>
   where?: Prisma.GroupWhereInput
 }
 
-export type GroupUpdateToOneWithWhereWithoutPurchasesInput = {
+export type GroupUpdateToOneWithWhereWithoutInvoicesInput = {
   where?: Prisma.GroupWhereInput
-  data: Prisma.XOR<Prisma.GroupUpdateWithoutPurchasesInput, Prisma.GroupUncheckedUpdateWithoutPurchasesInput>
+  data: Prisma.XOR<Prisma.GroupUpdateWithoutInvoicesInput, Prisma.GroupUncheckedUpdateWithoutInvoicesInput>
 }
 
-export type GroupUpdateWithoutPurchasesInput = {
+export type GroupUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -832,7 +832,7 @@ export type GroupUpdateWithoutPurchasesInput = {
   cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
 }
 
-export type GroupUncheckedUpdateWithoutPurchasesInput = {
+export type GroupUncheckedUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   debtorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -877,7 +877,7 @@ export type GroupUpdateWithoutDebtorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creditor?: Prisma.UserUpdateOneWithoutCreditorGroupsNestedInput
   cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
-  purchases?: Prisma.PurchaseUpdateManyWithoutGroupNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutDebtorInput = {
@@ -890,7 +890,7 @@ export type GroupUncheckedUpdateWithoutDebtorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cards?: Prisma.CardUncheckedUpdateManyWithoutGroupNestedInput
-  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutGroupNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateManyWithoutDebtorInput = {
@@ -914,7 +914,7 @@ export type GroupUpdateWithoutCreditorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   debtor?: Prisma.UserUpdateOneRequiredWithoutDebtorGroupsNestedInput
   cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
-  purchases?: Prisma.PurchaseUpdateManyWithoutGroupNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutCreditorInput = {
@@ -927,7 +927,7 @@ export type GroupUncheckedUpdateWithoutCreditorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cards?: Prisma.CardUncheckedUpdateManyWithoutGroupNestedInput
-  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutGroupNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateManyWithoutCreditorInput = {
@@ -948,12 +948,12 @@ export type GroupUncheckedUpdateManyWithoutCreditorInput = {
 
 export type GroupCountOutputType = {
   cards: number
-  purchases: number
+  invoices: number
 }
 
 export type GroupCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cards?: boolean | GroupCountOutputTypeCountCardsArgs
-  purchases?: boolean | GroupCountOutputTypeCountPurchasesArgs
+  invoices?: boolean | GroupCountOutputTypeCountInvoicesArgs
 }
 
 /**
@@ -976,8 +976,8 @@ export type GroupCountOutputTypeCountCardsArgs<ExtArgs extends runtime.Types.Ext
 /**
  * GroupCountOutputType without action
  */
-export type GroupCountOutputTypeCountPurchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PurchaseWhereInput
+export type GroupCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
 }
 
 
@@ -994,7 +994,7 @@ export type GroupSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   debtor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   creditor?: boolean | Prisma.Group$creditorArgs<ExtArgs>
   cards?: boolean | Prisma.Group$cardsArgs<ExtArgs>
-  purchases?: boolean | Prisma.Group$purchasesArgs<ExtArgs>
+  invoices?: boolean | Prisma.Group$invoicesArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["group"]>
 
@@ -1043,7 +1043,7 @@ export type GroupInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   debtor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   creditor?: boolean | Prisma.Group$creditorArgs<ExtArgs>
   cards?: boolean | Prisma.Group$cardsArgs<ExtArgs>
-  purchases?: boolean | Prisma.Group$purchasesArgs<ExtArgs>
+  invoices?: boolean | Prisma.Group$invoicesArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type GroupIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1061,7 +1061,7 @@ export type $GroupPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     debtor: Prisma.$UserPayload<ExtArgs>
     creditor: Prisma.$UserPayload<ExtArgs> | null
     cards: Prisma.$CardPayload<ExtArgs>[]
-    purchases: Prisma.$PurchasePayload<ExtArgs>[]
+    invoices: Prisma.$InvoicePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1470,7 +1470,7 @@ export interface Prisma__GroupClient<T, Null = never, ExtArgs extends runtime.Ty
   debtor<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   creditor<T extends Prisma.Group$creditorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$creditorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   cards<T extends Prisma.Group$cardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$cardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  purchases<T extends Prisma.Group$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invoices<T extends Prisma.Group$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1953,27 +1953,27 @@ export type Group$cardsArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 }
 
 /**
- * Group.purchases
+ * Group.invoices
  */
-export type Group$purchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Group$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Purchase
+   * Select specific fields to fetch from the Invoice
    */
-  select?: Prisma.PurchaseSelect<ExtArgs> | null
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Purchase
+   * Omit specific fields from the Invoice
    */
-  omit?: Prisma.PurchaseOmit<ExtArgs> | null
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PurchaseInclude<ExtArgs> | null
-  where?: Prisma.PurchaseWhereInput
-  orderBy?: Prisma.PurchaseOrderByWithRelationInput | Prisma.PurchaseOrderByWithRelationInput[]
-  cursor?: Prisma.PurchaseWhereUniqueInput
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.PurchaseScalarFieldEnum | Prisma.PurchaseScalarFieldEnum[]
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
 }
 
 /**

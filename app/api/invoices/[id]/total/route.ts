@@ -5,19 +5,24 @@ import { headers } from "next/headers";
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Promise<{ groupId: string }> },
+    { params }: { params: Promise<{ id: string }> },
 ) {
+    const { id } = await params;
+
+    if (!id) {
+        return NextResponse.json(
+            { error: "Invoice ID is required" },
+            { status: 400 },
+        );
+    }
+
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { groupId } = await params;
-
-    // soma todas as compras de todas as invoices do grupo (todos os cartões
-    // + o balde avulso), já que Purchase não tem mais groupId direto
     const result = await prisma.purchase.aggregate({
-        where: { invoice: { groupId } },
+        where: { invoiceId: id },
         _sum: { amount: true },
     });
 
