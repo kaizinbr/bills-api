@@ -131,7 +131,7 @@ export async function getOrCreateInvoice({
             });
 
             if (cardId) {
-                await generateSubscriptionPurchases(newInvoice);
+                await chargeSubscriptionsForInvoice({invoice: newInvoice, cardId});
             }
 
             lastInvoice = newInvoice;
@@ -189,6 +189,57 @@ async function generateSubscriptionPurchases(invoice: Invoice): Promise<void> {
                 categoryId: subscription.categoryId,
                 invoiceId: invoice.id,
                 cardId: invoice.cardId,
+                subscriptionId: subscription.id,
+                createdById: subscription.createdById,
+            },
+        });
+    }
+}
+
+
+
+
+export async function chargeSubscriptionsForInvoice({
+    invoice,
+    cardId,
+}: {
+    invoice: Invoice;
+    cardId: string | null;
+}): Promise<void> {
+    if (!cardId) return;
+
+    const activeSubscriptions = await prisma.subscription.findMany({
+        where: {
+            cardId,
+            startDate: { lte: invoice.closingDate },
+            OR: [
+                { canceledAt: null },
+                { canceledAt: { gt: invoice.periodStart } },
+            ],
+        },
+    });
+
+    for (const subscription of activeSubscriptions) {
+        const chargeDate = clampToPeriod(
+            nextClosingDate(invoice.periodStart, subscription.chargeDay),
+            invoice.periodStart,
+            invoice.closingDate,
+        );
+
+        await prisma.purchase.upsert({
+            where: {
+                invoiceId_subscriptionId: {
+                    invoiceId: invoice.id,
+                    subscriptionId: subscription.id,
+                },
+            },
+            update: {}, // já existe cobrança dessa assinatura nessa fatura — não faz nada
+            create: {
+                amount: subscription.amount,
+                purchasedAt: chargeDate,
+                categoryId: subscription.categoryId,
+                invoiceId: invoice.id,
+                cardId,
                 subscriptionId: subscription.id,
                 createdById: subscription.createdById,
             },
