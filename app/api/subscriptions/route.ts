@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { cardId, categoryId, name, amountCents, chargeDay } =
+    const { cardId, categoryId, name, amountCents, chargeDay, groupId } =
         await request.json();
 
     if (!cardId || !categoryId || !name || !amountCents || !chargeDay) {
@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
             amount: normalizedAmount,
             chargeDay,
             createdById: session.user.id,
+            groupId,
         },
     });
 

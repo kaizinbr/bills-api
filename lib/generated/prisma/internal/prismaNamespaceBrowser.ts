@@ -228,6 +228,7 @@ export const SubscriptionScalarFieldEnum = {
   canceledAt: 'canceledAt',
   categoryId: 'categoryId',
   cardId: 'cardId',
+  groupId: 'groupId',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

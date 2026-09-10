@@ -19,7 +19,12 @@ export async function GET(request: NextRequest) {
         include: {
             cards: true,
             debtor: { select: { id: true, name: true, image: true } },
-            invoices: { orderBy: { periodStart: "desc" }, take: 1 }
+            invoices: { orderBy: { periodStart: "desc" }, take: 1 },
+            _count: {
+                select: {
+                    subscriptions: true
+                },
+            },
         },
     });
 
@@ -28,7 +33,12 @@ export async function GET(request: NextRequest) {
         include: {
             cards: true,
             debtor: { select: { id: true, name: true, image: true } },
-            invoices: { orderBy: { periodStart: "desc" }, take: 1 }
+            invoices: { orderBy: { periodStart: "desc" }, take: 1 },
+            _count: {
+                select: {
+                    subscriptions: true
+                },
+            },
         },
     });
 

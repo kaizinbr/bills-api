@@ -101,6 +101,7 @@ model Group {
 
     cards    Card[]
     invoices Invoice[]
+    subscriptions Subscription[]
 
     @@index([debtorId])
     @@index([creditorId])
@@ -253,6 +254,9 @@ model Subscription {
     cardId String @db.Uuid
     card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
 
+    groupId String @db.Uuid
+    group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
     createdById String @db.Uuid
     createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Cascade)
 
@@ -262,6 +266,7 @@ model Subscription {
     purchases Purchase[]
 
     @@index([cardId])
+    @@index([groupId])
     @@index([canceledAt])
     @@map("subscription")
 }

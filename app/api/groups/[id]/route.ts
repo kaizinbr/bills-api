@@ -32,6 +32,7 @@ export async function GET(
         },
         include: {
             cards: true, // Include the related cards
+            subscriptions: true, // Include the related subscriptions
             debtor: {
                 select: {
                     id: true,
@@ -39,6 +40,7 @@ export async function GET(
                     image: true,
                 },
             },
+            
         },
     });
 
