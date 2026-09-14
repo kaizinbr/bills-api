@@ -7,18 +7,18 @@ const PAGE_SIZE = 20;
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Promise<{ groupId: string }> },
+    { params }: { params: Promise<{ id: string }> },
 ) {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { groupId } = await params;
+    const { id } = await params;
     const page = Number(request.nextUrl.searchParams.get("page") ?? "1");
 
-    // compras não têm mais groupId direto — filtra pelas invoices do grupo
-    const where = { invoice: { groupId } };
+    // compras não têm mais id direto — filtra pelas invoices do grupo
+    const where = { invoice: { id } };
 
     const [purchases, total] = await Promise.all([
         prisma.purchase.findMany({

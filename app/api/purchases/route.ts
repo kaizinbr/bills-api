@@ -98,16 +98,13 @@ export async function POST(request: NextRequest) {
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Promise<{ id: string }> },
 ) {
-    const { id } = await params;
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const purchase = await prisma.purchase.findUnique({
-        where: { id },
+    const purchase = await prisma.purchase.findMany({
         include: {
             category: true,
             card: true,
@@ -129,33 +126,3 @@ export async function GET(
 
     return NextResponse.json({ purchase });
 }
-
-export async function DELETE(
-    request: NextRequest,
-    { params }: { params: Promise<{ id: string }> },
-
-) {
-    const { id } = await params;
-    const session = await auth.api.getSession({ headers: await headers() });
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const purchase = await prisma.purchase.findUnique({
-        where: { id },
-    });
-
-    if (!purchase) {
-        return NextResponse.json(
-            { error: "Purchase not found" },
-            { status: 404 },
-        );
-    }
-
-    const deletePurchase = await prisma.purchase.delete({
-        where: { id },
-    });
-
-    return NextResponse.json({ purchase: deletePurchase });
-}
-

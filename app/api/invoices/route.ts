@@ -4,6 +4,7 @@ import { getOrCreateInvoice } from "@/lib/invoices";
 
 import { auth } from "@/auth";
 import { headers } from "next/headers";
+import { generateUniqueInviteCode } from "@/lib/invites";
 
 export async function GET(request: NextRequest) {
     const session = await auth.api.getSession({
@@ -97,6 +98,7 @@ export async function POST(request: NextRequest) {
                     connect: cardIds.map((cardId: string) => ({ id: cardId })),
                 },
             }),
+            inviteCode: await generateUniqueInviteCode(),
         },
     });
 
