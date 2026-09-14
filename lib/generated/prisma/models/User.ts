@@ -207,6 +207,7 @@ export type UserWhereInput = {
   createdCards?: Prisma.CardListRelationFilter
   createdCategories?: Prisma.CategoryListRelationFilter
   createdSubscriptions?: Prisma.SubscriptionListRelationFilter
+  groupMemberships?: Prisma.GroupMemberListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -226,6 +227,7 @@ export type UserOrderByWithRelationInput = {
   createdCards?: Prisma.CardOrderByRelationAggregateInput
   createdCategories?: Prisma.CategoryOrderByRelationAggregateInput
   createdSubscriptions?: Prisma.SubscriptionOrderByRelationAggregateInput
+  groupMemberships?: Prisma.GroupMemberOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -248,6 +250,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdCards?: Prisma.CardListRelationFilter
   createdCategories?: Prisma.CategoryListRelationFilter
   createdSubscriptions?: Prisma.SubscriptionListRelationFilter
+  groupMemberships?: Prisma.GroupMemberListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -293,6 +296,7 @@ export type UserCreateInput = {
   createdCards?: Prisma.CardCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -312,6 +316,7 @@ export type UserUncheckedCreateInput = {
   createdCards?: Prisma.CardUncheckedCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -331,6 +336,7 @@ export type UserUpdateInput = {
   createdCards?: Prisma.CardUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -350,6 +356,7 @@ export type UserUncheckedUpdateInput = {
   createdCards?: Prisma.CardUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -496,6 +503,20 @@ export type UserUpdateOneWithoutCreditorGroupsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreditorGroupsInput, Prisma.UserUpdateWithoutCreditorGroupsInput>, Prisma.UserUncheckedUpdateWithoutCreditorGroupsInput>
 }
 
+export type UserCreateNestedOneWithoutGroupMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupMembershipsInput, Prisma.UserUncheckedCreateWithoutGroupMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutGroupMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupMembershipsInput, Prisma.UserUncheckedCreateWithoutGroupMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutGroupMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGroupMembershipsInput, Prisma.UserUpdateWithoutGroupMembershipsInput>, Prisma.UserUncheckedUpdateWithoutGroupMembershipsInput>
+}
+
 export type UserCreateNestedOneWithoutOwnedCardsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedCardsInput, Prisma.UserUncheckedCreateWithoutOwnedCardsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedCardsInput
@@ -584,6 +605,7 @@ export type UserCreateWithoutSessionsInput = {
   createdCards?: Prisma.CardCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -602,6 +624,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   createdCards?: Prisma.CardUncheckedCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -636,6 +659,7 @@ export type UserUpdateWithoutSessionsInput = {
   createdCards?: Prisma.CardUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -654,6 +678,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   createdCards?: Prisma.CardUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -672,6 +697,7 @@ export type UserCreateWithoutAccountsInput = {
   createdCards?: Prisma.CardCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -690,6 +716,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   createdCards?: Prisma.CardUncheckedCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -724,6 +751,7 @@ export type UserUpdateWithoutAccountsInput = {
   createdCards?: Prisma.CardUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -742,6 +770,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   createdCards?: Prisma.CardUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDebtorGroupsInput = {
@@ -760,6 +789,7 @@ export type UserCreateWithoutDebtorGroupsInput = {
   createdCards?: Prisma.CardCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDebtorGroupsInput = {
@@ -778,6 +808,7 @@ export type UserUncheckedCreateWithoutDebtorGroupsInput = {
   createdCards?: Prisma.CardUncheckedCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDebtorGroupsInput = {
@@ -801,6 +832,7 @@ export type UserCreateWithoutCreditorGroupsInput = {
   createdCards?: Prisma.CardCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreditorGroupsInput = {
@@ -819,6 +851,7 @@ export type UserUncheckedCreateWithoutCreditorGroupsInput = {
   createdCards?: Prisma.CardUncheckedCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreditorGroupsInput = {
@@ -853,6 +886,7 @@ export type UserUpdateWithoutDebtorGroupsInput = {
   createdCards?: Prisma.CardUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDebtorGroupsInput = {
@@ -871,6 +905,7 @@ export type UserUncheckedUpdateWithoutDebtorGroupsInput = {
   createdCards?: Prisma.CardUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutCreditorGroupsInput = {
@@ -900,6 +935,7 @@ export type UserUpdateWithoutCreditorGroupsInput = {
   createdCards?: Prisma.CardUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreditorGroupsInput = {
@@ -913,6 +949,99 @@ export type UserUncheckedUpdateWithoutCreditorGroupsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   debtorGroups?: Prisma.GroupUncheckedUpdateManyWithoutDebtorNestedInput
+  purchasesCreated?: Prisma.PurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
+  ownedCards?: Prisma.CardUncheckedUpdateManyWithoutOwnerNestedInput
+  createdCards?: Prisma.CardUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdCategories?: Prisma.CategoryUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdSubscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutGroupMembershipsInput = {
+  id?: string
+  name: string
+  email: string
+  emailVerified: boolean
+  image?: string | null
+  createdAt: Date | string
+  updatedAt: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  debtorGroups?: Prisma.GroupCreateNestedManyWithoutDebtorInput
+  creditorGroups?: Prisma.GroupCreateNestedManyWithoutCreditorInput
+  purchasesCreated?: Prisma.PurchaseCreateNestedManyWithoutCreatedByInput
+  ownedCards?: Prisma.CardCreateNestedManyWithoutOwnerInput
+  createdCards?: Prisma.CardCreateNestedManyWithoutCreatedByInput
+  createdCategories?: Prisma.CategoryCreateNestedManyWithoutCreatedByInput
+  createdSubscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutGroupMembershipsInput = {
+  id?: string
+  name: string
+  email: string
+  emailVerified: boolean
+  image?: string | null
+  createdAt: Date | string
+  updatedAt: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  debtorGroups?: Prisma.GroupUncheckedCreateNestedManyWithoutDebtorInput
+  creditorGroups?: Prisma.GroupUncheckedCreateNestedManyWithoutCreditorInput
+  purchasesCreated?: Prisma.PurchaseUncheckedCreateNestedManyWithoutCreatedByInput
+  ownedCards?: Prisma.CardUncheckedCreateNestedManyWithoutOwnerInput
+  createdCards?: Prisma.CardUncheckedCreateNestedManyWithoutCreatedByInput
+  createdCategories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCreatedByInput
+  createdSubscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutGroupMembershipsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupMembershipsInput, Prisma.UserUncheckedCreateWithoutGroupMembershipsInput>
+}
+
+export type UserUpsertWithoutGroupMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGroupMembershipsInput, Prisma.UserUncheckedUpdateWithoutGroupMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupMembershipsInput, Prisma.UserUncheckedCreateWithoutGroupMembershipsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGroupMembershipsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGroupMembershipsInput, Prisma.UserUncheckedUpdateWithoutGroupMembershipsInput>
+}
+
+export type UserUpdateWithoutGroupMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  debtorGroups?: Prisma.GroupUpdateManyWithoutDebtorNestedInput
+  creditorGroups?: Prisma.GroupUpdateManyWithoutCreditorNestedInput
+  purchasesCreated?: Prisma.PurchaseUpdateManyWithoutCreatedByNestedInput
+  ownedCards?: Prisma.CardUpdateManyWithoutOwnerNestedInput
+  createdCards?: Prisma.CardUpdateManyWithoutCreatedByNestedInput
+  createdCategories?: Prisma.CategoryUpdateManyWithoutCreatedByNestedInput
+  createdSubscriptions?: Prisma.SubscriptionUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  debtorGroups?: Prisma.GroupUncheckedUpdateManyWithoutDebtorNestedInput
+  creditorGroups?: Prisma.GroupUncheckedUpdateManyWithoutCreditorNestedInput
   purchasesCreated?: Prisma.PurchaseUncheckedUpdateManyWithoutCreatedByNestedInput
   ownedCards?: Prisma.CardUncheckedUpdateManyWithoutOwnerNestedInput
   createdCards?: Prisma.CardUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -936,6 +1065,7 @@ export type UserCreateWithoutOwnedCardsInput = {
   createdCards?: Prisma.CardCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOwnedCardsInput = {
@@ -954,6 +1084,7 @@ export type UserUncheckedCreateWithoutOwnedCardsInput = {
   createdCards?: Prisma.CardUncheckedCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOwnedCardsInput = {
@@ -977,6 +1108,7 @@ export type UserCreateWithoutCreatedCardsInput = {
   ownedCards?: Prisma.CardCreateNestedManyWithoutOwnerInput
   createdCategories?: Prisma.CategoryCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedCardsInput = {
@@ -995,6 +1127,7 @@ export type UserUncheckedCreateWithoutCreatedCardsInput = {
   ownedCards?: Prisma.CardUncheckedCreateNestedManyWithoutOwnerInput
   createdCategories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedCardsInput = {
@@ -1029,6 +1162,7 @@ export type UserUpdateWithoutOwnedCardsInput = {
   createdCards?: Prisma.CardUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOwnedCardsInput = {
@@ -1047,6 +1181,7 @@ export type UserUncheckedUpdateWithoutOwnedCardsInput = {
   createdCards?: Prisma.CardUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutCreatedCardsInput = {
@@ -1076,6 +1211,7 @@ export type UserUpdateWithoutCreatedCardsInput = {
   ownedCards?: Prisma.CardUpdateManyWithoutOwnerNestedInput
   createdCategories?: Prisma.CategoryUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedCardsInput = {
@@ -1094,6 +1230,7 @@ export type UserUncheckedUpdateWithoutCreatedCardsInput = {
   ownedCards?: Prisma.CardUncheckedUpdateManyWithoutOwnerNestedInput
   createdCategories?: Prisma.CategoryUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPurchasesCreatedInput = {
@@ -1112,6 +1249,7 @@ export type UserCreateWithoutPurchasesCreatedInput = {
   createdCards?: Prisma.CardCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPurchasesCreatedInput = {
@@ -1130,6 +1268,7 @@ export type UserUncheckedCreateWithoutPurchasesCreatedInput = {
   createdCards?: Prisma.CardUncheckedCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPurchasesCreatedInput = {
@@ -1164,6 +1303,7 @@ export type UserUpdateWithoutPurchasesCreatedInput = {
   createdCards?: Prisma.CardUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPurchasesCreatedInput = {
@@ -1182,6 +1322,7 @@ export type UserUncheckedUpdateWithoutPurchasesCreatedInput = {
   createdCards?: Prisma.CardUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedCategoriesInput = {
@@ -1200,6 +1341,7 @@ export type UserCreateWithoutCreatedCategoriesInput = {
   ownedCards?: Prisma.CardCreateNestedManyWithoutOwnerInput
   createdCards?: Prisma.CardCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedCategoriesInput = {
@@ -1218,6 +1360,7 @@ export type UserUncheckedCreateWithoutCreatedCategoriesInput = {
   ownedCards?: Prisma.CardUncheckedCreateNestedManyWithoutOwnerInput
   createdCards?: Prisma.CardUncheckedCreateNestedManyWithoutCreatedByInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedCategoriesInput = {
@@ -1252,6 +1395,7 @@ export type UserUpdateWithoutCreatedCategoriesInput = {
   ownedCards?: Prisma.CardUpdateManyWithoutOwnerNestedInput
   createdCards?: Prisma.CardUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedCategoriesInput = {
@@ -1270,6 +1414,7 @@ export type UserUncheckedUpdateWithoutCreatedCategoriesInput = {
   ownedCards?: Prisma.CardUncheckedUpdateManyWithoutOwnerNestedInput
   createdCards?: Prisma.CardUncheckedUpdateManyWithoutCreatedByNestedInput
   createdSubscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedSubscriptionsInput = {
@@ -1288,6 +1433,7 @@ export type UserCreateWithoutCreatedSubscriptionsInput = {
   ownedCards?: Prisma.CardCreateNestedManyWithoutOwnerInput
   createdCards?: Prisma.CardCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSubscriptionsInput = {
@@ -1306,6 +1452,7 @@ export type UserUncheckedCreateWithoutCreatedSubscriptionsInput = {
   ownedCards?: Prisma.CardUncheckedCreateNestedManyWithoutOwnerInput
   createdCards?: Prisma.CardUncheckedCreateNestedManyWithoutCreatedByInput
   createdCategories?: Prisma.CategoryUncheckedCreateNestedManyWithoutCreatedByInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSubscriptionsInput = {
@@ -1340,6 +1487,7 @@ export type UserUpdateWithoutCreatedSubscriptionsInput = {
   ownedCards?: Prisma.CardUpdateManyWithoutOwnerNestedInput
   createdCards?: Prisma.CardUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSubscriptionsInput = {
@@ -1358,6 +1506,7 @@ export type UserUncheckedUpdateWithoutCreatedSubscriptionsInput = {
   ownedCards?: Prisma.CardUncheckedUpdateManyWithoutOwnerNestedInput
   createdCards?: Prisma.CardUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCategories?: Prisma.CategoryUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1375,6 +1524,7 @@ export type UserCountOutputType = {
   createdCards: number
   createdCategories: number
   createdSubscriptions: number
+  groupMemberships: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1387,6 +1537,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   createdCards?: boolean | UserCountOutputTypeCountCreatedCardsArgs
   createdCategories?: boolean | UserCountOutputTypeCountCreatedCategoriesArgs
   createdSubscriptions?: boolean | UserCountOutputTypeCountCreatedSubscriptionsArgs
+  groupMemberships?: boolean | UserCountOutputTypeCountGroupMembershipsArgs
 }
 
 /**
@@ -1462,6 +1613,13 @@ export type UserCountOutputTypeCountCreatedSubscriptionsArgs<ExtArgs extends run
   where?: Prisma.SubscriptionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGroupMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GroupMemberWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1480,6 +1638,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdCards?: boolean | Prisma.User$createdCardsArgs<ExtArgs>
   createdCategories?: boolean | Prisma.User$createdCategoriesArgs<ExtArgs>
   createdSubscriptions?: boolean | Prisma.User$createdSubscriptionsArgs<ExtArgs>
+  groupMemberships?: boolean | Prisma.User$groupMembershipsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1524,6 +1683,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdCards?: boolean | Prisma.User$createdCardsArgs<ExtArgs>
   createdCategories?: boolean | Prisma.User$createdCategoriesArgs<ExtArgs>
   createdSubscriptions?: boolean | Prisma.User$createdSubscriptionsArgs<ExtArgs>
+  groupMemberships?: boolean | Prisma.User$groupMembershipsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1541,6 +1701,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdCards: Prisma.$CardPayload<ExtArgs>[]
     createdCategories: Prisma.$CategoryPayload<ExtArgs>[]
     createdSubscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+    groupMemberships: Prisma.$GroupMemberPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1953,6 +2114,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   createdCards<T extends Prisma.User$createdCardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdCardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdCategories<T extends Prisma.User$createdCategoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdCategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdSubscriptions<T extends Prisma.User$createdSubscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  groupMemberships<T extends Prisma.User$groupMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$groupMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2595,6 +2757,30 @@ export type User$createdSubscriptionsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[]
+}
+
+/**
+ * User.groupMemberships
+ */
+export type User$groupMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GroupMember
+   */
+  select?: Prisma.GroupMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GroupMember
+   */
+  omit?: Prisma.GroupMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GroupMemberInclude<ExtArgs> | null
+  where?: Prisma.GroupMemberWhereInput
+  orderBy?: Prisma.GroupMemberOrderByWithRelationInput | Prisma.GroupMemberOrderByWithRelationInput[]
+  cursor?: Prisma.GroupMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GroupMemberScalarFieldEnum | Prisma.GroupMemberScalarFieldEnum[]
 }
 
 /**

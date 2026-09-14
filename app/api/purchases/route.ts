@@ -5,7 +5,7 @@ import { getOrCreateInvoice } from "@/lib/invoices";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
-function parseAmountInCents(value: unknown): string | null {
+export function parseAmountInCents(value: unknown): string | null {
     if (typeof value !== "string" && typeof value !== "number") return null;
 
     const rawValue = String(value).trim();

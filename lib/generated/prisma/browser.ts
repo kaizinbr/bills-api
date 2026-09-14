@@ -43,6 +43,11 @@ export type Verification = Prisma.VerificationModel
  */
 export type Group = Prisma.GroupModel
 /**
+ * Model GroupMember
+ * 
+ */
+export type GroupMember = Prisma.GroupMemberModel
+/**
  * Model Card
  * 
  */

@@ -31,6 +31,10 @@ model User {
     createdCategories    Category[]
     createdSubscriptions Subscription[]
 
+    // contas (groups) às quais este usuário tem acesso, além de ser
+    // devedor/credor — controla quem pode ver/usar a conta no app
+    groupMemberships GroupMember[]
+
     @@unique([email])
     @@map("user")
 }
@@ -95,17 +99,57 @@ model Group {
 
     closingDay Int?
 
+    // limite de gasto opcional, pra ajudar a controlar os gastos da conta
+    limit Decimal? @db.Decimal(10, 2)
+
+    // código de convite: 6 caracteres alfanuméricos, obrigatório e único,
+    // usado pra entrar na conta sem precisar ser adicionado manualmente
+    // (gerado na criação da conta pelo código da API, não pelo banco)
+    inviteCode String @unique
+
     archived  Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    cards    Card[]
-    invoices Invoice[]
+    cards         Card[]
+    invoices      Invoice[]
     subscriptions Subscription[]
+
+    // usuários com acesso a esta conta (dono + convidados)
+    members GroupMember[]
 
     @@index([debtorId])
     @@index([creditorId])
     @@map("group")
+}
+
+enum GroupRole {
+    OWNER
+    MEMBER
+
+    @@map("group_role")
+}
+
+// Quem pode acessar uma conta (Group), além de quem é debtor/creditor.
+// debtor/creditor definem a dívida em si; GroupMember define quem
+// consegue ABRIR e USAR a conta no app — são conceitos independentes,
+// mas na prática o creditor normalmente também vira um GroupMember com
+// role OWNER (isso é convenção da aplicação, não uma regra do banco).
+model GroupMember {
+    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+    groupId String @db.Uuid
+    group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+    userId String @db.Uuid
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    role     GroupRole @default(MEMBER)
+    joinedAt DateTime  @default(now())
+
+    @@unique([groupId, userId])
+    @@index([userId])
+    @@map("group_member")
 }
 
 model Card {

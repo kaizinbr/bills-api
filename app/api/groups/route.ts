@@ -1,11 +1,13 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getOrCreateInvoice } from "@/lib/invoices";
+import { generateUniqueInviteCode } from "@/lib/invites";
 
 import { auth } from "@/auth";
 import { headers } from "next/headers";
+import { parseAmountInCents } from "@/app/api/purchases/route";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     const session = await auth.api.getSession({
         headers: await headers(),
     });
@@ -14,8 +16,14 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const creditorGroups = await prisma.group.findMany({
-        where: { creditorId: session.user.id },
+    const groups = await prisma.group.findMany({
+        where: {
+            members: {
+                some: {
+                    userId: session.user.id,
+                },
+            },
+        },
         include: {
             cards: true,
             debtor: { select: { id: true, name: true, image: true } },
@@ -25,31 +33,19 @@ export async function GET(request: NextRequest) {
                     subscriptions: true
                 },
             },
+            members: true
         },
     });
 
-    const debtorGroups = await prisma.group.findMany({
-        where: { debtorId: session.user.id },
-        include: {
-            cards: true,
-            debtor: { select: { id: true, name: true, image: true } },
-            invoices: { orderBy: { periodStart: "desc" }, take: 1 },
-            _count: {
-                select: {
-                    subscriptions: true
-                },
-            },
-        },
-    });
+    console.log("Groups fetched for user:", session.user.id, groups);
 
     // garante que a fatura do período atual existe pra cada cartão (e pro
     // balde avulso de cada grupo), o que também dispara a geração das
     // cobranças de assinatura desse período
-    const allGroups = [...creditorGroups, ...debtorGroups];
     const now = new Date();
 
     await Promise.all(
-        allGroups.flatMap((group) => [
+        groups.flatMap((group) => [
             getOrCreateInvoice({
                 groupId: group.id,
                 cardId: null,
@@ -65,7 +61,7 @@ export async function GET(request: NextRequest) {
         ]),
     );
 
-    return NextResponse.json({ creditorGroups, debtorGroups });
+    return NextResponse.json({ groups });
 }
 
 export async function POST(request: NextRequest) {
@@ -78,7 +74,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, payerId, receiverId, closingDay, archived, cards } = body;
+    const { name, amount, payerId, receiverId, closingDay, archived, cards } = body;
     const cardIds = Array.isArray(cards) ? cards : [];
 
     const safePayerId =
@@ -97,19 +93,49 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    const newGroup = await prisma.group.create({
-        data: {
-            name,
-            creditorId: safePayerId,
-            debtorId: safeReceiverId,
-            closingDay,
-            archived: Boolean(archived),
-            ...(cardIds.length > 0 && {
-                cards: {
-                    connect: cardIds.map((cardId: string) => ({ id: cardId })),
-                },
-            }),
-        },
+    const inviteCode = await generateUniqueInviteCode();
+    const normalizedAmount = parseAmountInCents(amount);
+        if (normalizedAmount === null) {
+            return NextResponse.json(
+                { error: "amount must contain only digits in cents" },
+                { status: 400 },
+            );
+        }
+
+    const newGroup = await prisma.$transaction(async (tx) => {
+        const group = await tx.group.create({
+            data: {
+                name,
+                limit: normalizedAmount,
+                creditorId: safePayerId,
+                debtorId: safeReceiverId,
+                closingDay,
+                inviteCode,
+                archived: Boolean(archived),
+                ...(cardIds.length > 0 && {
+                    cards: {
+                        connect: cardIds.map((cardId: string) => ({ id: cardId })),
+                    },
+                }),
+            },
+        });
+
+        // quem criou a conta vira membro com acesso total (owner)
+        await tx.groupMember.create({
+            data: {
+                groupId: group.id,
+                userId: session.user.id,
+                role: "OWNER",
+            },
+        });
+
+        return group;
+    });
+
+    await getOrCreateInvoice({
+        groupId: newGroup.id,
+        cardId: null,
+        targetDate: new Date(),
     });
 
     return NextResponse.json(newGroup, { status: 201 });

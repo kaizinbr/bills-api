@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const GroupRole = {
+  OWNER: 'OWNER',
+  MEMBER: 'MEMBER'
+} as const
+
+export type GroupRole = (typeof GroupRole)[keyof typeof GroupRole]
+
+
 export const InvoiceStatus = {
   OPEN: 'OPEN',
   CLOSED: 'CLOSED',

@@ -20,7 +20,7 @@ function lastDayOfMonth(year: number, monthIndex: number): number {
  * Retorna a próxima data (>= from) cujo dia do mês seja `closingDay`.
  * Lida com meses mais curtos: closingDay=31 em fevereiro vira dia 28/29.
  */
-function nextClosingDate(from: Date, closingDay: number): Date {
+export function nextClosingDate(from: Date, closingDay: number): Date {
     const year = from.getUTCFullYear();
     const month = from.getUTCMonth();
     const day = Math.min(closingDay, lastDayOfMonth(year, month));
