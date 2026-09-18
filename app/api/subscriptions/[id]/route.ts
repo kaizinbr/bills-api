@@ -73,24 +73,25 @@ export async function PATCH(
         );
     }
 
-    const normalizedAmount = parseAmountInCents(amount);
-    if (normalizedAmount === null) {
-        console.log("amount must contain only digits in cents");
-        return NextResponse.json(
-            { error: "amount must contain only digits in cents" },
-            { status: 400 },
-        );
-    }
-
-    const updatedPurchase = await prisma.subscription.update({
+    const updatedSubscription = await prisma.subscription.update({
         where: { id },
         data: {
             name: name ?? null,
-            amount: normalizedAmount,
+            amount: amount,
             cardId,
             categoryId,
         },
     });
 
-    return NextResponse.json(updatedPurchase, { status: 200 });
+    const updatePurchases = await prisma.purchase.updateMany({
+        where: { subscriptionId: id },
+        data: {
+            description: name ?? null,
+            amount: amount,
+            cardId,
+            categoryId,
+        },
+    });
+
+    return NextResponse.json(updatedSubscription, { status: 200 });
 }

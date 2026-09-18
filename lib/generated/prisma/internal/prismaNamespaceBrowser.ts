@@ -59,9 +59,11 @@ export const ModelName = {
   GroupMember: 'GroupMember',
   Card: 'Card',
   Invoice: 'Invoice',
+  IncomeEntry: 'IncomeEntry',
   Purchase: 'Purchase',
   Category: 'Category',
-  Subscription: 'Subscription'
+  Subscription: 'Subscription',
+  InstallmentPlan: 'InstallmentPlan'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -187,9 +189,10 @@ export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof Card
 export const InvoiceScalarFieldEnum = {
   id: 'id',
   groupId: 'groupId',
-  cardId: 'cardId',
   periodStart: 'periodStart',
   closingDate: 'closingDate',
+  referenceMonth: 'referenceMonth',
+  referenceYear: 'referenceYear',
   status: 'status',
   paidAt: 'paidAt',
   createdAt: 'createdAt',
@@ -197,6 +200,19 @@ export const InvoiceScalarFieldEnum = {
 } as const
 
 export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const IncomeEntryScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  amount: 'amount',
+  description: 'description',
+  receivedAt: 'receivedAt',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type IncomeEntryScalarFieldEnum = (typeof IncomeEntryScalarFieldEnum)[keyof typeof IncomeEntryScalarFieldEnum]
 
 
 export const PurchaseScalarFieldEnum = {
@@ -207,9 +223,9 @@ export const PurchaseScalarFieldEnum = {
   categoryId: 'categoryId',
   invoiceId: 'invoiceId',
   cardId: 'cardId',
-  installmentGroupId: 'installmentGroupId',
+  userId: 'userId',
+  installmentPlanId: 'installmentPlanId',
   installmentNumber: 'installmentNumber',
-  installmentTotal: 'installmentTotal',
   subscriptionId: 'subscriptionId',
   createdById: 'createdById',
   createdAt: 'createdAt',
@@ -243,12 +259,32 @@ export const SubscriptionScalarFieldEnum = {
   categoryId: 'categoryId',
   cardId: 'cardId',
   groupId: 'groupId',
+  userId: 'userId',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
+
+
+export const InstallmentPlanScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  totalAmount: 'totalAmount',
+  installments: 'installments',
+  dayOfMonth: 'dayOfMonth',
+  startDate: 'startDate',
+  cancelledAt: 'cancelledAt',
+  categoryId: 'categoryId',
+  cardId: 'cardId',
+  groupId: 'groupId',
+  userId: 'userId',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type InstallmentPlanScalarFieldEnum = (typeof InstallmentPlanScalarFieldEnum)[keyof typeof InstallmentPlanScalarFieldEnum]
 
 
 export const SortOrder = {

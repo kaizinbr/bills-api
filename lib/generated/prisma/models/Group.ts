@@ -28,12 +28,12 @@ export type AggregateGroup = {
 
 export type GroupAvgAggregateOutputType = {
   closingDay: number | null
-  limit: runtime.Decimal | null
+  limit: number | null
 }
 
 export type GroupSumAggregateOutputType = {
   closingDay: number | null
-  limit: runtime.Decimal | null
+  limit: number | null
 }
 
 export type GroupMinAggregateOutputType = {
@@ -43,7 +43,7 @@ export type GroupMinAggregateOutputType = {
   creditorId: string | null
   creditorName: string | null
   closingDay: number | null
-  limit: runtime.Decimal | null
+  limit: number | null
   inviteCode: string | null
   archived: boolean | null
   createdAt: Date | null
@@ -57,7 +57,7 @@ export type GroupMaxAggregateOutputType = {
   creditorId: string | null
   creditorName: string | null
   closingDay: number | null
-  limit: runtime.Decimal | null
+  limit: number | null
   inviteCode: string | null
   archived: boolean | null
   createdAt: Date | null
@@ -222,11 +222,11 @@ export type GroupGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type GroupGroupByOutputType = {
   id: string
   name: string
-  debtorId: string
+  debtorId: string | null
   creditorId: string | null
   creditorName: string | null
   closingDay: number | null
-  limit: runtime.Decimal | null
+  limit: number | null
   inviteCode: string
   archived: boolean
   createdAt: Date
@@ -259,27 +259,28 @@ export type GroupWhereInput = {
   NOT?: Prisma.GroupWhereInput | Prisma.GroupWhereInput[]
   id?: Prisma.UuidFilter<"Group"> | string
   name?: Prisma.StringFilter<"Group"> | string
-  debtorId?: Prisma.UuidFilter<"Group"> | string
+  debtorId?: Prisma.UuidNullableFilter<"Group"> | string | null
   creditorId?: Prisma.UuidNullableFilter<"Group"> | string | null
   creditorName?: Prisma.StringNullableFilter<"Group"> | string | null
   closingDay?: Prisma.IntNullableFilter<"Group"> | number | null
-  limit?: Prisma.DecimalNullableFilter<"Group"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.IntNullableFilter<"Group"> | number | null
   inviteCode?: Prisma.StringFilter<"Group"> | string
   archived?: Prisma.BoolFilter<"Group"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Group"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Group"> | Date | string
-  debtor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  debtor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   creditor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   cards?: Prisma.CardListRelationFilter
   invoices?: Prisma.InvoiceListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
+  installmentPlans?: Prisma.InstallmentPlanListRelationFilter
   members?: Prisma.GroupMemberListRelationFilter
 }
 
 export type GroupOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  debtorId?: Prisma.SortOrder
+  debtorId?: Prisma.SortOrderInput | Prisma.SortOrder
   creditorId?: Prisma.SortOrderInput | Prisma.SortOrder
   creditorName?: Prisma.SortOrderInput | Prisma.SortOrder
   closingDay?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -293,6 +294,7 @@ export type GroupOrderByWithRelationInput = {
   cards?: Prisma.CardOrderByRelationAggregateInput
   invoices?: Prisma.InvoiceOrderByRelationAggregateInput
   subscriptions?: Prisma.SubscriptionOrderByRelationAggregateInput
+  installmentPlans?: Prisma.InstallmentPlanOrderByRelationAggregateInput
   members?: Prisma.GroupMemberOrderByRelationAggregateInput
 }
 
@@ -303,26 +305,27 @@ export type GroupWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.GroupWhereInput[]
   NOT?: Prisma.GroupWhereInput | Prisma.GroupWhereInput[]
   name?: Prisma.StringFilter<"Group"> | string
-  debtorId?: Prisma.UuidFilter<"Group"> | string
+  debtorId?: Prisma.UuidNullableFilter<"Group"> | string | null
   creditorId?: Prisma.UuidNullableFilter<"Group"> | string | null
   creditorName?: Prisma.StringNullableFilter<"Group"> | string | null
   closingDay?: Prisma.IntNullableFilter<"Group"> | number | null
-  limit?: Prisma.DecimalNullableFilter<"Group"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.IntNullableFilter<"Group"> | number | null
   archived?: Prisma.BoolFilter<"Group"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Group"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Group"> | Date | string
-  debtor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  debtor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   creditor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   cards?: Prisma.CardListRelationFilter
   invoices?: Prisma.InvoiceListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
+  installmentPlans?: Prisma.InstallmentPlanListRelationFilter
   members?: Prisma.GroupMemberListRelationFilter
 }, "id" | "inviteCode">
 
 export type GroupOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  debtorId?: Prisma.SortOrder
+  debtorId?: Prisma.SortOrderInput | Prisma.SortOrder
   creditorId?: Prisma.SortOrderInput | Prisma.SortOrder
   creditorName?: Prisma.SortOrderInput | Prisma.SortOrder
   closingDay?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -344,11 +347,11 @@ export type GroupScalarWhereWithAggregatesInput = {
   NOT?: Prisma.GroupScalarWhereWithAggregatesInput | Prisma.GroupScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Group"> | string
   name?: Prisma.StringWithAggregatesFilter<"Group"> | string
-  debtorId?: Prisma.UuidWithAggregatesFilter<"Group"> | string
+  debtorId?: Prisma.UuidNullableWithAggregatesFilter<"Group"> | string | null
   creditorId?: Prisma.UuidNullableWithAggregatesFilter<"Group"> | string | null
   creditorName?: Prisma.StringNullableWithAggregatesFilter<"Group"> | string | null
   closingDay?: Prisma.IntNullableWithAggregatesFilter<"Group"> | number | null
-  limit?: Prisma.DecimalNullableWithAggregatesFilter<"Group"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.IntNullableWithAggregatesFilter<"Group"> | number | null
   inviteCode?: Prisma.StringWithAggregatesFilter<"Group"> | string
   archived?: Prisma.BoolWithAggregatesFilter<"Group"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Group"> | Date | string
@@ -360,27 +363,28 @@ export type GroupCreateInput = {
   name: string
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  debtor: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
+  debtor?: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
   creditor?: Prisma.UserCreateNestedOneWithoutCreditorGroupsInput
   cards?: Prisma.CardCreateNestedManyWithoutGroupInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateInput = {
   id?: string
   name: string
-  debtorId: string
+  debtorId?: string | null
   creditorId?: string | null
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
@@ -388,6 +392,7 @@ export type GroupUncheckedCreateInput = {
   cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutGroupInput
 }
 
@@ -396,27 +401,28 @@ export type GroupUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  debtor?: Prisma.UserUpdateOneRequiredWithoutDebtorGroupsNestedInput
+  debtor?: Prisma.UserUpdateOneWithoutDebtorGroupsNestedInput
   creditor?: Prisma.UserUpdateOneWithoutCreditorGroupsNestedInput
   cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  debtorId?: Prisma.StringFieldUpdateOperationsInput | string
+  debtorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -424,17 +430,18 @@ export type GroupUncheckedUpdateInput = {
   cards?: Prisma.CardUncheckedUpdateManyWithoutGroupNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupCreateManyInput = {
   id?: string
   name: string
-  debtorId: string
+  debtorId?: string | null
   creditorId?: string | null
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
@@ -446,7 +453,7 @@ export type GroupUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -456,11 +463,11 @@ export type GroupUpdateManyMutationInput = {
 export type GroupUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  debtorId?: Prisma.StringFieldUpdateOperationsInput | string
+  debtorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -626,14 +633,6 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableDecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
-}
-
 export type GroupCreateNestedOneWithoutMembersInput = {
   create?: Prisma.XOR<Prisma.GroupCreateWithoutMembersInput, Prisma.GroupUncheckedCreateWithoutMembersInput>
   connectOrCreate?: Prisma.GroupCreateOrConnectWithoutMembersInput
@@ -690,12 +689,26 @@ export type GroupUpdateOneRequiredWithoutSubscriptionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.GroupUpdateToOneWithWhereWithoutSubscriptionsInput, Prisma.GroupUpdateWithoutSubscriptionsInput>, Prisma.GroupUncheckedUpdateWithoutSubscriptionsInput>
 }
 
+export type GroupCreateNestedOneWithoutInstallmentPlansInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutInstallmentPlansInput, Prisma.GroupUncheckedCreateWithoutInstallmentPlansInput>
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutInstallmentPlansInput
+  connect?: Prisma.GroupWhereUniqueInput
+}
+
+export type GroupUpdateOneRequiredWithoutInstallmentPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutInstallmentPlansInput, Prisma.GroupUncheckedCreateWithoutInstallmentPlansInput>
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutInstallmentPlansInput
+  upsert?: Prisma.GroupUpsertWithoutInstallmentPlansInput
+  connect?: Prisma.GroupWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GroupUpdateToOneWithWhereWithoutInstallmentPlansInput, Prisma.GroupUpdateWithoutInstallmentPlansInput>, Prisma.GroupUncheckedUpdateWithoutInstallmentPlansInput>
+}
+
 export type GroupCreateWithoutDebtorInput = {
   id?: string
   name: string
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
@@ -704,6 +717,7 @@ export type GroupCreateWithoutDebtorInput = {
   cards?: Prisma.CardCreateNestedManyWithoutGroupInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberCreateNestedManyWithoutGroupInput
 }
 
@@ -713,7 +727,7 @@ export type GroupUncheckedCreateWithoutDebtorInput = {
   creditorId?: string | null
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
@@ -721,6 +735,7 @@ export type GroupUncheckedCreateWithoutDebtorInput = {
   cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutGroupInput
 }
 
@@ -739,25 +754,26 @@ export type GroupCreateWithoutCreditorInput = {
   name: string
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  debtor: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
+  debtor?: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
   cards?: Prisma.CardCreateNestedManyWithoutGroupInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutCreditorInput = {
   id?: string
   name: string
-  debtorId: string
+  debtorId?: string | null
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
@@ -765,6 +781,7 @@ export type GroupUncheckedCreateWithoutCreditorInput = {
   cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutGroupInput
 }
 
@@ -800,11 +817,11 @@ export type GroupScalarWhereInput = {
   NOT?: Prisma.GroupScalarWhereInput | Prisma.GroupScalarWhereInput[]
   id?: Prisma.UuidFilter<"Group"> | string
   name?: Prisma.StringFilter<"Group"> | string
-  debtorId?: Prisma.UuidFilter<"Group"> | string
+  debtorId?: Prisma.UuidNullableFilter<"Group"> | string | null
   creditorId?: Prisma.UuidNullableFilter<"Group"> | string | null
   creditorName?: Prisma.StringNullableFilter<"Group"> | string | null
   closingDay?: Prisma.IntNullableFilter<"Group"> | number | null
-  limit?: Prisma.DecimalNullableFilter<"Group"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.IntNullableFilter<"Group"> | number | null
   inviteCode?: Prisma.StringFilter<"Group"> | string
   archived?: Prisma.BoolFilter<"Group"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Group"> | Date | string
@@ -832,26 +849,27 @@ export type GroupCreateWithoutMembersInput = {
   name: string
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  debtor: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
+  debtor?: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
   creditor?: Prisma.UserCreateNestedOneWithoutCreditorGroupsInput
   cards?: Prisma.CardCreateNestedManyWithoutGroupInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutMembersInput = {
   id?: string
   name: string
-  debtorId: string
+  debtorId?: string | null
   creditorId?: string | null
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
@@ -859,6 +877,7 @@ export type GroupUncheckedCreateWithoutMembersInput = {
   cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupCreateOrConnectWithoutMembersInput = {
@@ -882,26 +901,27 @@ export type GroupUpdateWithoutMembersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  debtor?: Prisma.UserUpdateOneRequiredWithoutDebtorGroupsNestedInput
+  debtor?: Prisma.UserUpdateOneWithoutDebtorGroupsNestedInput
   creditor?: Prisma.UserUpdateOneWithoutCreditorGroupsNestedInput
   cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutMembersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  debtorId?: Prisma.StringFieldUpdateOperationsInput | string
+  debtorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -909,6 +929,7 @@ export type GroupUncheckedUpdateWithoutMembersInput = {
   cards?: Prisma.CardUncheckedUpdateManyWithoutGroupNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupCreateWithoutCardsInput = {
@@ -916,32 +937,34 @@ export type GroupCreateWithoutCardsInput = {
   name: string
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  debtor: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
+  debtor?: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
   creditor?: Prisma.UserCreateNestedOneWithoutCreditorGroupsInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutCardsInput = {
   id?: string
   name: string
-  debtorId: string
+  debtorId?: string | null
   creditorId?: string | null
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutGroupInput
 }
 
@@ -966,32 +989,34 @@ export type GroupUpdateWithoutCardsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  debtor?: Prisma.UserUpdateOneRequiredWithoutDebtorGroupsNestedInput
+  debtor?: Prisma.UserUpdateOneWithoutDebtorGroupsNestedInput
   creditor?: Prisma.UserUpdateOneWithoutCreditorGroupsNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutCardsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  debtorId?: Prisma.StringFieldUpdateOperationsInput | string
+  debtorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUncheckedUpdateManyWithoutGroupNestedInput
 }
 
@@ -1000,32 +1025,34 @@ export type GroupCreateWithoutInvoicesInput = {
   name: string
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  debtor: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
+  debtor?: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
   creditor?: Prisma.UserCreateNestedOneWithoutCreditorGroupsInput
   cards?: Prisma.CardCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutInvoicesInput = {
   id?: string
   name: string
-  debtorId: string
+  debtorId?: string | null
   creditorId?: string | null
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutGroupInput
 }
 
@@ -1050,32 +1077,34 @@ export type GroupUpdateWithoutInvoicesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  debtor?: Prisma.UserUpdateOneRequiredWithoutDebtorGroupsNestedInput
+  debtor?: Prisma.UserUpdateOneWithoutDebtorGroupsNestedInput
   creditor?: Prisma.UserUpdateOneWithoutCreditorGroupsNestedInput
   cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  debtorId?: Prisma.StringFieldUpdateOperationsInput | string
+  debtorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cards?: Prisma.CardUncheckedUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUncheckedUpdateManyWithoutGroupNestedInput
 }
 
@@ -1084,32 +1113,34 @@ export type GroupCreateWithoutSubscriptionsInput = {
   name: string
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  debtor: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
+  debtor?: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
   creditor?: Prisma.UserCreateNestedOneWithoutCreditorGroupsInput
   cards?: Prisma.CardCreateNestedManyWithoutGroupInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutSubscriptionsInput = {
   id?: string
   name: string
-  debtorId: string
+  debtorId?: string | null
   creditorId?: string | null
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutGroupInput
   members?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutGroupInput
 }
 
@@ -1134,32 +1165,122 @@ export type GroupUpdateWithoutSubscriptionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  debtor?: Prisma.UserUpdateOneRequiredWithoutDebtorGroupsNestedInput
+  debtor?: Prisma.UserUpdateOneWithoutDebtorGroupsNestedInput
   creditor?: Prisma.UserUpdateOneWithoutCreditorGroupsNestedInput
   cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutSubscriptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  debtorId?: Prisma.StringFieldUpdateOperationsInput | string
+  debtorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cards?: Prisma.CardUncheckedUpdateManyWithoutGroupNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutGroupNestedInput
+  members?: Prisma.GroupMemberUncheckedUpdateManyWithoutGroupNestedInput
+}
+
+export type GroupCreateWithoutInstallmentPlansInput = {
+  id?: string
+  name: string
+  creditorName?: string | null
+  closingDay?: number | null
+  limit?: number | null
+  inviteCode: string
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  debtor?: Prisma.UserCreateNestedOneWithoutDebtorGroupsInput
+  creditor?: Prisma.UserCreateNestedOneWithoutCreditorGroupsInput
+  cards?: Prisma.CardCreateNestedManyWithoutGroupInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutGroupInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutGroupInput
+  members?: Prisma.GroupMemberCreateNestedManyWithoutGroupInput
+}
+
+export type GroupUncheckedCreateWithoutInstallmentPlansInput = {
+  id?: string
+  name: string
+  debtorId?: string | null
+  creditorId?: string | null
+  creditorName?: string | null
+  closingDay?: number | null
+  limit?: number | null
+  inviteCode: string
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  cards?: Prisma.CardUncheckedCreateNestedManyWithoutGroupInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutGroupInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutGroupInput
+  members?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutGroupInput
+}
+
+export type GroupCreateOrConnectWithoutInstallmentPlansInput = {
+  where: Prisma.GroupWhereUniqueInput
+  create: Prisma.XOR<Prisma.GroupCreateWithoutInstallmentPlansInput, Prisma.GroupUncheckedCreateWithoutInstallmentPlansInput>
+}
+
+export type GroupUpsertWithoutInstallmentPlansInput = {
+  update: Prisma.XOR<Prisma.GroupUpdateWithoutInstallmentPlansInput, Prisma.GroupUncheckedUpdateWithoutInstallmentPlansInput>
+  create: Prisma.XOR<Prisma.GroupCreateWithoutInstallmentPlansInput, Prisma.GroupUncheckedCreateWithoutInstallmentPlansInput>
+  where?: Prisma.GroupWhereInput
+}
+
+export type GroupUpdateToOneWithWhereWithoutInstallmentPlansInput = {
+  where?: Prisma.GroupWhereInput
+  data: Prisma.XOR<Prisma.GroupUpdateWithoutInstallmentPlansInput, Prisma.GroupUncheckedUpdateWithoutInstallmentPlansInput>
+}
+
+export type GroupUpdateWithoutInstallmentPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  debtor?: Prisma.UserUpdateOneWithoutDebtorGroupsNestedInput
+  creditor?: Prisma.UserUpdateOneWithoutCreditorGroupsNestedInput
+  cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutGroupNestedInput
+  members?: Prisma.GroupMemberUpdateManyWithoutGroupNestedInput
+}
+
+export type GroupUncheckedUpdateWithoutInstallmentPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  debtorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creditorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cards?: Prisma.CardUncheckedUpdateManyWithoutGroupNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUncheckedUpdateManyWithoutGroupNestedInput
 }
 
@@ -1169,7 +1290,7 @@ export type GroupCreateManyDebtorInput = {
   creditorId?: string | null
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
@@ -1179,10 +1300,10 @@ export type GroupCreateManyDebtorInput = {
 export type GroupCreateManyCreditorInput = {
   id?: string
   name: string
-  debtorId: string
+  debtorId?: string | null
   creditorName?: string | null
   closingDay?: number | null
-  limit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: number | null
   inviteCode: string
   archived?: boolean
   createdAt?: Date | string
@@ -1194,7 +1315,7 @@ export type GroupUpdateWithoutDebtorInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1203,6 +1324,7 @@ export type GroupUpdateWithoutDebtorInput = {
   cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUpdateManyWithoutGroupNestedInput
 }
 
@@ -1212,7 +1334,7 @@ export type GroupUncheckedUpdateWithoutDebtorInput = {
   creditorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1220,6 +1342,7 @@ export type GroupUncheckedUpdateWithoutDebtorInput = {
   cards?: Prisma.CardUncheckedUpdateManyWithoutGroupNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUncheckedUpdateManyWithoutGroupNestedInput
 }
 
@@ -1229,7 +1352,7 @@ export type GroupUncheckedUpdateManyWithoutDebtorInput = {
   creditorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1241,25 +1364,26 @@ export type GroupUpdateWithoutCreditorInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  debtor?: Prisma.UserUpdateOneRequiredWithoutDebtorGroupsNestedInput
+  debtor?: Prisma.UserUpdateOneWithoutDebtorGroupsNestedInput
   cards?: Prisma.CardUpdateManyWithoutGroupNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutCreditorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  debtorId?: Prisma.StringFieldUpdateOperationsInput | string
+  debtorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1267,16 +1391,17 @@ export type GroupUncheckedUpdateWithoutCreditorInput = {
   cards?: Prisma.CardUncheckedUpdateManyWithoutGroupNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutGroupNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutGroupNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutGroupNestedInput
   members?: Prisma.GroupMemberUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateManyWithoutCreditorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  debtorId?: Prisma.StringFieldUpdateOperationsInput | string
+  debtorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   creditorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closingDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  limit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  limit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1292,6 +1417,7 @@ export type GroupCountOutputType = {
   cards: number
   invoices: number
   subscriptions: number
+  installmentPlans: number
   members: number
 }
 
@@ -1299,6 +1425,7 @@ export type GroupCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   cards?: boolean | GroupCountOutputTypeCountCardsArgs
   invoices?: boolean | GroupCountOutputTypeCountInvoicesArgs
   subscriptions?: boolean | GroupCountOutputTypeCountSubscriptionsArgs
+  installmentPlans?: boolean | GroupCountOutputTypeCountInstallmentPlansArgs
   members?: boolean | GroupCountOutputTypeCountMembersArgs
 }
 
@@ -1336,6 +1463,13 @@ export type GroupCountOutputTypeCountSubscriptionsArgs<ExtArgs extends runtime.T
 /**
  * GroupCountOutputType without action
  */
+export type GroupCountOutputTypeCountInstallmentPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InstallmentPlanWhereInput
+}
+
+/**
+ * GroupCountOutputType without action
+ */
 export type GroupCountOutputTypeCountMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.GroupMemberWhereInput
 }
@@ -1353,11 +1487,12 @@ export type GroupSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  debtor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  debtor?: boolean | Prisma.Group$debtorArgs<ExtArgs>
   creditor?: boolean | Prisma.Group$creditorArgs<ExtArgs>
   cards?: boolean | Prisma.Group$cardsArgs<ExtArgs>
   invoices?: boolean | Prisma.Group$invoicesArgs<ExtArgs>
   subscriptions?: boolean | Prisma.Group$subscriptionsArgs<ExtArgs>
+  installmentPlans?: boolean | Prisma.Group$installmentPlansArgs<ExtArgs>
   members?: boolean | Prisma.Group$membersArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["group"]>
@@ -1374,7 +1509,7 @@ export type GroupSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  debtor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  debtor?: boolean | Prisma.Group$debtorArgs<ExtArgs>
   creditor?: boolean | Prisma.Group$creditorArgs<ExtArgs>
 }, ExtArgs["result"]["group"]>
 
@@ -1390,7 +1525,7 @@ export type GroupSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  debtor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  debtor?: boolean | Prisma.Group$debtorArgs<ExtArgs>
   creditor?: boolean | Prisma.Group$creditorArgs<ExtArgs>
 }, ExtArgs["result"]["group"]>
 
@@ -1410,41 +1545,43 @@ export type GroupSelectScalar = {
 
 export type GroupOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "debtorId" | "creditorId" | "creditorName" | "closingDay" | "limit" | "inviteCode" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["group"]>
 export type GroupInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  debtor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  debtor?: boolean | Prisma.Group$debtorArgs<ExtArgs>
   creditor?: boolean | Prisma.Group$creditorArgs<ExtArgs>
   cards?: boolean | Prisma.Group$cardsArgs<ExtArgs>
   invoices?: boolean | Prisma.Group$invoicesArgs<ExtArgs>
   subscriptions?: boolean | Prisma.Group$subscriptionsArgs<ExtArgs>
+  installmentPlans?: boolean | Prisma.Group$installmentPlansArgs<ExtArgs>
   members?: boolean | Prisma.Group$membersArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type GroupIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  debtor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  debtor?: boolean | Prisma.Group$debtorArgs<ExtArgs>
   creditor?: boolean | Prisma.Group$creditorArgs<ExtArgs>
 }
 export type GroupIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  debtor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  debtor?: boolean | Prisma.Group$debtorArgs<ExtArgs>
   creditor?: boolean | Prisma.Group$creditorArgs<ExtArgs>
 }
 
 export type $GroupPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Group"
   objects: {
-    debtor: Prisma.$UserPayload<ExtArgs>
+    debtor: Prisma.$UserPayload<ExtArgs> | null
     creditor: Prisma.$UserPayload<ExtArgs> | null
     cards: Prisma.$CardPayload<ExtArgs>[]
     invoices: Prisma.$InvoicePayload<ExtArgs>[]
     subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+    installmentPlans: Prisma.$InstallmentPlanPayload<ExtArgs>[]
     members: Prisma.$GroupMemberPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    debtorId: string
+    debtorId: string | null
     creditorId: string | null
     creditorName: string | null
     closingDay: number | null
-    limit: runtime.Decimal | null
+    limit: number | null
     inviteCode: string
     archived: boolean
     createdAt: Date
@@ -1843,11 +1980,12 @@ readonly fields: GroupFieldRefs;
  */
 export interface Prisma__GroupClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  debtor<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  debtor<T extends Prisma.Group$debtorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$debtorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   creditor<T extends Prisma.Group$creditorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$creditorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   cards<T extends Prisma.Group$cardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$cardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invoices<T extends Prisma.Group$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscriptions<T extends Prisma.Group$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  installmentPlans<T extends Prisma.Group$installmentPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$installmentPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InstallmentPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   members<T extends Prisma.Group$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1884,7 +2022,7 @@ export interface GroupFieldRefs {
   readonly creditorId: Prisma.FieldRef<"Group", 'String'>
   readonly creditorName: Prisma.FieldRef<"Group", 'String'>
   readonly closingDay: Prisma.FieldRef<"Group", 'Int'>
-  readonly limit: Prisma.FieldRef<"Group", 'Decimal'>
+  readonly limit: Prisma.FieldRef<"Group", 'Int'>
   readonly inviteCode: Prisma.FieldRef<"Group", 'String'>
   readonly archived: Prisma.FieldRef<"Group", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Group", 'DateTime'>
@@ -2290,6 +2428,25 @@ export type GroupDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Group.debtor
+ */
+export type Group$debtorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
  * Group.creditor
  */
 export type Group$creditorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2378,6 +2535,30 @@ export type Group$subscriptionsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[]
+}
+
+/**
+ * Group.installmentPlans
+ */
+export type Group$installmentPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InstallmentPlan
+   */
+  select?: Prisma.InstallmentPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InstallmentPlan
+   */
+  omit?: Prisma.InstallmentPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InstallmentPlanInclude<ExtArgs> | null
+  where?: Prisma.InstallmentPlanWhereInput
+  orderBy?: Prisma.InstallmentPlanOrderByWithRelationInput | Prisma.InstallmentPlanOrderByWithRelationInput[]
+  cursor?: Prisma.InstallmentPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InstallmentPlanScalarFieldEnum | Prisma.InstallmentPlanScalarFieldEnum[]
 }
 
 /**

@@ -23,13 +23,20 @@ model User {
 
     debtorGroups     Group[]    @relation("DebtorGroups")
     creditorGroups   Group[]    @relation("CreditorGroups")
-    purchasesCreated Purchase[]
+    purchasesCreated Purchase[] @relation("PurchaseCreatedBy")
+    purchasesOwned   Purchase[] @relation("PurchaseOwner")
 
     ownedCards   Card[] @relation("OwnedCards")
     createdCards Card[] @relation("CreatedCards")
 
     createdCategories    Category[]
-    createdSubscriptions Subscription[]
+    createdSubscriptions Subscription[]  @relation("SubscriptionCreatedBy")
+    ownedSubscriptions   Subscription[]  @relation("SubscriptionOwner")
+
+    createdInstallmentPlans InstallmentPlan[] @relation("InstallmentPlanCreatedBy")
+    ownedInstallmentPlans   InstallmentPlan[] @relation("InstallmentPlanOwner")
+
+    createdIncomeEntries IncomeEntry[]
 
     // contas (groups) às quais este usuário tem acesso, além de ser
     // devedor/credor — controla quem pode ver/usar a conta no app
@@ -90,17 +97,19 @@ model Group {
     id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
     name String
 
-    debtorId String @db.Uuid
-    debtor   User   @relation("DebtorGroups", fields: [debtorId], references: [id], onDelete: Cascade)
+    debtorId String? @db.Uuid
+    debtor   User?   @relation("DebtorGroups", fields: [debtorId], references: [id], onDelete: SetNull)
 
     creditorId   String? @db.Uuid
     creditor     User?   @relation("CreditorGroups", fields: [creditorId], references: [id], onDelete: SetNull)
     creditorName String?
 
+    // 1-28: o cliente já bloqueia 29/30/31 pra não ter ambiguidade em fevereiro
     closingDay Int?
 
     // limite de gasto opcional, pra ajudar a controlar os gastos da conta
-    limit Decimal? @db.Decimal(10, 2)
+    // valor em centavos (ex: 50000 = R$ 500,00)
+    limit Int?
 
     // código de convite: 6 caracteres alfanuméricos, obrigatório e único,
     // usado pra entrar na conta sem precisar ser adicionado manualmente
@@ -111,9 +120,10 @@ model Group {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    cards         Card[]
-    invoices      Invoice[]
-    subscriptions Subscription[]
+    cards            Card[]
+    invoices         Invoice[]
+    subscriptions    Subscription[]
+    installmentPlans InstallmentPlan[]
 
     // usuários com acesso a esta conta (dono + convidados)
     members GroupMember[]
@@ -135,6 +145,10 @@ enum GroupRole {
 // consegue ABRIR e USAR a conta no app — são conceitos independentes,
 // mas na prática o creditor normalmente também vira um GroupMember com
 // role OWNER (isso é convenção da aplicação, não uma regra do banco).
+//
+// É também a lista de quem pode ser "dono" (userId) de uma Purchase ou
+// Subscription dentro desta conta — a aplicação deve validar isso na rota,
+// o Prisma não garante sozinho.
 model GroupMember {
     id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
 
@@ -172,9 +186,9 @@ model Card {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    invoices      Invoice[]
-    subscriptions Subscription[]
-    purchases     Purchase[]
+    subscriptions    Subscription[]
+    purchases        Purchase[]
+    installmentPlans InstallmentPlan[]
 
     @@index([groupId])
     @@index([ownerId])
@@ -189,34 +203,66 @@ enum InvoiceStatus {
     @@map("invoice_status")
 }
 
+// Fatura pertence à CONTA (Group), não a um cartão específico — uma fatura
+// reúne compras de todos os cartões da conta num mesmo período de fechamento.
 model Invoice {
     id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
 
     groupId String @db.Uuid
     group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
-    cardId String? @db.Uuid
-    card   Card?   @relation(fields: [cardId], references: [id], onDelete: Cascade)
-
     periodStart DateTime
     closingDate DateTime
-    status      InvoiceStatus @default(OPEN)
-    paidAt      DateTime?
+
+    // mês/ano de referência: fixos na criação, derivados do mês do
+    // closingDate. Não recalcular depois — é o que torna a fatura
+    // idempotente (não duplica) e estável mesmo se o closingDay da conta
+    // mudar depois.
+    referenceMonth Int // 1-12
+    referenceYear  Int
+
+    status InvoiceStatus @default(OPEN)
+    paidAt DateTime?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    purchases Purchase[]
+    purchases     Purchase[]
+    incomeEntries IncomeEntry[]
 
-    @@unique([cardId, periodStart])
+    @@unique([groupId, referenceYear, referenceMonth])
     @@index([groupId, periodStart])
     @@map("invoice")
+}
+
+// Valor recebido no mês daquela fatura, pra ajudar a monitorar gastos.
+// Pode haver várias por fatura (ex: usuário lança salário, depois um extra).
+// É da conta inteira, não por membro.
+model IncomeEntry {
+    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+    invoiceId String  @db.Uuid
+    invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+    // valor em centavos
+    amount      Int
+    description String?
+    receivedAt  DateTime @default(now())
+
+    createdById String @db.Uuid
+    createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+
+    @@index([invoiceId])
+    @@map("income_entry")
 }
 
 model Purchase {
     id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
     description String?
-    amount      Decimal  @db.Decimal(10, 2)
+    // valor em centavos (ex: 5000 = R$ 50,00) — formatar só no cliente
+    amount      Int
     purchasedAt DateTime @default(now())
 
     categoryId String   @db.Uuid
@@ -228,24 +274,34 @@ model Purchase {
     cardId String? @db.Uuid
     card   Card?   @relation(fields: [cardId], references: [id], onDelete: SetNull)
 
-    installmentGroupId String? @db.Uuid
-    installmentNumber  Int?
-    installmentTotal   Int?
+    // "subconta": de quem é o gasto (deve ser um GroupMember da conta da
+    // fatura — validado na aplicação). null = compra sem dono, considerada
+    // dividida entre os membros só na exibição, sem entrar no total de cada um.
+    // Diferente de createdById: userId é o dono do gasto, createdById é quem
+    // registrou a compra no app — podem ser pessoas diferentes.
+    userId String? @db.Uuid
+    user   User?   @relation("PurchaseOwner", fields: [userId], references: [id], onDelete: SetNull)
+
+    installmentPlanId String?          @db.Uuid
+    installmentPlan   InstallmentPlan? @relation(fields: [installmentPlanId], references: [id], onDelete: SetNull)
+    installmentNumber Int? // 1, 2, 3... só pra exibir "3/12"
 
     subscriptionId String?       @db.Uuid
     subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
 
     createdById String   @db.Uuid
-    createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+    createdBy   User     @relation("PurchaseCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
     @@unique([invoiceId, subscriptionId])
+    @@unique([invoiceId, installmentPlanId])
     @@index([invoiceId, purchasedAt])
+    @@index([invoiceId, userId])
     @@index([cardId, purchasedAt])
-    @@index([installmentGroupId])
     @@index([categoryId])
     @@index([subscriptionId])
+    @@index([installmentPlanId])
     @@map("purchase")
 }
 
@@ -277,17 +333,22 @@ model Category {
     archived  Boolean  @default(false)
     createdAt DateTime @default(now())
 
-    purchases     Purchase[]
-    subscriptions Subscription[]
+    purchases        Purchase[]
+    subscriptions    Subscription[]
+    installmentPlans InstallmentPlan[]
 
     @@index([type])
     @@map("category")
 }
 
+// Uma "assinatura" pertence a um dono (userId) dentro da conta. Duas pessoas
+// da mesma conta podem ter, cada uma, sua própria Subscription "Spotify" —
+// são registros independentes, então nada impede duplicar o nome.
 model Subscription {
     id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
     name       String
-    amount     Decimal   @db.Decimal(10, 2)
+    // valor em centavos
+    amount     Int
     chargeDay  Int
     startDate  DateTime  @default(now())
     canceledAt DateTime?
@@ -301,8 +362,12 @@ model Subscription {
     groupId String @db.Uuid
     group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
+    // dono da assinatura (subconta) — null = sem dono específico
+    userId String? @db.Uuid
+    user   User?   @relation("SubscriptionOwner", fields: [userId], references: [id], onDelete: SetNull)
+
     createdById String @db.Uuid
-    createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Cascade)
+    createdBy   User   @relation("SubscriptionCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -311,6 +376,53 @@ model Subscription {
 
     @@index([cardId])
     @@index([groupId])
+    @@index([userId])
     @@index([canceledAt])
     @@map("subscription")
+}
+
+// Plano de parcelamento: gera uma Purchase por fatura, uma por mês, no mesmo
+// dayOfMonth, até completar `installments` parcelas. Mesmo padrão da
+// Subscription (dono opcional, cancelamento sem apagar o passado).
+model InstallmentPlan {
+    id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    description String
+
+    // valor total em centavos. Dividido em `installments` parcelas iguais;
+    // o resto do arredondamento (centavos que sobram) vai pra 1ª parcela.
+    totalAmount  Int
+    installments Int
+
+    // dia do mês em que a parcela é lançada, 1-28 (mesmo limite do
+    // closingDay, pra não ter ambiguidade em fevereiro)
+    dayOfMonth Int
+    // data da 1ª parcela, escolhida pelo usuário na criação
+    startDate  DateTime
+
+    cancelledAt DateTime?
+
+    categoryId String   @db.Uuid
+    category   Category @relation(fields: [categoryId], references: [id])
+
+    cardId String? @db.Uuid
+    card   Card?   @relation(fields: [cardId], references: [id], onDelete: SetNull)
+
+    groupId String @db.Uuid
+    group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+    // dono do parcelamento (subconta) — null = sem dono específico
+    userId String? @db.Uuid
+    user   User?   @relation("InstallmentPlanOwner", fields: [userId], references: [id], onDelete: SetNull)
+
+    createdById String @db.Uuid
+    createdBy   User   @relation("InstallmentPlanCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+
+    purchases Purchase[]
+
+    @@index([groupId])
+    @@index([cardId])
+    @@index([userId])
+    @@map("installment_plan")
 }

@@ -10,7 +10,10 @@ export async function GET(
     const { id } = await params;
 
     if (!id) {
-        return NextResponse.json({ error: "Invoice ID is required" }, { status: 400 });
+        return NextResponse.json(
+            { error: "Invoice ID is required" },
+            { status: 400 },
+        );
     }
 
     const session = await auth.api.getSession({ headers: await headers() });
@@ -30,7 +33,11 @@ export async function GET(
             skip,
             take: limit,
             orderBy: { purchasedAt: "desc" },
-            include: { category: true },
+            include: {
+                category: true,
+                subscription: true,
+                installmentPlan: true,
+            },
         }),
         prisma.purchase.count({ where: { invoiceId: id } }),
     ]);

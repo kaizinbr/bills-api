@@ -44,6 +44,17 @@ export async function GET(
                     image: true,
                 },
             },
+            members: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            image: true,
+                        },
+                    },
+                },
+            }
         },
     });
 
@@ -148,7 +159,7 @@ export async function PATCH(
         },
         data: {
             name,
-            limit: parsedLimit,
+            limit: limit,
             closingDay,
         },
     });

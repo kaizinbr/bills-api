@@ -209,6 +209,7 @@ export type CategoryWhereInput = {
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   purchases?: Prisma.PurchaseListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
+  installmentPlans?: Prisma.InstallmentPlanListRelationFilter
 }
 
 export type CategoryOrderByWithRelationInput = {
@@ -223,6 +224,7 @@ export type CategoryOrderByWithRelationInput = {
   createdBy?: Prisma.UserOrderByWithRelationInput
   purchases?: Prisma.PurchaseOrderByRelationAggregateInput
   subscriptions?: Prisma.SubscriptionOrderByRelationAggregateInput
+  installmentPlans?: Prisma.InstallmentPlanOrderByRelationAggregateInput
 }
 
 export type CategoryWhereUniqueInput = Prisma.AtLeast<{
@@ -240,6 +242,7 @@ export type CategoryWhereUniqueInput = Prisma.AtLeast<{
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   purchases?: Prisma.PurchaseListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
+  installmentPlans?: Prisma.InstallmentPlanListRelationFilter
 }, "id" | "key">
 
 export type CategoryOrderByWithAggregationInput = {
@@ -281,6 +284,7 @@ export type CategoryCreateInput = {
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedCategoriesInput
   purchases?: Prisma.PurchaseCreateNestedManyWithoutCategoryInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCategoryInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutCategoryInput
 }
 
 export type CategoryUncheckedCreateInput = {
@@ -294,6 +298,7 @@ export type CategoryUncheckedCreateInput = {
   createdAt?: Date | string
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutCategoryInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCategoryInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutCategoryInput
 }
 
 export type CategoryUpdateInput = {
@@ -307,6 +312,7 @@ export type CategoryUpdateInput = {
   createdBy?: Prisma.UserUpdateOneWithoutCreatedCategoriesNestedInput
   purchases?: Prisma.PurchaseUpdateManyWithoutCategoryNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutCategoryNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutCategoryNestedInput
 }
 
 export type CategoryUncheckedUpdateInput = {
@@ -320,6 +326,7 @@ export type CategoryUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutCategoryNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCategoryNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
 export type CategoryCreateManyInput = {
@@ -476,6 +483,20 @@ export type CategoryUpdateOneRequiredWithoutSubscriptionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutSubscriptionsInput, Prisma.CategoryUpdateWithoutSubscriptionsInput>, Prisma.CategoryUncheckedUpdateWithoutSubscriptionsInput>
 }
 
+export type CategoryCreateNestedOneWithoutInstallmentPlansInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutInstallmentPlansInput, Prisma.CategoryUncheckedCreateWithoutInstallmentPlansInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutInstallmentPlansInput
+  connect?: Prisma.CategoryWhereUniqueInput
+}
+
+export type CategoryUpdateOneRequiredWithoutInstallmentPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutInstallmentPlansInput, Prisma.CategoryUncheckedCreateWithoutInstallmentPlansInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutInstallmentPlansInput
+  upsert?: Prisma.CategoryUpsertWithoutInstallmentPlansInput
+  connect?: Prisma.CategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutInstallmentPlansInput, Prisma.CategoryUpdateWithoutInstallmentPlansInput>, Prisma.CategoryUncheckedUpdateWithoutInstallmentPlansInput>
+}
+
 export type CategoryCreateWithoutCreatedByInput = {
   id?: string
   key: string
@@ -486,6 +507,7 @@ export type CategoryCreateWithoutCreatedByInput = {
   createdAt?: Date | string
   purchases?: Prisma.PurchaseCreateNestedManyWithoutCategoryInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCategoryInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutCategoryInput
 }
 
 export type CategoryUncheckedCreateWithoutCreatedByInput = {
@@ -498,6 +520,7 @@ export type CategoryUncheckedCreateWithoutCreatedByInput = {
   createdAt?: Date | string
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutCategoryInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCategoryInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutCategoryInput
 }
 
 export type CategoryCreateOrConnectWithoutCreatedByInput = {
@@ -550,6 +573,7 @@ export type CategoryCreateWithoutPurchasesInput = {
   createdAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedCategoriesInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCategoryInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutCategoryInput
 }
 
 export type CategoryUncheckedCreateWithoutPurchasesInput = {
@@ -562,6 +586,7 @@ export type CategoryUncheckedCreateWithoutPurchasesInput = {
   archived?: boolean
   createdAt?: Date | string
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCategoryInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutCategoryInput
 }
 
 export type CategoryCreateOrConnectWithoutPurchasesInput = {
@@ -590,6 +615,7 @@ export type CategoryUpdateWithoutPurchasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutCreatedCategoriesNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutCategoryNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutCategoryNestedInput
 }
 
 export type CategoryUncheckedUpdateWithoutPurchasesInput = {
@@ -602,6 +628,7 @@ export type CategoryUncheckedUpdateWithoutPurchasesInput = {
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCategoryNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
 export type CategoryCreateWithoutSubscriptionsInput = {
@@ -614,6 +641,7 @@ export type CategoryCreateWithoutSubscriptionsInput = {
   createdAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedCategoriesInput
   purchases?: Prisma.PurchaseCreateNestedManyWithoutCategoryInput
+  installmentPlans?: Prisma.InstallmentPlanCreateNestedManyWithoutCategoryInput
 }
 
 export type CategoryUncheckedCreateWithoutSubscriptionsInput = {
@@ -626,6 +654,7 @@ export type CategoryUncheckedCreateWithoutSubscriptionsInput = {
   archived?: boolean
   createdAt?: Date | string
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutCategoryInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedCreateNestedManyWithoutCategoryInput
 }
 
 export type CategoryCreateOrConnectWithoutSubscriptionsInput = {
@@ -654,6 +683,7 @@ export type CategoryUpdateWithoutSubscriptionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutCreatedCategoriesNestedInput
   purchases?: Prisma.PurchaseUpdateManyWithoutCategoryNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutCategoryNestedInput
 }
 
 export type CategoryUncheckedUpdateWithoutSubscriptionsInput = {
@@ -666,6 +696,75 @@ export type CategoryUncheckedUpdateWithoutSubscriptionsInput = {
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutCategoryNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryCreateWithoutInstallmentPlansInput = {
+  id?: string
+  key: string
+  label: string
+  icon?: string | null
+  type?: $Enums.CategoryType
+  archived?: boolean
+  createdAt?: Date | string
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedCategoriesInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutCategoryInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryUncheckedCreateWithoutInstallmentPlansInput = {
+  id?: string
+  key: string
+  label: string
+  icon?: string | null
+  type?: $Enums.CategoryType
+  createdById?: string | null
+  archived?: boolean
+  createdAt?: Date | string
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutCategoryInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryCreateOrConnectWithoutInstallmentPlansInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutInstallmentPlansInput, Prisma.CategoryUncheckedCreateWithoutInstallmentPlansInput>
+}
+
+export type CategoryUpsertWithoutInstallmentPlansInput = {
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutInstallmentPlansInput, Prisma.CategoryUncheckedUpdateWithoutInstallmentPlansInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutInstallmentPlansInput, Prisma.CategoryUncheckedCreateWithoutInstallmentPlansInput>
+  where?: Prisma.CategoryWhereInput
+}
+
+export type CategoryUpdateToOneWithWhereWithoutInstallmentPlansInput = {
+  where?: Prisma.CategoryWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutInstallmentPlansInput, Prisma.CategoryUncheckedUpdateWithoutInstallmentPlansInput>
+}
+
+export type CategoryUpdateWithoutInstallmentPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedCategoriesNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutCategoryNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutInstallmentPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutCategoryNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
 export type CategoryCreateManyCreatedByInput = {
@@ -688,6 +787,7 @@ export type CategoryUpdateWithoutCreatedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchases?: Prisma.PurchaseUpdateManyWithoutCategoryNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutCategoryNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUpdateManyWithoutCategoryNestedInput
 }
 
 export type CategoryUncheckedUpdateWithoutCreatedByInput = {
@@ -700,6 +800,7 @@ export type CategoryUncheckedUpdateWithoutCreatedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutCategoryNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutCategoryNestedInput
+  installmentPlans?: Prisma.InstallmentPlanUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
 export type CategoryUncheckedUpdateManyWithoutCreatedByInput = {
@@ -720,11 +821,13 @@ export type CategoryUncheckedUpdateManyWithoutCreatedByInput = {
 export type CategoryCountOutputType = {
   purchases: number
   subscriptions: number
+  installmentPlans: number
 }
 
 export type CategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   purchases?: boolean | CategoryCountOutputTypeCountPurchasesArgs
   subscriptions?: boolean | CategoryCountOutputTypeCountSubscriptionsArgs
+  installmentPlans?: boolean | CategoryCountOutputTypeCountInstallmentPlansArgs
 }
 
 /**
@@ -751,6 +854,13 @@ export type CategoryCountOutputTypeCountSubscriptionsArgs<ExtArgs extends runtim
   where?: Prisma.SubscriptionWhereInput
 }
 
+/**
+ * CategoryCountOutputType without action
+ */
+export type CategoryCountOutputTypeCountInstallmentPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InstallmentPlanWhereInput
+}
+
 
 export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -764,6 +874,7 @@ export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   createdBy?: boolean | Prisma.Category$createdByArgs<ExtArgs>
   purchases?: boolean | Prisma.Category$purchasesArgs<ExtArgs>
   subscriptions?: boolean | Prisma.Category$subscriptionsArgs<ExtArgs>
+  installmentPlans?: boolean | Prisma.Category$installmentPlansArgs<ExtArgs>
   _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["category"]>
 
@@ -807,6 +918,7 @@ export type CategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   createdBy?: boolean | Prisma.Category$createdByArgs<ExtArgs>
   purchases?: boolean | Prisma.Category$purchasesArgs<ExtArgs>
   subscriptions?: boolean | Prisma.Category$subscriptionsArgs<ExtArgs>
+  installmentPlans?: boolean | Prisma.Category$installmentPlansArgs<ExtArgs>
   _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CategoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -822,6 +934,7 @@ export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     createdBy: Prisma.$UserPayload<ExtArgs> | null
     purchases: Prisma.$PurchasePayload<ExtArgs>[]
     subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+    installmentPlans: Prisma.$InstallmentPlanPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1229,6 +1342,7 @@ export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends runtime
   createdBy<T extends Prisma.Category$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   purchases<T extends Prisma.Category$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscriptions<T extends Prisma.Category$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  installmentPlans<T extends Prisma.Category$installmentPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$installmentPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InstallmentPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1731,6 +1845,30 @@ export type Category$subscriptionsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[]
+}
+
+/**
+ * Category.installmentPlans
+ */
+export type Category$installmentPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InstallmentPlan
+   */
+  select?: Prisma.InstallmentPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InstallmentPlan
+   */
+  omit?: Prisma.InstallmentPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InstallmentPlanInclude<ExtArgs> | null
+  where?: Prisma.InstallmentPlanWhereInput
+  orderBy?: Prisma.InstallmentPlanOrderByWithRelationInput | Prisma.InstallmentPlanOrderByWithRelationInput[]
+  cursor?: Prisma.InstallmentPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InstallmentPlanScalarFieldEnum | Prisma.InstallmentPlanScalarFieldEnum[]
 }
 
 /**

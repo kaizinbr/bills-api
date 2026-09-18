@@ -5,15 +5,6 @@ import { getOrCreateInvoice } from "@/lib/invoices";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
-export function parseAmountInCents(value: unknown): string | null {
-    if (typeof value !== "string" && typeof value !== "number") return null;
-
-    const rawValue = String(value).trim();
-    if (!/^\d+$/.test(rawValue)) return null;
-
-    const cents = rawValue.padStart(3, "0");
-    return `${cents.slice(0, -2)}.${cents.slice(-2)}`;
-}
 
 export async function POST(request: NextRequest) {
     const session = await auth.api.getSession({
@@ -34,7 +25,9 @@ export async function POST(request: NextRequest) {
         invoiceId,
         groupId,
         categoryId,
+        userId,
     } = body;
+    console.log(userId)
 
     if (!categoryId || typeof categoryId !== "string") {
         return NextResponse.json(
@@ -57,14 +50,6 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    const normalizedAmount = parseAmountInCents(amount);
-    if (normalizedAmount === null) {
-        return NextResponse.json(
-            { error: "amount must contain only digits in cents" },
-            { status: 400 },
-        );
-    }
-
     const purchasedAt = purchasedDate ? new Date(purchasedDate) : new Date();
     const safeCardId =
         typeof cardId === "string" && cardId.trim() ? cardId : null;
@@ -72,18 +57,17 @@ export async function POST(request: NextRequest) {
     // resolve (ou cria) a fatura correspondente ao cartão/grupo + data da compra
     const invoice = await getOrCreateInvoice({
         groupId,
-        cardId: safeCardId,
         targetDate: purchasedAt,
     });
 
     const baseData = {
         description: description ?? null,
-        amount: normalizedAmount,
+        amount: amount,
         purchasedAt,
         cardId: safeCardId,
         invoiceId: invoice.id,
         categoryId,
-        // groupId,
+        userId
     };
 
     const purchase =

@@ -41,13 +41,11 @@ export async function GET(request: NextRequest) {
         allGroups.flatMap((group) => [
             getOrCreateInvoice({
                 groupId: group.id,
-                cardId: null,
                 targetDate: now,
             }),
             ...group.cards.map((card) =>
                 getOrCreateInvoice({
                     groupId: group.id,
-                    cardId: card.id,
                     targetDate: now,
                 }),
             ),

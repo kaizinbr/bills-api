@@ -82,6 +82,11 @@ export type Card = Prisma.CardModel
  */
 export type Invoice = Prisma.InvoiceModel
 /**
+ * Model IncomeEntry
+ * 
+ */
+export type IncomeEntry = Prisma.IncomeEntryModel
+/**
  * Model Purchase
  * 
  */
@@ -96,3 +101,8 @@ export type Category = Prisma.CategoryModel
  * 
  */
 export type Subscription = Prisma.SubscriptionModel
+/**
+ * Model InstallmentPlan
+ * 
+ */
+export type InstallmentPlan = Prisma.InstallmentPlanModel

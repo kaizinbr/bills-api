@@ -405,9 +405,11 @@ export const ModelName = {
   GroupMember: 'GroupMember',
   Card: 'Card',
   Invoice: 'Invoice',
+  IncomeEntry: 'IncomeEntry',
   Purchase: 'Purchase',
   Category: 'Category',
-  Subscription: 'Subscription'
+  Subscription: 'Subscription',
+  InstallmentPlan: 'InstallmentPlan'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -423,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "group" | "groupMember" | "card" | "invoice" | "purchase" | "category" | "subscription"
+    modelProps: "user" | "session" | "account" | "verification" | "group" | "groupMember" | "card" | "invoice" | "incomeEntry" | "purchase" | "category" | "subscription" | "installmentPlan"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1019,6 +1021,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    IncomeEntry: {
+      payload: Prisma.$IncomeEntryPayload<ExtArgs>
+      fields: Prisma.IncomeEntryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IncomeEntryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IncomeEntryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload>
+        }
+        findFirst: {
+          args: Prisma.IncomeEntryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IncomeEntryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload>
+        }
+        findMany: {
+          args: Prisma.IncomeEntryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload>[]
+        }
+        create: {
+          args: Prisma.IncomeEntryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload>
+        }
+        createMany: {
+          args: Prisma.IncomeEntryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IncomeEntryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload>[]
+        }
+        delete: {
+          args: Prisma.IncomeEntryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload>
+        }
+        update: {
+          args: Prisma.IncomeEntryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload>
+        }
+        deleteMany: {
+          args: Prisma.IncomeEntryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IncomeEntryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IncomeEntryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload>[]
+        }
+        upsert: {
+          args: Prisma.IncomeEntryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IncomeEntryPayload>
+        }
+        aggregate: {
+          args: Prisma.IncomeEntryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIncomeEntry>
+        }
+        groupBy: {
+          args: Prisma.IncomeEntryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IncomeEntryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IncomeEntryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IncomeEntryCountAggregateOutputType> | number
+        }
+      }
+    }
     Purchase: {
       payload: Prisma.$PurchasePayload<ExtArgs>
       fields: Prisma.PurchaseFieldRefs
@@ -1241,6 +1317,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    InstallmentPlan: {
+      payload: Prisma.$InstallmentPlanPayload<ExtArgs>
+      fields: Prisma.InstallmentPlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InstallmentPlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InstallmentPlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload>
+        }
+        findFirst: {
+          args: Prisma.InstallmentPlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InstallmentPlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload>
+        }
+        findMany: {
+          args: Prisma.InstallmentPlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload>[]
+        }
+        create: {
+          args: Prisma.InstallmentPlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload>
+        }
+        createMany: {
+          args: Prisma.InstallmentPlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InstallmentPlanCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload>[]
+        }
+        delete: {
+          args: Prisma.InstallmentPlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload>
+        }
+        update: {
+          args: Prisma.InstallmentPlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.InstallmentPlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InstallmentPlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InstallmentPlanUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload>[]
+        }
+        upsert: {
+          args: Prisma.InstallmentPlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstallmentPlanPayload>
+        }
+        aggregate: {
+          args: Prisma.InstallmentPlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInstallmentPlan>
+        }
+        groupBy: {
+          args: Prisma.InstallmentPlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InstallmentPlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InstallmentPlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InstallmentPlanCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1387,9 +1537,10 @@ export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof Card
 export const InvoiceScalarFieldEnum = {
   id: 'id',
   groupId: 'groupId',
-  cardId: 'cardId',
   periodStart: 'periodStart',
   closingDate: 'closingDate',
+  referenceMonth: 'referenceMonth',
+  referenceYear: 'referenceYear',
   status: 'status',
   paidAt: 'paidAt',
   createdAt: 'createdAt',
@@ -1397,6 +1548,19 @@ export const InvoiceScalarFieldEnum = {
 } as const
 
 export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const IncomeEntryScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  amount: 'amount',
+  description: 'description',
+  receivedAt: 'receivedAt',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type IncomeEntryScalarFieldEnum = (typeof IncomeEntryScalarFieldEnum)[keyof typeof IncomeEntryScalarFieldEnum]
 
 
 export const PurchaseScalarFieldEnum = {
@@ -1407,9 +1571,9 @@ export const PurchaseScalarFieldEnum = {
   categoryId: 'categoryId',
   invoiceId: 'invoiceId',
   cardId: 'cardId',
-  installmentGroupId: 'installmentGroupId',
+  userId: 'userId',
+  installmentPlanId: 'installmentPlanId',
   installmentNumber: 'installmentNumber',
-  installmentTotal: 'installmentTotal',
   subscriptionId: 'subscriptionId',
   createdById: 'createdById',
   createdAt: 'createdAt',
@@ -1443,12 +1607,32 @@ export const SubscriptionScalarFieldEnum = {
   categoryId: 'categoryId',
   cardId: 'cardId',
   groupId: 'groupId',
+  userId: 'userId',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
+
+
+export const InstallmentPlanScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  totalAmount: 'totalAmount',
+  installments: 'installments',
+  dayOfMonth: 'dayOfMonth',
+  startDate: 'startDate',
+  cancelledAt: 'cancelledAt',
+  categoryId: 'categoryId',
+  cardId: 'cardId',
+  groupId: 'groupId',
+  userId: 'userId',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type InstallmentPlanScalarFieldEnum = (typeof InstallmentPlanScalarFieldEnum)[keyof typeof InstallmentPlanScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1527,20 +1711,6 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -1758,9 +1928,11 @@ export type GlobalOmitConfig = {
   groupMember?: Prisma.GroupMemberOmit
   card?: Prisma.CardOmit
   invoice?: Prisma.InvoiceOmit
+  incomeEntry?: Prisma.IncomeEntryOmit
   purchase?: Prisma.PurchaseOmit
   category?: Prisma.CategoryOmit
   subscription?: Prisma.SubscriptionOmit
+  installmentPlan?: Prisma.InstallmentPlanOmit
 }
 
 /* Types for Logging */

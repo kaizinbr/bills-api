@@ -5,7 +5,6 @@ import { generateUniqueInviteCode } from "@/lib/invites";
 
 import { auth } from "@/auth";
 import { headers } from "next/headers";
-import { parseAmountInCents } from "@/app/api/purchases/route";
 
 export async function GET() {
     const session = await auth.api.getSession({
@@ -28,16 +27,19 @@ export async function GET() {
             cards: true,
             debtor: { select: { id: true, name: true, image: true } },
             invoices: { orderBy: { periodStart: "desc" }, take: 1 },
+            members: { include: { user: { select: { id: true, name: true, image: true } } } },
+            installmentPlans: true,
             _count: {
                 select: {
-                    subscriptions: true
+                    subscriptions: true,
+                    cards: true,
+                    installmentPlans: true,
                 },
             },
-            members: true
         },
     });
 
-    console.log("Groups fetched for user:", session.user.id, groups);
+    // console.log("Groups fetched for user:", session.user.id, groups);
 
     // garante que a fatura do período atual existe pra cada cartão (e pro
     // balde avulso de cada grupo), o que também dispara a geração das
@@ -48,13 +50,11 @@ export async function GET() {
         groups.flatMap((group) => [
             getOrCreateInvoice({
                 groupId: group.id,
-                cardId: null,
                 targetDate: now,
             }),
             ...group.cards.map((card) =>
                 getOrCreateInvoice({
                     groupId: group.id,
-                    cardId: card.id,
                     targetDate: now,
                 }),
             ),
@@ -94,19 +94,11 @@ export async function POST(request: NextRequest) {
     }
 
     const inviteCode = await generateUniqueInviteCode();
-    const normalizedAmount = parseAmountInCents(amount);
-        if (normalizedAmount === null) {
-            return NextResponse.json(
-                { error: "amount must contain only digits in cents" },
-                { status: 400 },
-            );
-        }
-
     const newGroup = await prisma.$transaction(async (tx) => {
         const group = await tx.group.create({
             data: {
                 name,
-                limit: normalizedAmount,
+                limit: amount,
                 creditorId: safePayerId,
                 debtorId: safeReceiverId,
                 closingDay,
@@ -132,10 +124,11 @@ export async function POST(request: NextRequest) {
         return group;
     });
 
+    const now = new Date();
+
     await getOrCreateInvoice({
         groupId: newGroup.id,
-        cardId: null,
-        targetDate: new Date(),
+        targetDate: now,
     });
 
     return NextResponse.json(newGroup, { status: 201 });

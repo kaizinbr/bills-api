@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
             cardId,
             categoryId,
             name,
-            amount: normalizedAmount,
+            amount: amountCents,
             chargeDay,
             createdById: session.user.id,
             groupId,
@@ -67,11 +67,10 @@ export async function POST(request: NextRequest) {
     // próximo GET /groups ou a virada de período
     const currentInvoice = await getOrCreateInvoice({
         groupId: card.groupId,
-        cardId,
         targetDate: new Date(),
     });
     console.log("currentInvoice", currentInvoice);
-    await chargeSubscriptionsForInvoice({invoice: currentInvoice, cardId});
+    await chargeSubscriptionsForInvoice({invoice: currentInvoice});
 
     return NextResponse.json({ subscription });
 }
