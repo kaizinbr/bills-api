@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     const group = await prisma.group.findUnique({
-        where: { inviteCode },
+        where: { inviteCode: inviteCode.toUpperCase() },
         include: { members: true },
     });
 
