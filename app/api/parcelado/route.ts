@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
     // resolve (ou cria) a fatura correspondente ao cartão/grupo + data da compra
     const installment = await generateInstallmentPurchases(plan);
 
-    return NextResponse.json(installment, { status: 201 });
+    return NextResponse.json( { status: 201 });
 }
 
 export async function GET(request: NextRequest) {
