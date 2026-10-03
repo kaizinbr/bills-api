@@ -15,10 +15,14 @@ export async function GET(request: NextRequest) {
     }
 
     const users = await prisma.user.findMany({
-        where: {
-            id: {
-                not: session.user.id,
-            },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            color: true,
+            createdAt: true,
+            updatedAt: true,
         },
     });
 

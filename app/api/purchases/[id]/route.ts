@@ -38,6 +38,14 @@ export async function GET(
                     group: true,
                 },
             },
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    image: true,
+                    color: true,
+                },
+            },
         },
     });
 
@@ -89,7 +97,7 @@ export async function PATCH(
     }
 
     const body = await request.json();
-    const { description, amount, cardId, categoryId } = body;
+    const { description, amount, cardId, categoryId, userId } = body;
 
     if (!categoryId || typeof categoryId !== "string") {
         console.log("categoryId is required");
@@ -115,6 +123,7 @@ export async function PATCH(
             amount: amount,
             cardId,
             categoryId,
+            userId,
         },
     });
 
