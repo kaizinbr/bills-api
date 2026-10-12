@@ -35,5 +35,7 @@ export async function GET(
         },
     });
 
+    console.log("invoice", invoice?.groupId);
+
     return NextResponse.json({ invoice });
 }
