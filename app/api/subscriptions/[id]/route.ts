@@ -45,13 +45,20 @@ export async function DELETE(
         );
     }
 
-    // const 
+    const deletePurchases = await prisma.purchase.deleteMany({
+        where: {
+            subscriptionId: id,
+            purchasedAt: {
+                gt: subscription.canceledAt ?? new Date(),
+            },
+        },
+    });
 
-    const deletePurchase = await prisma.subscription.delete({
+    const deleteSubscription = await prisma.subscription.delete({
         where: { id },
     });
     
-    return NextResponse.json({ purchase: deletePurchase });
+    return NextResponse.json({ purchase: deleteSubscription });
 }
 
 export async function PATCH(
