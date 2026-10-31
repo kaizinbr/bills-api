@@ -11,17 +11,15 @@
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.7.14",
     "@better-auth/prisma-adapter": "^1.7.14",
-    "@neondatabase/auth": "^0.7.0-beta",
     "@neondatabase/serverless": "^1.2.0",
     "@prisma/adapter-neon": "^7.10.0",
-    "@prisma/client": "^7.10.0",
     "@vercel/blob": "^2.8.0",
     "better-auth": "^1.7.14",
     "colorthief": "^3.5.0",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^1.0.0-rc.5",
     "next": "^16.4.3",
-    "prisma": "^7.10.0",
+    "postgres": "^4.0.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "sharp": "^0.35.5"
