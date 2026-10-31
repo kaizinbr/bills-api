@@ -1,0 +1,161 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "7adacaee-ec0b-4863-9510-20ee5558a014",
+  "prevIds": [
+    "e773854d-a16e-4161-a68c-699c9599f110"
+  ],
+  "footprints": [
+    {
+      "statementType": "drop_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "account",
+        "issuer"
+      ],
+      "writes": [
+        "s|col|public.account.issuer",
+        "n|col|public.account.issuer",
+        "e|col|public.account.issuer"
+      ],
+      "reads": [
+        "n|tbl|public.account",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "account",
+        "account_issuer_accountId_key"
+      ],
+      "writes": [
+        "s|idx|public.account_issuer_accountId_key",
+        "n|idx|public.account_issuer_accountId_key",
+        "e|idx|public.account_issuer_accountId_key",
+        "n|rel|public.account_issuer_accountId_key"
+      ],
+      "reads": [
+        "n|tbl|public.account",
+        "n|sch|public",
+        "n|col|public.account.accountId"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"account\",\"issuer\"]"
+    },
+    {
+      "op": "alter",
+      "key": "indexes\u0000[\"public\",\"account_issuer_accountId_key\"]",
+      "set": {
+        "columns": [
+          {
+            "value": "accountId",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ]
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"user\",\"user_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"session\",\"session_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"account\",\"account_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"verification\",\"verification_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"group\",\"group_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"group_member\",\"group_member_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"card\",\"card_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"invoice\",\"invoice_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"income_entry\",\"income_entry_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"purchase\",\"purchase_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"category\",\"category_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"subscription\",\"subscription_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"installment_plan\",\"installment_plan_pkey\"]",
+      "set": {
+        "nameExplicit": false
+      }
+    }
+  ]
+}

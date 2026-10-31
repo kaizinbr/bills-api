@@ -38,7 +38,6 @@ export const account = pgTable(
         id: uuid().defaultRandom().primaryKey(),
         accountId: text().notNull(),
         providerId: text().notNull(),
-        issuer: text().notNull(),
         userId: uuid().notNull(),
         accessToken: text(),
         refreshToken: text(),
@@ -60,7 +59,6 @@ export const account = pgTable(
             .onDelete("cascade"),
         uniqueIndex("account_issuer_accountId_key").using(
             "btree",
-            table.issuer.asc().nullsLast(),
             table.accountId.asc().nullsLast(),
         ),
     ],
