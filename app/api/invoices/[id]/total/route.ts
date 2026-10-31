@@ -1,5 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { eq, sql } from "drizzle-orm";
+import { db } from "@/db/index";
+import { purchase as purchaseTable } from "@/db/drizzle/schema";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
@@ -21,10 +23,12 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const result = await prisma.purchase.aggregate({
-        where: { invoiceId: id },
-        _sum: { amount: true },
-    });
+    const [result] = await db
+        .select({
+            total: sql<number>`coalesce(sum(${purchaseTable.amount}), 0)`.mapWith(Number),
+        })
+        .from(purchaseTable)
+        .where(eq(purchaseTable.invoiceId, id));
 
-    return NextResponse.json({ total: result._sum.amount ?? 0 });
+    return NextResponse.json({ total: result.total });
 }

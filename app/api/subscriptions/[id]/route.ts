@@ -1,9 +1,13 @@
 // app/api/subscriptions/[id]/route.ts — cancelar (nunca deleta, só marca canceledAt)
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { and, eq, gt } from "drizzle-orm";
+import { db } from "@/db/index";
+import {
+    purchase as purchaseTable,
+    subscription as subscriptionTable,
+} from "@/db/drizzle/schema";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
-import { parseAmountInCents } from "@/app/api/purchases/[id]/route";
 
 export async function GET(
     request: NextRequest,
@@ -15,13 +19,13 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const subscription = await prisma.subscription.findFirst({
+    const subscription = await db.query.subscription.findFirst({
         where: { id },
-        include: { category: true, card: true },
+        with: { category: true, card: true },
         orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json({ subscription });
+    return NextResponse.json({ subscription: subscription ?? null });
 }
 
 export async function DELETE(
@@ -34,9 +38,11 @@ export async function DELETE(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const subscription = await prisma.subscription.findUnique({
-        where: { id },
-    });
+    const [subscription] = await db
+        .select()
+        .from(subscriptionTable)
+        .where(eq(subscriptionTable.id, id))
+        .limit(1);
 
     if (!subscription) {
         return NextResponse.json(
@@ -45,19 +51,20 @@ export async function DELETE(
         );
     }
 
-    const deletePurchases = await prisma.purchase.deleteMany({
-        where: {
-            subscriptionId: id,
-            purchasedAt: {
-                gt: subscription.canceledAt ?? new Date(),
-            },
-        },
-    });
+    await db
+        .delete(purchaseTable)
+        .where(
+            and(
+                eq(purchaseTable.subscriptionId, id),
+                gt(purchaseTable.purchasedAt, subscription.canceledAt ?? new Date()),
+            ),
+        );
 
-    const deleteSubscription = await prisma.subscription.delete({
-        where: { id },
-    });
-    
+    const [deleteSubscription] = await db
+        .delete(subscriptionTable)
+        .where(eq(subscriptionTable.id, id))
+        .returning();
+
     return NextResponse.json({ purchase: deleteSubscription });
 }
 
@@ -82,25 +89,33 @@ export async function PATCH(
         );
     }
 
-    const updatedSubscription = await prisma.subscription.update({
-        where: { id },
-        data: {
+    const [updatedSubscription] = await db
+        .update(subscriptionTable)
+        .set({
             name: name ?? null,
-            amount: amount,
+            amount,
             cardId,
             categoryId,
-        },
-    });
+        })
+        .where(eq(subscriptionTable.id, id))
+        .returning();
 
-    const updatePurchases = await prisma.purchase.updateMany({
-        where: { subscriptionId: id },
-        data: {
+    if (!updatedSubscription) {
+        return NextResponse.json(
+            { error: "Subscription not found" },
+            { status: 404 },
+        );
+    }
+
+    await db
+        .update(purchaseTable)
+        .set({
             description: name ?? null,
-            amount: amount,
+            amount,
             cardId,
             categoryId,
-        },
-    });
+        })
+        .where(eq(purchaseTable.subscriptionId, id));
 
     return NextResponse.json(updatedSubscription, { status: 200 });
 }

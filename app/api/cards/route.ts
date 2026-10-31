@@ -1,34 +1,32 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/index";
+import { card as cardTable } from "@/db/drizzle/schema";
 
-import { auth } from "@/auth"
-import { headers } from "next/headers"
-
+import { auth } from "@/auth";
+import { headers } from "next/headers";
 
 export async function GET(request: NextRequest) {
     const session = await auth.api.getSession({
-        headers: await headers()
-    })
+        headers: await headers(),
+    });
 
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const myCards = await prisma.card.findMany({
-        where: {
-            ownerId: session.user.id,
-        },
-    });
-
+    const myCards = await db
+        .select()
+        .from(cardTable)
+        .where(eq(cardTable.ownerId, session.user.id));
 
     return NextResponse.json({ myCards });
 }
 
-
 export async function POST(request: NextRequest) {
     const session = await auth.api.getSession({
-        headers: await headers()
-    })
+        headers: await headers(),
+    });
 
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -38,31 +36,32 @@ export async function POST(request: NextRequest) {
     const { name, color, ownerId, groupId, digits } = body;
 
     if (!name || typeof name !== "string") {
-        return NextResponse.json({ error: "Group name is required" }, { status: 400 });
+        return NextResponse.json(
+            { error: "Card name is required" },
+            { status: 400 },
+        );
     }
 
     if (!color || typeof color !== "string") {
-        return NextResponse.json({ error: "Group color is required" }, { status: 400 });
+        return NextResponse.json(
+            { error: "Card color is required" },
+            { status: 400 },
+        );
     }
 
-    let finalColor;
+    const finalColor = color.startsWith("#") ? color : `#${color}`;
 
-    if (!color.startsWith("#")) {
-        finalColor = `#${color}`;
-    } else {
-        finalColor = color;
-    }
-
-    const newCard = await prisma.card.create({
-        data: {
+    const [newCard] = await db
+        .insert(cardTable)
+        .values({
             name,
             color: finalColor,
             ownerId: ownerId || session.user.id,
             createdById: session.user.id,
             groupId: groupId || null,
             digits: digits || "0000",
-        },
-    });
+        })
+        .returning();
 
     return NextResponse.json(newCard, { status: 201 });
 }

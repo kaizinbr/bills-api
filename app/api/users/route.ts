@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db/index";
+import { user as userTable } from "@/db/drizzle/schema";
 
 import { auth } from "@/auth"
 import { headers } from "next/headers"
@@ -14,19 +15,17 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const users = await prisma.user.findMany({
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-            color: true,
-            createdAt: true,
-            updatedAt: true,
-        },
-    });
-
-
+    const users = await db
+        .select({
+            id: userTable.id,
+            name: userTable.name,
+            email: userTable.email,
+            image: userTable.image,
+            color: userTable.color,
+            createdAt: userTable.createdAt,
+            updatedAt: userTable.updatedAt,
+        })
+        .from(userTable);
 
     return NextResponse.json({ users });
 }

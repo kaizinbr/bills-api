@@ -1,10 +1,13 @@
-// app/api/subscriptions/[id]/route.ts — cancelar (nunca deleta, só marca canceledAt)
+// app/api/purchases/[id]/route.ts
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/index";
+import {
+    purchase as purchaseTable,
+    user as userTable,
+} from "@/db/drizzle/schema";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
-
-import { generateUniqueInviteCode } from "@/lib/invites";
 
 
 export function parseAmountInCents(value: unknown): string | null {
@@ -27,23 +30,15 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const purchase = await prisma.purchase.findUnique({
+    const purchase = await db.query.purchase.findFirst({
         where: { id },
-        include: {
+        with: {
             category: true,
             card: true,
             subscription: true,
             invoice: {
-                include: {
+                with: {
                     group: true,
-                },
-            },
-            user: {
-                select: {
-                    id: true,
-                    name: true,
-                    image: true,
-                    color: true,
                 },
             },
         },
@@ -55,7 +50,23 @@ export async function GET(
             { status: 404 },
         );
     }
-    return NextResponse.json({ purchase });
+
+    let user = null;
+    if (purchase.userId) {
+        const [found] = await db
+            .select({
+                id: userTable.id,
+                name: userTable.name,
+                image: userTable.image,
+                color: userTable.color,
+            })
+            .from(userTable)
+            .where(eq(userTable.id, purchase.userId))
+            .limit(1);
+        user = found ?? null;
+    }
+
+    return NextResponse.json({ purchase: { ...purchase, user } });
 }
 
 export async function DELETE(
@@ -68,21 +79,18 @@ export async function DELETE(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const purchase = await prisma.purchase.findUnique({
-        where: { id },
-    });
+    const [deletePurchase] = await db
+        .delete(purchaseTable)
+        .where(eq(purchaseTable.id, id))
+        .returning();
 
-    if (!purchase) {
+    if (!deletePurchase) {
         return NextResponse.json(
             { error: "Purchase not found" },
             { status: 404 },
         );
     }
 
-    const deletePurchase = await prisma.purchase.delete({
-        where: { id },
-    });
-    
     return NextResponse.json({ purchase: deletePurchase });
 }
 
@@ -116,16 +124,24 @@ export async function PATCH(
         );
     }
 
-    const updatedPurchase = await prisma.purchase.update({
-        where: { id },
-        data: {
+    const [updatedPurchase] = await db
+        .update(purchaseTable)
+        .set({
             description: description ?? null,
             amount: amount,
             cardId,
             categoryId,
             userId,
-        },
-    });
+        })
+        .where(eq(purchaseTable.id, id))
+        .returning();
+
+    if (!updatedPurchase) {
+        return NextResponse.json(
+            { error: "Purchase not found" },
+            { status: 404 },
+        );
+    }
 
     return NextResponse.json(updatedPurchase, { status: 200 });
 }

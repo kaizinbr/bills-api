@@ -1,10 +1,12 @@
 import { del } from "@vercel/blob";
+import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 
 import { auth } from "@/auth";
+import { db } from "@/db/index";
+import { user as userTable } from "@/db/drizzle/schema";
 import { HEX_COLOR, isUserAvatarUrl, isVercelBlobUrl } from "@/lib/avatar";
-import { prisma } from "@/lib/prisma";
 
 
 export async function GET(request: NextRequest) {
@@ -16,11 +18,11 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({
-        where: {
-            id: session.user.id,
-        },
-    });
+    const [user] = await db
+        .select()
+        .from(userTable)
+        .where(eq(userTable.id, session.user.id))
+        .limit(1);
 
     if (!user) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -70,15 +72,30 @@ export async function PATCH(request: Request): Promise<NextResponse> {
     }
 
     try {
-        const previous = data.image
-            ? (await prisma.user.findUnique({ where: { id: userId }, select: { image: true } }))?.image
-            : null;
+        let previous: string | null = null;
+        if (data.image) {
+            const [current] = await db
+                .select({ image: userTable.image })
+                .from(userTable)
+                .where(eq(userTable.id, userId))
+                .limit(1);
+            previous = current?.image ?? null;
+        }
 
-        const user = await prisma.user.update({
-            where: { id: userId },
-            data,
-            select: { id: true, name: true, image: true, color: true },
-        });
+        const [user] = await db
+            .update(userTable)
+            .set({ ...data, updatedAt: new Date() })
+            .where(eq(userTable.id, userId))
+            .returning({
+                id: userTable.id,
+                name: userTable.name,
+                image: userTable.image,
+                color: userTable.color,
+            });
+
+        if (!user) {
+            return NextResponse.json({ error: "User not found" }, { status: 404 });
+        }
 
         if (previous && previous !== data.image && isVercelBlobUrl(previous)) {
             try {

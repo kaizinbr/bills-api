@@ -1,10 +1,14 @@
-// app/api/subscriptions/[id]/route.ts — cancelar (nunca deleta, só marca canceledAt)
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/index";
+import {
+    card as cardTable,
+    purchase as purchaseTable,
+} from "@/db/drizzle/schema";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
-function parseAmountInCents(value: unknown): string | null {
+export function parseAmountInCents(value: unknown): string | null {
     if (typeof value !== "string" && typeof value !== "number") return null;
 
     const rawValue = String(value).trim();
@@ -24,16 +28,16 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const card = await prisma.card.findUnique({
-        where: { id },
-    });
+    const [card] = await db
+        .select()
+        .from(cardTable)
+        .where(eq(cardTable.id, id))
+        .limit(1);
 
     if (!card) {
-        return NextResponse.json(
-            { error: "Card not found" },
-            { status: 404 },
-        );
+        return NextResponse.json({ error: "Card not found" }, { status: 404 });
     }
+
     return NextResponse.json({ card });
 }
 
@@ -46,28 +50,27 @@ export async function DELETE(
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const card = await prisma.card.findUnique({
-        where: { id },
+
+    const deletedCard = await db.transaction(async (tx) => {
+        // desvincula as compras em vez de apagá-las
+        await tx
+            .update(purchaseTable)
+            .set({ cardId: null })
+            .where(eq(purchaseTable.cardId, id));
+
+        const [deleted] = await tx
+            .delete(cardTable)
+            .where(eq(cardTable.id, id))
+            .returning();
+
+        return deleted;
     });
 
-    if (!card) {
-        return NextResponse.json(
-            { error: "Card not found" },
-            { status: 404 },
-        );
+    if (!deletedCard) {
+        return NextResponse.json({ error: "Card not found" }, { status: 404 });
     }
 
-    // update purchase to nullify cardId instead of deleting it
-    await prisma.purchase.updateMany({
-        where: { cardId: id },
-        data: { cardId: null },
-    });
-
-    const deletePurchase = await prisma.card.delete({
-        where: { id },
-    });
-    
-    return NextResponse.json({ card: deletePurchase });
+    return NextResponse.json({ card: deletedCard });
 }
 
 export async function PATCH(
@@ -83,14 +86,15 @@ export async function PATCH(
     const body = await request.json();
     const { name, digits, color } = body;
 
-    const updatedCard = await prisma.card.update({
-        where: { id },
-        data: {
-            name,
-            digits,
-            color,
-        },
-    });
+    const [updatedCard] = await db
+        .update(cardTable)
+        .set({ name, digits, color })
+        .where(eq(cardTable.id, id))
+        .returning();
+
+    if (!updatedCard) {
+        return NextResponse.json({ error: "Card not found" }, { status: 404 });
+    }
 
     return NextResponse.json(updatedCard, { status: 200 });
 }

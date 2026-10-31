@@ -1,5 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { and, eq } from "drizzle-orm";
+import { db } from "@/db/index";
+import { groupMember as groupMemberTable } from "@/db/drizzle/schema";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
@@ -14,13 +16,15 @@ export async function PATCH(
 
     const { id } = await params;
 
-    // remove usuario from group
-    await prisma.groupMember.deleteMany({
-        where: {
-            groupId: id,
-            userId: session.user.id,
-        },
-    });
+    // remove o usuário do grupo
+    await db
+        .delete(groupMemberTable)
+        .where(
+            and(
+                eq(groupMemberTable.groupId, id),
+                eq(groupMemberTable.userId, session.user.id),
+            ),
+        );
 
     return NextResponse.json({ message: "User signed out from group" });
 }

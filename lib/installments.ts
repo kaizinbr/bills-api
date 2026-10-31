@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/prisma";
-import type { InstallmentPlan } from "@/lib/generated/prisma/client";
+import { db } from "@/db/index";
+import { purchase as purchaseTable } from "@/db/drizzle/schema";
 import { getOrCreateInvoice } from "@/lib/invoices";
 
 /**
@@ -55,11 +55,6 @@ export async function generateInstallmentPurchases(
     // cancelledAt: Date | null;
 },
 ): Promise<void> {
-
-    
-
-
-
     const amounts = splitInstallments(plan.totalAmount, plan.installments);
 
     for (let index = 0; index < plan.installments; index++) {
@@ -74,15 +69,10 @@ export async function generateInstallmentPurchases(
             targetDate: purchasedAt,
         });
 
-        await prisma.purchase.upsert({
-            where: {
-                invoiceId_installmentPlanId: {
-                    invoiceId: invoice.id,
-                    installmentPlanId: plan.id,
-                },
-            },
-            update: {}, // já existe essa parcela nessa fatura — não faz nada
-            create: {
+        // já existe essa parcela nessa fatura — não faz nada
+        await db
+            .insert(purchaseTable)
+            .values({
                 installmentPlanId: plan.id,
                 description: plan.description,
                 amount: amounts[index],
@@ -93,7 +83,9 @@ export async function generateInstallmentPurchases(
                 userId: plan.userId,
                 installmentNumber: index + 1,
                 createdById: plan.createdById,
-            },
-        });
+            })
+            .onConflictDoNothing({
+                target: [purchaseTable.invoiceId, purchaseTable.installmentPlanId],
+            });
     }
 }

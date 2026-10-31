@@ -1,6 +1,5 @@
-// app/api/groups/[id]/subscriptions/route.ts
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db/index";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
@@ -14,9 +13,8 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const cards = await prisma.card.findMany({
+    const cards = await db.query.card.findMany({
         where: { groupId: id },
-        // include: { category: true, card: true },
         orderBy: { createdAt: "desc" },
     });
 

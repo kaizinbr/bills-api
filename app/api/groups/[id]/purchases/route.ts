@@ -1,5 +1,10 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { eq, sql } from "drizzle-orm";
+import { db } from "@/db/index";
+import {
+    purchase as purchaseTable,
+    invoice as invoiceTable,
+} from "@/db/drizzle/schema";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
@@ -15,25 +20,29 @@ export async function GET(
     }
 
     const { id } = await params;
-    const page = Number(request.nextUrl.searchParams.get("page") ?? "1");
+    const page = Math.max(
+        Number(request.nextUrl.searchParams.get("page")) || 1,
+        1,
+    );
 
-    // compras não têm mais id direto — filtra pelas invoices do grupo
-    const where = { invoice: { id } };
-
-    const [purchases, total] = await Promise.all([
-        prisma.purchase.findMany({
-            where,
+    const [purchases, [{ total }]] = await Promise.all([
+        db.query.purchase.findMany({
+            where: { invoice: { groupId: id } },
             orderBy: { purchasedAt: "desc" },
-            skip: (page - 1) * PAGE_SIZE,
-            take: PAGE_SIZE,
-            include: {
+            offset: (page - 1) * PAGE_SIZE,
+            limit: PAGE_SIZE,
+            with: {
                 category: {
-                    select: { id: true, key: true, label: true, icon: true },
+                    columns: { id: true, key: true, label: true, icon: true },
                 },
-                card: { select: { id: true, name: true, color: true } },
+                card: { columns: { id: true, name: true, color: true } },
             },
         }),
-        prisma.purchase.count({ where }),
+        db
+            .select({ total: sql<number>`count(*)`.mapWith(Number) })
+            .from(purchaseTable)
+            .innerJoin(invoiceTable, eq(invoiceTable.id, purchaseTable.invoiceId))
+            .where(eq(invoiceTable.groupId, id)),
     ]);
 
     return NextResponse.json({

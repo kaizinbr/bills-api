@@ -1,4 +1,6 @@
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/index";
+import { group as groupTable } from "@/db/drizzle/schema";
 
 const INVITE_CODE_LENGTH = 6;
 // sem 0/O, 1/I/L — evita confusão na hora de digitar o código à mão
@@ -22,10 +24,11 @@ export async function generateUniqueInviteCode(): Promise<string> {
     for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
         const code = randomInviteCode();
 
-        const existing = await prisma.group.findUnique({
-            where: { inviteCode: code },
-            select: { id: true },
-        });
+        const [existing] = await db
+            .select({ id: groupTable.id })
+            .from(groupTable)
+            .where(eq(groupTable.inviteCode, code))
+            .limit(1);
 
         if (!existing) return code;
     }

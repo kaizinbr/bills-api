@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db/index";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
@@ -21,23 +21,15 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const group = await prisma.group.findFirst({
+    const group = await db.query.group.findFirst({
         where: {
-            invoices: {
-                some: {
-                    id: id,
-                },
-            },
+            invoices: { id },
         },
-        include: {
-            members: {
-                include: {
+        with: {
+            groupMembers: {
+                with: {
                     user: {
-                        select: {
-                            id: true,
-                            name: true,
-                            image: true,
-                        },
+                        columns: { id: true, name: true, image: true },
                     },
                 },
             },
@@ -48,18 +40,12 @@ export async function GET(
         return NextResponse.json({ error: "Invoice not found" }, { status: 404 });
     }
 
-    const purchases = await prisma.purchase.findMany({
-        where: {
-            invoiceId: id,
-        },
-            include: {
-                user: {
-                    select: {
-                        id: true,
-                        name: true,
-                        image: true,
-                    },
-                },
+    const purchases = await db.query.purchase.findMany({
+        where: { invoiceId: id },
+        with: {
+            userUserId: {
+                columns: { id: true, name: true, image: true },
+            },
         },
     });
 
@@ -71,7 +57,7 @@ export async function GET(
         description: purchase.description,
         createdAt: purchase.createdAt,
         updatedAt: purchase.updatedAt,
-        user: purchase.user,
+        user: purchase.userUserId,
     }));
 
     const unassignedPurchases = purchasesWithUser.filter(
@@ -81,11 +67,11 @@ export async function GET(
         (total, purchase) => total + purchase.amount,
         0,
     );
-    const sharedAmount = group.members.length
-        ? Math.floor(unassignedTotal / group.members.length)
+    const sharedAmount = group.groupMembers.length
+        ? Math.floor(unassignedTotal / group.groupMembers.length)
         : 0;
 
-    const members = group.members.map((member) => {
+    const members = group.groupMembers.map((member) => {
         const memberPurchases = purchasesWithUser.filter(
             (purchase) => purchase.userId === member.userId,
         );

@@ -1,8 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
 
 import { auth } from "@/auth";
 import { headers } from "next/headers";
+
+
+import { eq, inArray } from "drizzle-orm";
+import { db } from "@/db/index";
+import { group as groupTable, card as cardTable, purchase as puschaseTable } from "@/db/drizzle/schema";
 
 export async function GET(
     request: NextRequest,
@@ -26,11 +30,11 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const invoice = await prisma.invoice.findFirst({
+    const invoice = await db.query.invoice.findFirst({
         where: {
             id: id,
         },
-        include: {
+        with: {
             purchases: true, 
         },
     });

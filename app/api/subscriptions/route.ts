@@ -1,6 +1,11 @@
 // app/api/subscriptions/route.ts
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/index";
+import {
+    card as cardTable,
+    subscription as subscriptionTable,
+} from "@/db/drizzle/schema";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 import {
@@ -49,19 +54,28 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    const card = await prisma.card.findUniqueOrThrow({ where: { id: cardId } });
+    const [card] = await db
+        .select()
+        .from(cardTable)
+        .where(eq(cardTable.id, cardId))
+        .limit(1);
 
-    const subscription = await prisma.subscription.create({
-        data: {
+    if (!card) {
+        return NextResponse.json({ error: "Card not found" }, { status: 404 });
+    }
+
+    const [subscription] = await db
+        .insert(subscriptionTable)
+        .values({
             cardId,
             categoryId,
             name,
-            amount: amountCents,
+            amount: Number(amountCents),
             chargeDay,
             createdById: session.user.id,
             groupId,
-        },
-    });
+        })
+        .returning();
 
     // cobra imediatamente na fatura atual desse cartão, sem esperar o
     // próximo GET /groups ou a virada de período

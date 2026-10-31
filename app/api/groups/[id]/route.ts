@@ -1,5 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/index";
+import { group as groupTable } from "@/db/drizzle/schema";
 
 import { auth } from "@/auth";
 import { headers } from "next/headers";
@@ -7,11 +9,7 @@ import { parseAmountInCents } from "@/app/api/purchases/[id]/route";
 
 export async function GET(
     request: NextRequest,
-    {
-        params,
-    }: {
-        params: Promise<{ id: string }>;
-    },
+    { params }: { params: Promise<{ id: string }> },
 ) {
     const { id } = await params;
 
@@ -30,31 +28,21 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const group = await prisma.group.findFirst({
-        where: {
-            id: id,
-        },
-        include: {
-            cards: true, // Include the related cards
-            subscriptions: true, // Include the related subscriptions
-            debtor: {
-                select: {
-                    id: true,
-                    name: true,
-                    image: true,
-                },
+    const group = await db.query.group.findFirst({
+        where: { id },
+        with: {
+            cards: true,
+            subscriptions: true,
+            userDebtorId: {
+                columns: { id: true, name: true, image: true },
             },
-            members: {
-                include: {
+            groupMembers: {
+                with: {
                     user: {
-                        select: {
-                            id: true,
-                            name: true,
-                            image: true,
-                        },
+                        columns: { id: true, name: true, image: true },
                     },
                 },
-            }
+            },
         },
     });
 
@@ -63,11 +51,7 @@ export async function GET(
 
 export async function DELETE(
     request: NextRequest,
-    {
-        params,
-    }: {
-        params: Promise<{ id: string }>;
-    },
+    { params }: { params: Promise<{ id: string }> },
 ) {
     const { id } = await params;
 
@@ -86,33 +70,21 @@ export async function DELETE(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const group = await prisma.group.findFirst({
-        where: {
-            id: id,
-        },
-    });
+    const [deleted] = await db
+        .delete(groupTable)
+        .where(eq(groupTable.id, id))
+        .returning({ id: groupTable.id });
 
-    if (!group) {
+    if (!deleted) {
         return NextResponse.json({ error: "Group not found" }, { status: 404 });
     }
-
-    await prisma.group.delete({
-        where: {
-            id: id,
-        },
-    });
 
     return NextResponse.json({ message: "Group deleted successfully" });
 }
 
-
 export async function PATCH(
     request: NextRequest,
-    {
-        params,
-    }: {
-        params: Promise<{ id: string }>;
-    },
+    { params }: { params: Promise<{ id: string }> },
 ) {
     const { id } = await params;
 
@@ -130,17 +102,6 @@ export async function PATCH(
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    const group = await prisma.group.findFirst({
-        where: {
-            id: id,
-        },
-    });
-
-    if (!group) {
-        return NextResponse.json({ error: "Group not found" }, { status: 404 });
-    }
-
 
     const { name, limit, closingDay } = await request.json();
 
@@ -153,16 +114,19 @@ export async function PATCH(
         );
     }
 
-    const updatedGroup = await prisma.group.update({
-        where: {
-            id: id,
-        },
-        data: {
+    const [updatedGroup] = await db
+        .update(groupTable)
+        .set({
             name,
-            limit: limit,
+            limit,
             closingDay,
-        },
-    });
+        })
+        .where(eq(groupTable.id, id))
+        .returning();
+
+    if (!updatedGroup) {
+        return NextResponse.json({ error: "Group not found" }, { status: 404 });
+    }
 
     return NextResponse.json({ group: updatedGroup });
 }

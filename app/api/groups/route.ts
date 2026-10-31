@@ -1,5 +1,11 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { inArray } from "drizzle-orm";
+import { db } from "@/db/index";
+import {
+    group as groupTable,
+    card as cardTable,
+    groupMember as groupMemberTable,
+} from "@/db/drizzle/schema";
 import { getOrCreateInvoice } from "@/lib/invoices";
 import { generateUniqueInviteCode } from "@/lib/invites";
 
@@ -15,35 +21,34 @@ export async function GET() {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const groups = await prisma.group.findMany({
+    const rows = await db.query.group.findMany({
         where: {
-            members: {
-                some: {
-                    userId: session.user.id,
-                },
-            },
+            groupMembers: { userId: session.user.id },
         },
-        include: {
+        with: {
             cards: true,
-            debtor: { select: { id: true, name: true, image: true } },
-            invoices: { orderBy: { periodStart: "desc" }, take: 1 },
-            members: { include: { user: { select: { id: true, name: true, image: true } } } },
-            installmentPlans: true,
-            _count: {
-                select: {
-                    subscriptions: true,
-                    cards: true,
-                    installmentPlans: true,
+            userDebtorId: { columns: { id: true, name: true, image: true } },
+            invoices: { orderBy: { periodStart: "desc" }, limit: 1 },
+            groupMembers: {
+                with: {
+                    user: { columns: { id: true, name: true, image: true } },
                 },
             },
+            installmentPlans: true,
+            subscriptions: { columns: { id: true } },
         },
     });
 
-    // console.log("Groups fetched for user:", session.user.id, groups);
+    // recria o `_count` do Prisma e não devolve a lista de subscriptions
+    const groups = rows.map(({ subscriptions, ...group }) => ({
+        ...group,
+        _count: {
+            subscriptions: subscriptions.length,
+            cards: group.cards.length,
+            installmentPlans: group.installmentPlans.length,
+        },
+    }));
 
-    // garante que a fatura do período atual existe pra cada cartão (e pro
-    // balde avulso de cada grupo), o que também dispara a geração das
-    // cobranças de assinatura desse período
     const now = new Date();
 
     await Promise.all(
@@ -75,7 +80,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const { name, amount, payerId, receiverId, closingDay, archived, cards } = body;
-    const cardIds = Array.isArray(cards) ? cards : [];
+    const cardIds: string[] = Array.isArray(cards) ? cards : [];
 
     const safePayerId =
         typeof payerId === "string" && payerId.trim()
@@ -94,9 +99,11 @@ export async function POST(request: NextRequest) {
     }
 
     const inviteCode = await generateUniqueInviteCode();
-    const newGroup = await prisma.$transaction(async (tx) => {
-        const group = await tx.group.create({
-            data: {
+
+    const newGroup = await db.transaction(async (tx) => {
+        const [group] = await tx
+            .insert(groupTable)
+            .values({
                 name,
                 limit: amount,
                 creditorId: safePayerId,
@@ -104,31 +111,30 @@ export async function POST(request: NextRequest) {
                 closingDay,
                 inviteCode,
                 archived: Boolean(archived),
-                ...(cardIds.length > 0 && {
-                    cards: {
-                        connect: cardIds.map((cardId: string) => ({ id: cardId })),
-                    },
-                }),
-            },
-        });
+            })
+            .returning();
+
+        // equivalente ao `connect` do Prisma
+        if (cardIds.length > 0) {
+            await tx
+                .update(cardTable)
+                .set({ groupId: group.id })
+                .where(inArray(cardTable.id, cardIds));
+        }
 
         // quem criou a conta vira membro com acesso total (owner)
-        await tx.groupMember.create({
-            data: {
-                groupId: group.id,
-                userId: session.user.id,
-                role: "OWNER",
-            },
+        await tx.insert(groupMemberTable).values({
+            groupId: group.id,
+            userId: session.user.id,
+            role: "OWNER",
         });
 
         return group;
     });
 
-    const now = new Date();
-
     await getOrCreateInvoice({
         groupId: newGroup.id,
-        targetDate: now,
+        targetDate: new Date(),
     });
 
     return NextResponse.json(newGroup, { status: 201 });

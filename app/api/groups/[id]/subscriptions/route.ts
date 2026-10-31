@@ -1,6 +1,5 @@
-// app/api/groups/[id]/subscriptions/route.ts
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db/index";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
@@ -14,9 +13,9 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const subscriptions = await prisma.subscription.findMany({
-        where: { groupId: id, canceledAt: null },
-        include: { category: true, card: true },
+    const subscriptions = await db.query.subscription.findMany({
+        where: { groupId: id, canceledAt: { isNull: true } },
+        with: { category: true, card: true },
         orderBy: { createdAt: "desc" },
     });
 

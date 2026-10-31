@@ -1,5 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/index";
+import { purchase as purchaseTable } from "@/db/drizzle/schema";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
@@ -27,16 +29,11 @@ export async function GET(
     const pageParam = searchParams.get("page");
     const page = Math.max(Number(pageParam) || 1, 1);
     const limit = 30;
-    const skip = (page - 1) * limit;
+    const offset = (page - 1) * limit;
 
-
-    const invoice = await prisma.invoice.findFirst({
-        where: {
-            id: id,
-        },
-        include: {
-            purchases: true,
-        },
+    const invoice = await db.query.invoice.findFirst({
+        where: { id },
+        with: { purchases: true },
     });
 
     if (!invoice) {
@@ -44,65 +41,20 @@ export async function GET(
     }
 
     await chargeSubscriptionsForInvoice({ invoice });
-    console.log("invoice", invoice?.groupId);
-
-    // const activeSubscriptions = await prisma.subscription.findMany({
-    //     where: {
-    //         groupId: invoice?.groupId,
-    //         canceledAt: null,
-    //     },
-    // });
-
-    // console.log("activeSubscriptions", activeSubscriptions);
-
-    // // check and update purchases for active subscriptions
-    // for (const subscription of activeSubscriptions) {
-    //     const existingPurchase = await prisma.purchase.findFirst({
-    //         where: {
-    //             subscriptionId: subscription.id,
-    //             invoiceId: id,
-    //         },
-    //     });
-
-    //     if (!existingPurchase) {
-    //         // Create a new purchase for this subscription
-    //         await prisma.purchase.create({
-    //             data: {
-    //                 description: subscription.name,
-    //                 amount: subscription.amount,
-    //                 purchasedAt: new Date(),
-    //                 invoiceId: id,
-    //                 subscriptionId: subscription.id,
-    //                 categoryId: subscription.categoryId,
-    //                 cardId: subscription.cardId,
-    //                 createdById: session.user.id,
-    //             },
-    //         });
-    //     }
-    // }
-
-    // const updatedInvoice = await prisma.invoice.findFirst({
-    //     where: {
-    //         id: id,
-    //     },
-    //     include: {
-    //         purchases: true,
-    //     },
-    // });
 
     const [purchases, total] = await Promise.all([
-        prisma.purchase.findMany({
+        db.query.purchase.findMany({
             where: { invoiceId: id },
-            skip,
-            take: limit,
+            limit,
+            offset,
             orderBy: { purchasedAt: "desc" },
-            include: {
+            with: {
                 category: true,
                 subscription: true,
                 installmentPlan: true,
             },
         }),
-        prisma.purchase.count({ where: { invoiceId: id } }),
+        db.$count(purchaseTable, eq(purchaseTable.invoiceId, id)),
     ]);
 
     return NextResponse.json({

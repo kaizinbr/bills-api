@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db/index";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
@@ -14,7 +14,7 @@ export async function GET(
 
     const { id } = await params;
 
-    const invoices = await prisma.invoice.findMany({
+    const invoices = await db.query.invoice.findMany({
         where: { groupId: id },
         orderBy: { periodStart: "desc" },
     });

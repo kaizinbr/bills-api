@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { getOrCreateInvoice } from "@/lib/invoices";
+import { db } from "@/db/index";
+import { installmentPlan as installmentPlanTable } from "@/db/drizzle/schema";
 import { generateInstallmentPurchases } from "@/lib/installments";
 
 import { auth } from "@/auth";
@@ -71,9 +71,10 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    
-    const newInstallment = await prisma.installmentPlan.create({
-        data: {
+
+    const [newInstallment] = await db
+        .insert(installmentPlanTable)
+        .values({
             userId: userId,
             description: description,
             categoryId: categoryId,
@@ -82,10 +83,10 @@ export async function POST(request: NextRequest) {
             totalAmount: totalAmount,
             installments: installments,
             dayOfMonth: dayOfMonth,
-            startDate: startDate,
+            startDate: new Date(startDate),
             groupId: groupId,
-        },
-    });
+        })
+        .returning();
     console.log(newInstallment)
 
 
@@ -116,13 +117,13 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const purchase = await prisma.purchase.findMany({
-        include: {
+    const purchase = await db.query.purchase.findMany({
+        with: {
             category: true,
             card: true,
             subscription: true,
             invoice: {
-                include: {
+                with: {
                     group: true,
                 },
             },

@@ -1,5 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/index";
+import { purchase as purchaseTable } from "@/db/drizzle/schema";
 import { getOrCreateInvoice } from "@/lib/invoices";
 
 import { auth } from "@/auth";
@@ -67,15 +69,28 @@ export async function POST(request: NextRequest) {
         cardId: safeCardId,
         invoiceId: invoice.id,
         categoryId,
-        userId
+        userId,
     };
 
-    const purchase =
-        typeof id === "string" && id.trim()
-            ? await prisma.purchase.update({ where: { id }, data: baseData })
-            : await prisma.purchase.create({
-                  data: { ...baseData, createdById: session.user.id },
-              });
+    const isUpdate = Boolean(typeof id === "string" && id.trim());
+
+    const [purchase] = isUpdate
+        ? await db
+              .update(purchaseTable)
+              .set(baseData)
+              .where(eq(purchaseTable.id, id))
+              .returning()
+        : await db
+              .insert(purchaseTable)
+              .values({ ...baseData, createdById: session.user.id })
+              .returning();
+
+    if (!purchase) {
+        return NextResponse.json(
+            { error: "Purchase not found" },
+            { status: 404 },
+        );
+    }
 
     return NextResponse.json(purchase, { status: 201 });
 }
@@ -88,15 +103,15 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const purchase = await prisma.purchase.findMany({
-        include: {
+    const purchase = await db.query.purchase.findMany({
+        with: {
             category: true,
             card: true,
             subscription: true,
             invoice: {
-                include: {
+                with: {
                     group: true,
-                },  
+                },
             },
         },
     });

@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { getOrCreateInvoice } from "@/lib/invoices";
-import { generateUniqueInviteCode } from "@/lib/invites";
+import { db } from "@/db/index";
+import { groupMember as groupMemberTable } from "@/db/drizzle/schema";
 
 import { auth } from "@/auth";
 import { headers } from "next/headers";
@@ -25,9 +24,9 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    const group = await prisma.group.findUnique({
+    const group = await db.query.group.findFirst({
         where: { inviteCode: inviteCode.toUpperCase() },
-        include: { members: true },
+        with: { groupMembers: true },
     });
 
     if (!group) {
@@ -37,24 +36,18 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    if (group.members.some((member) => member.userId === session.user.id)) {
+    if (group.groupMembers.some((member) => member.userId === session.user.id)) {
         return NextResponse.json(
             { error: "Você já é membro desta conta" },
             { status: 400 },
         );
     }
 
-    const newMember = await prisma.group.update({
-        where: { inviteCode },
-        data: {
-            members: {
-                create: {
-                    userId: session.user.id,
-                    role: "MEMBER",
-                },
-            },
-        },
+    await db.insert(groupMemberTable).values({
+        groupId: group.id,
+        userId: session.user.id,
+        role: "MEMBER",
     });
 
-    return NextResponse.json(newMember, { status: 201 });
+    return NextResponse.json(group, { status: 201 });
 }

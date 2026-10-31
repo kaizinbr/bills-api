@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db/index";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
@@ -14,22 +14,14 @@ export async function GET(
 
     const { id } = await params;
 
-    const group = await prisma.group.findFirst({
-        where: {
-            id: id,
-        },
-        include: {
-            members: {
-                include: {
-                    user: {
-                        select: {
-                            id: true,
-                            name: true,
-                            image: true,
-                        },
-                    },
+    const group = await db.query.group.findFirst({
+        where: { id },
+        with: {
+            groupMembers: {
+                with: {
+                    user: { columns: { id: true, name: true, image: true } },
                 },
-            }
+            },
         },
     });
 
@@ -37,5 +29,6 @@ export async function GET(
         return NextResponse.json({ error: "Group not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ members: group.members });
+    // mantém a chave `members` na resposta para o app Expo não quebrar
+    return NextResponse.json({ members: group.groupMembers });
 }

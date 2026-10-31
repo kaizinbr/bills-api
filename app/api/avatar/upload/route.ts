@@ -4,8 +4,8 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { auth } from "@/auth";
+import { db } from "@/db/index";
 import { DEFAULT_COLOR } from "@/lib/avatar";
-import { prisma } from "@/lib/prisma";
 
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
 const CONTENT_TYPES = new Map([
@@ -45,8 +45,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         const userId = session.user.id;
         const prefix = `avatars/${userId}/`;
 
-        // se a cor falhar, não derruba o upload
-        const dominantColor = await getColor(imageBuffer, { quality: 10 }).catch(() => null);
         let color = DEFAULT_COLOR;
         try {
             const dominantColor = await getColor(imageBuffer, { quality: 10 });
@@ -68,9 +66,9 @@ export async function POST(request: Request): Promise<NextResponse> {
         // limpa uploads pendentes antigos (nunca salvos).
         // Mantém só: a foto atual do banco + a que acabou de subir.
         try {
-            const current = await prisma.user.findUnique({
+            const current = await db.query.user.findFirst({
                 where: { id: userId },
-                select: { image: true },
+                columns: { image: true },
             });
             const { blobs } = await list({ prefix });
             const stale = blobs

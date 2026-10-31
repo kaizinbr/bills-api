@@ -1,8 +1,9 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
 
 import { auth } from "@/auth"
 import { headers } from "next/headers"
+
+import { db } from "@/db/index";
 
 
 export async function GET(request: NextRequest) {
@@ -14,9 +15,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const categories = await prisma.category.findMany();
-
-
+    const categories = await db.query.category.findMany();
 
     return NextResponse.json({ categories });
 }

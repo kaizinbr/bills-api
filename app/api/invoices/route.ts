@@ -1,5 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { eq, inArray } from "drizzle-orm";
+import { db } from "@/db/index";
+import { group as groupTable, card as cardTable } from "@/db/drizzle/schema";
 import { getOrCreateInvoice } from "@/lib/invoices";
 
 import { auth } from "@/auth";
@@ -15,25 +17,23 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const creditorGroups = await prisma.group.findMany({
-        where: { creditorId: session.user.id },
-        include: {
-            cards: true,
-            debtor: { select: { id: true, name: true, image: true } },
-        },
-    });
+    const [creditorGroups, debtorGroups] = await Promise.all([
+        db.query.group.findMany({
+            where: { creditorId: session.user.id },
+            with: {
+                cards: true,
+                userDebtorId: { columns: { id: true, name: true, image: true } },
+            },
+        }),
+        db.query.group.findMany({
+            where: { debtorId: session.user.id },
+            with: {
+                cards: true,
+                userDebtorId: { columns: { id: true, name: true, image: true } },
+            },
+        }),
+    ]);
 
-    const debtorGroups = await prisma.group.findMany({
-        where: { debtorId: session.user.id },
-        include: {
-            cards: true,
-            debtor: { select: { id: true, name: true, image: true } },
-        },
-    });
-
-    // garante que a fatura do período atual existe pra cada cartão (e pro
-    // balde avulso de cada grupo), o que também dispara a geração das
-    // cobranças de assinatura desse período
     const allGroups = [...creditorGroups, ...debtorGroups];
     const now = new Date();
 
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const { name, payerId, receiverId, closingDay, archived, cards } = body;
-    const cardIds = Array.isArray(cards) ? cards : [];
+    const cardIds: string[] = Array.isArray(cards) ? cards : [];
 
     const safePayerId =
         typeof payerId === "string" && payerId.trim()
@@ -84,21 +84,25 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    const newGroup = await prisma.group.create({
-        data: {
+    const [newGroup] = await db
+        .insert(groupTable)
+        .values({
             name,
             creditorId: safePayerId,
             debtorId: safeReceiverId,
             closingDay,
             archived: Boolean(archived),
-            ...(cardIds.length > 0 && {
-                cards: {
-                    connect: cardIds.map((cardId: string) => ({ id: cardId })),
-                },
-            }),
             inviteCode: await generateUniqueInviteCode(),
-        },
-    });
+        })
+        .returning();
+
+    // equivalente ao `connect` do Prisma: aponta os cartões para o novo grupo
+    if (cardIds.length > 0) {
+        await db
+            .update(cardTable)
+            .set({ groupId: newGroup.id })
+            .where(inArray(cardTable.id, cardIds));
+    }
 
     return NextResponse.json(newGroup, { status: 201 });
 }
