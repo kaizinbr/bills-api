@@ -1,0 +1,1 @@
+-- baseline: banco já existente, nada a executar

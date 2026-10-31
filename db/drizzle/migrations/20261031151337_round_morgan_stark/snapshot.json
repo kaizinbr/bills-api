@@ -1,0 +1,4732 @@
+{
+  "type": "base",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "e773854d-a16e-4161-a68c-699c9599f110",
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "group_role"
+      ],
+      "writes": [
+        "s|enum|public.group_role",
+        "n|enum|public.group_role",
+        "e|enum|public.group_role",
+        "n|type|public.group_role"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "invoice_status"
+      ],
+      "writes": [
+        "s|enum|public.invoice_status",
+        "n|enum|public.invoice_status",
+        "e|enum|public.invoice_status",
+        "n|type|public.invoice_status"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "category_type"
+      ],
+      "writes": [
+        "s|enum|public.category_type",
+        "n|enum|public.category_type",
+        "e|enum|public.category_type",
+        "n|type|public.category_type"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "account"
+      ],
+      "writes": [
+        "s|tbl|public.account",
+        "n|tbl|public.account",
+        "e|tbl|public.account",
+        "n|rel|public.account",
+        "n|type|public.account",
+        "n|rel|public.account_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "card"
+      ],
+      "writes": [
+        "s|tbl|public.card",
+        "n|tbl|public.card",
+        "e|tbl|public.card",
+        "n|rel|public.card",
+        "n|type|public.card",
+        "n|rel|public.card_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "category"
+      ],
+      "writes": [
+        "s|tbl|public.category",
+        "n|tbl|public.category",
+        "e|tbl|public.category",
+        "n|rel|public.category",
+        "n|type|public.category",
+        "n|rel|public.category_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.category_type"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "group"
+      ],
+      "writes": [
+        "s|tbl|public.group",
+        "n|tbl|public.group",
+        "e|tbl|public.group",
+        "n|rel|public.group",
+        "n|type|public.group",
+        "n|rel|public.group_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "group_member"
+      ],
+      "writes": [
+        "s|tbl|public.group_member",
+        "n|tbl|public.group_member",
+        "e|tbl|public.group_member",
+        "n|rel|public.group_member",
+        "n|type|public.group_member",
+        "n|rel|public.group_member_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.group_role"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "income_entry"
+      ],
+      "writes": [
+        "s|tbl|public.income_entry",
+        "n|tbl|public.income_entry",
+        "e|tbl|public.income_entry",
+        "n|rel|public.income_entry",
+        "n|type|public.income_entry",
+        "n|rel|public.income_entry_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "installment_plan"
+      ],
+      "writes": [
+        "s|tbl|public.installment_plan",
+        "n|tbl|public.installment_plan",
+        "e|tbl|public.installment_plan",
+        "n|rel|public.installment_plan",
+        "n|type|public.installment_plan",
+        "n|rel|public.installment_plan_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "invoice"
+      ],
+      "writes": [
+        "s|tbl|public.invoice",
+        "n|tbl|public.invoice",
+        "e|tbl|public.invoice",
+        "n|rel|public.invoice",
+        "n|type|public.invoice",
+        "n|rel|public.invoice_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.invoice_status"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "purchase"
+      ],
+      "writes": [
+        "s|tbl|public.purchase",
+        "n|tbl|public.purchase",
+        "e|tbl|public.purchase",
+        "n|rel|public.purchase",
+        "n|type|public.purchase",
+        "n|rel|public.purchase_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "session"
+      ],
+      "writes": [
+        "s|tbl|public.session",
+        "n|tbl|public.session",
+        "e|tbl|public.session",
+        "n|rel|public.session",
+        "n|type|public.session",
+        "n|rel|public.session_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "subscription"
+      ],
+      "writes": [
+        "s|tbl|public.subscription",
+        "n|tbl|public.subscription",
+        "e|tbl|public.subscription",
+        "n|rel|public.subscription",
+        "n|type|public.subscription",
+        "n|rel|public.subscription_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "user"
+      ],
+      "writes": [
+        "s|tbl|public.user",
+        "n|tbl|public.user",
+        "e|tbl|public.user",
+        "n|rel|public.user",
+        "n|type|public.user",
+        "n|rel|public.user_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "verification"
+      ],
+      "writes": [
+        "s|tbl|public.verification",
+        "n|tbl|public.verification",
+        "e|tbl|public.verification",
+        "n|rel|public.verification",
+        "n|type|public.verification",
+        "n|rel|public.verification_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "account",
+        "account_issuer_accountId_key"
+      ],
+      "writes": [
+        "s|idx|public.account_issuer_accountId_key",
+        "n|idx|public.account_issuer_accountId_key",
+        "e|idx|public.account_issuer_accountId_key",
+        "n|rel|public.account_issuer_accountId_key"
+      ],
+      "reads": [
+        "n|tbl|public.account",
+        "n|sch|public",
+        "n|col|public.account.issuer",
+        "n|col|public.account.accountId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "card",
+        "card_groupId_idx"
+      ],
+      "writes": [
+        "s|idx|public.card_groupId_idx",
+        "n|idx|public.card_groupId_idx",
+        "e|idx|public.card_groupId_idx",
+        "n|rel|public.card_groupId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.card",
+        "n|sch|public",
+        "n|col|public.card.groupId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "card",
+        "card_ownerId_idx"
+      ],
+      "writes": [
+        "s|idx|public.card_ownerId_idx",
+        "n|idx|public.card_ownerId_idx",
+        "e|idx|public.card_ownerId_idx",
+        "n|rel|public.card_ownerId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.card",
+        "n|sch|public",
+        "n|col|public.card.ownerId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "category",
+        "category_key_key"
+      ],
+      "writes": [
+        "s|idx|public.category_key_key",
+        "n|idx|public.category_key_key",
+        "e|idx|public.category_key_key",
+        "n|rel|public.category_key_key"
+      ],
+      "reads": [
+        "n|tbl|public.category",
+        "n|sch|public",
+        "n|col|public.category.key"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "category",
+        "category_type_idx"
+      ],
+      "writes": [
+        "s|idx|public.category_type_idx",
+        "n|idx|public.category_type_idx",
+        "e|idx|public.category_type_idx",
+        "n|rel|public.category_type_idx"
+      ],
+      "reads": [
+        "n|tbl|public.category",
+        "n|sch|public",
+        "n|col|public.category.type"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group",
+        "group_creditorId_idx"
+      ],
+      "writes": [
+        "s|idx|public.group_creditorId_idx",
+        "n|idx|public.group_creditorId_idx",
+        "e|idx|public.group_creditorId_idx",
+        "n|rel|public.group_creditorId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.group",
+        "n|sch|public",
+        "n|col|public.group.creditorId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group",
+        "group_debtorId_idx"
+      ],
+      "writes": [
+        "s|idx|public.group_debtorId_idx",
+        "n|idx|public.group_debtorId_idx",
+        "e|idx|public.group_debtorId_idx",
+        "n|rel|public.group_debtorId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.group",
+        "n|sch|public",
+        "n|col|public.group.debtorId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group",
+        "group_inviteCode_key"
+      ],
+      "writes": [
+        "s|idx|public.group_inviteCode_key",
+        "n|idx|public.group_inviteCode_key",
+        "e|idx|public.group_inviteCode_key",
+        "n|rel|public.group_inviteCode_key"
+      ],
+      "reads": [
+        "n|tbl|public.group",
+        "n|sch|public",
+        "n|col|public.group.inviteCode"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_member",
+        "group_member_groupId_userId_key"
+      ],
+      "writes": [
+        "s|idx|public.group_member_groupId_userId_key",
+        "n|idx|public.group_member_groupId_userId_key",
+        "e|idx|public.group_member_groupId_userId_key",
+        "n|rel|public.group_member_groupId_userId_key"
+      ],
+      "reads": [
+        "n|tbl|public.group_member",
+        "n|sch|public",
+        "n|col|public.group_member.groupId",
+        "n|col|public.group_member.userId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_member",
+        "group_member_userId_idx"
+      ],
+      "writes": [
+        "s|idx|public.group_member_userId_idx",
+        "n|idx|public.group_member_userId_idx",
+        "e|idx|public.group_member_userId_idx",
+        "n|rel|public.group_member_userId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.group_member",
+        "n|sch|public",
+        "n|col|public.group_member.userId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "income_entry",
+        "income_entry_invoiceId_idx"
+      ],
+      "writes": [
+        "s|idx|public.income_entry_invoiceId_idx",
+        "n|idx|public.income_entry_invoiceId_idx",
+        "e|idx|public.income_entry_invoiceId_idx",
+        "n|rel|public.income_entry_invoiceId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.income_entry",
+        "n|sch|public",
+        "n|col|public.income_entry.invoiceId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "installment_plan",
+        "installment_plan_cardId_idx"
+      ],
+      "writes": [
+        "s|idx|public.installment_plan_cardId_idx",
+        "n|idx|public.installment_plan_cardId_idx",
+        "e|idx|public.installment_plan_cardId_idx",
+        "n|rel|public.installment_plan_cardId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.installment_plan",
+        "n|sch|public",
+        "n|col|public.installment_plan.cardId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "installment_plan",
+        "installment_plan_groupId_idx"
+      ],
+      "writes": [
+        "s|idx|public.installment_plan_groupId_idx",
+        "n|idx|public.installment_plan_groupId_idx",
+        "e|idx|public.installment_plan_groupId_idx",
+        "n|rel|public.installment_plan_groupId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.installment_plan",
+        "n|sch|public",
+        "n|col|public.installment_plan.groupId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "installment_plan",
+        "installment_plan_userId_idx"
+      ],
+      "writes": [
+        "s|idx|public.installment_plan_userId_idx",
+        "n|idx|public.installment_plan_userId_idx",
+        "e|idx|public.installment_plan_userId_idx",
+        "n|rel|public.installment_plan_userId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.installment_plan",
+        "n|sch|public",
+        "n|col|public.installment_plan.userId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "invoice",
+        "invoice_groupId_periodStart_idx"
+      ],
+      "writes": [
+        "s|idx|public.invoice_groupId_periodStart_idx",
+        "n|idx|public.invoice_groupId_periodStart_idx",
+        "e|idx|public.invoice_groupId_periodStart_idx",
+        "n|rel|public.invoice_groupId_periodStart_idx"
+      ],
+      "reads": [
+        "n|tbl|public.invoice",
+        "n|sch|public",
+        "n|col|public.invoice.groupId",
+        "n|col|public.invoice.periodStart"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "invoice",
+        "invoice_groupId_referenceYear_referenceMonth_key"
+      ],
+      "writes": [
+        "s|idx|public.invoice_groupId_referenceYear_referenceMonth_key",
+        "n|idx|public.invoice_groupId_referenceYear_referenceMonth_key",
+        "e|idx|public.invoice_groupId_referenceYear_referenceMonth_key",
+        "n|rel|public.invoice_groupId_referenceYear_referenceMonth_key"
+      ],
+      "reads": [
+        "n|tbl|public.invoice",
+        "n|sch|public",
+        "n|col|public.invoice.groupId",
+        "n|col|public.invoice.referenceYear",
+        "n|col|public.invoice.referenceMonth"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "purchase",
+        "purchase_cardId_purchasedAt_idx"
+      ],
+      "writes": [
+        "s|idx|public.purchase_cardId_purchasedAt_idx",
+        "n|idx|public.purchase_cardId_purchasedAt_idx",
+        "e|idx|public.purchase_cardId_purchasedAt_idx",
+        "n|rel|public.purchase_cardId_purchasedAt_idx"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|col|public.purchase.cardId",
+        "n|col|public.purchase.purchasedAt"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "purchase",
+        "purchase_categoryId_idx"
+      ],
+      "writes": [
+        "s|idx|public.purchase_categoryId_idx",
+        "n|idx|public.purchase_categoryId_idx",
+        "e|idx|public.purchase_categoryId_idx",
+        "n|rel|public.purchase_categoryId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|col|public.purchase.categoryId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "purchase",
+        "purchase_installmentPlanId_idx"
+      ],
+      "writes": [
+        "s|idx|public.purchase_installmentPlanId_idx",
+        "n|idx|public.purchase_installmentPlanId_idx",
+        "e|idx|public.purchase_installmentPlanId_idx",
+        "n|rel|public.purchase_installmentPlanId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|col|public.purchase.installmentPlanId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "purchase",
+        "purchase_invoiceId_installmentPlanId_key"
+      ],
+      "writes": [
+        "s|idx|public.purchase_invoiceId_installmentPlanId_key",
+        "n|idx|public.purchase_invoiceId_installmentPlanId_key",
+        "e|idx|public.purchase_invoiceId_installmentPlanId_key",
+        "n|rel|public.purchase_invoiceId_installmentPlanId_key"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|col|public.purchase.invoiceId",
+        "n|col|public.purchase.installmentPlanId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "purchase",
+        "purchase_invoiceId_purchasedAt_idx"
+      ],
+      "writes": [
+        "s|idx|public.purchase_invoiceId_purchasedAt_idx",
+        "n|idx|public.purchase_invoiceId_purchasedAt_idx",
+        "e|idx|public.purchase_invoiceId_purchasedAt_idx",
+        "n|rel|public.purchase_invoiceId_purchasedAt_idx"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|col|public.purchase.invoiceId",
+        "n|col|public.purchase.purchasedAt"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "purchase",
+        "purchase_invoiceId_subscriptionId_key"
+      ],
+      "writes": [
+        "s|idx|public.purchase_invoiceId_subscriptionId_key",
+        "n|idx|public.purchase_invoiceId_subscriptionId_key",
+        "e|idx|public.purchase_invoiceId_subscriptionId_key",
+        "n|rel|public.purchase_invoiceId_subscriptionId_key"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|col|public.purchase.invoiceId",
+        "n|col|public.purchase.subscriptionId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "purchase",
+        "purchase_invoiceId_userId_idx"
+      ],
+      "writes": [
+        "s|idx|public.purchase_invoiceId_userId_idx",
+        "n|idx|public.purchase_invoiceId_userId_idx",
+        "e|idx|public.purchase_invoiceId_userId_idx",
+        "n|rel|public.purchase_invoiceId_userId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|col|public.purchase.invoiceId",
+        "n|col|public.purchase.userId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "purchase",
+        "purchase_subscriptionId_idx"
+      ],
+      "writes": [
+        "s|idx|public.purchase_subscriptionId_idx",
+        "n|idx|public.purchase_subscriptionId_idx",
+        "e|idx|public.purchase_subscriptionId_idx",
+        "n|rel|public.purchase_subscriptionId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|col|public.purchase.subscriptionId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "session",
+        "session_token_key"
+      ],
+      "writes": [
+        "s|idx|public.session_token_key",
+        "n|idx|public.session_token_key",
+        "e|idx|public.session_token_key",
+        "n|rel|public.session_token_key"
+      ],
+      "reads": [
+        "n|tbl|public.session",
+        "n|sch|public",
+        "n|col|public.session.token"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "subscription",
+        "subscription_canceledAt_idx"
+      ],
+      "writes": [
+        "s|idx|public.subscription_canceledAt_idx",
+        "n|idx|public.subscription_canceledAt_idx",
+        "e|idx|public.subscription_canceledAt_idx",
+        "n|rel|public.subscription_canceledAt_idx"
+      ],
+      "reads": [
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|col|public.subscription.canceledAt"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "subscription",
+        "subscription_cardId_idx"
+      ],
+      "writes": [
+        "s|idx|public.subscription_cardId_idx",
+        "n|idx|public.subscription_cardId_idx",
+        "e|idx|public.subscription_cardId_idx",
+        "n|rel|public.subscription_cardId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|col|public.subscription.cardId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "subscription",
+        "subscription_groupId_idx"
+      ],
+      "writes": [
+        "s|idx|public.subscription_groupId_idx",
+        "n|idx|public.subscription_groupId_idx",
+        "e|idx|public.subscription_groupId_idx",
+        "n|rel|public.subscription_groupId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|col|public.subscription.groupId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "subscription",
+        "subscription_userId_idx"
+      ],
+      "writes": [
+        "s|idx|public.subscription_userId_idx",
+        "n|idx|public.subscription_userId_idx",
+        "e|idx|public.subscription_userId_idx",
+        "n|rel|public.subscription_userId_idx"
+      ],
+      "reads": [
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|col|public.subscription.userId"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "user",
+        "user_email_key"
+      ],
+      "writes": [
+        "s|idx|public.user_email_key",
+        "n|idx|public.user_email_key",
+        "e|idx|public.user_email_key",
+        "n|rel|public.user_email_key"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.user.email"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "session"
+      ],
+      "writes": [
+        "s|fk|public.session.session_userId_fkey",
+        "n|fk|public.session.session_userId_fkey",
+        "e|fk|public.session.session_userId_fkey",
+        "n|con|public.session.session_userId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.session",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.session.userId",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "account"
+      ],
+      "writes": [
+        "s|fk|public.account.account_userId_fkey",
+        "n|fk|public.account.account_userId_fkey",
+        "e|fk|public.account.account_userId_fkey",
+        "n|con|public.account.account_userId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.account",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.account.userId",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "group"
+      ],
+      "writes": [
+        "s|fk|public.group.group_creditorId_fkey",
+        "n|fk|public.group.group_creditorId_fkey",
+        "e|fk|public.group.group_creditorId_fkey",
+        "n|con|public.group.group_creditorId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.group",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.group.creditorId",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "group"
+      ],
+      "writes": [
+        "s|fk|public.group.group_debtorId_fkey",
+        "n|fk|public.group.group_debtorId_fkey",
+        "e|fk|public.group.group_debtorId_fkey",
+        "n|con|public.group.group_debtorId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.group",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.group.debtorId",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "group_member"
+      ],
+      "writes": [
+        "s|fk|public.group_member.group_member_groupId_fkey",
+        "n|fk|public.group_member.group_member_groupId_fkey",
+        "e|fk|public.group_member.group_member_groupId_fkey",
+        "n|con|public.group_member.group_member_groupId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.group_member",
+        "n|sch|public",
+        "n|tbl|public.group",
+        "n|sch|public",
+        "n|col|public.group_member.groupId",
+        "n|col|public.group.id",
+        "e|uniqueness|public.group.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "group_member"
+      ],
+      "writes": [
+        "s|fk|public.group_member.group_member_userId_fkey",
+        "n|fk|public.group_member.group_member_userId_fkey",
+        "e|fk|public.group_member.group_member_userId_fkey",
+        "n|con|public.group_member.group_member_userId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.group_member",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.group_member.userId",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "card"
+      ],
+      "writes": [
+        "s|fk|public.card.card_createdById_fkey",
+        "n|fk|public.card.card_createdById_fkey",
+        "e|fk|public.card.card_createdById_fkey",
+        "n|con|public.card.card_createdById_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.card",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.card.createdById",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "card"
+      ],
+      "writes": [
+        "s|fk|public.card.card_groupId_fkey",
+        "n|fk|public.card.card_groupId_fkey",
+        "e|fk|public.card.card_groupId_fkey",
+        "n|con|public.card.card_groupId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.card",
+        "n|sch|public",
+        "n|tbl|public.group",
+        "n|sch|public",
+        "n|col|public.card.groupId",
+        "n|col|public.group.id",
+        "e|uniqueness|public.group.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "card"
+      ],
+      "writes": [
+        "s|fk|public.card.card_ownerId_fkey",
+        "n|fk|public.card.card_ownerId_fkey",
+        "e|fk|public.card.card_ownerId_fkey",
+        "n|con|public.card.card_ownerId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.card",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.card.ownerId",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "invoice"
+      ],
+      "writes": [
+        "s|fk|public.invoice.invoice_groupId_fkey",
+        "n|fk|public.invoice.invoice_groupId_fkey",
+        "e|fk|public.invoice.invoice_groupId_fkey",
+        "n|con|public.invoice.invoice_groupId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.invoice",
+        "n|sch|public",
+        "n|tbl|public.group",
+        "n|sch|public",
+        "n|col|public.invoice.groupId",
+        "n|col|public.group.id",
+        "e|uniqueness|public.group.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "income_entry"
+      ],
+      "writes": [
+        "s|fk|public.income_entry.income_entry_createdById_fkey",
+        "n|fk|public.income_entry.income_entry_createdById_fkey",
+        "e|fk|public.income_entry.income_entry_createdById_fkey",
+        "n|con|public.income_entry.income_entry_createdById_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.income_entry",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.income_entry.createdById",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "income_entry"
+      ],
+      "writes": [
+        "s|fk|public.income_entry.income_entry_invoiceId_fkey",
+        "n|fk|public.income_entry.income_entry_invoiceId_fkey",
+        "e|fk|public.income_entry.income_entry_invoiceId_fkey",
+        "n|con|public.income_entry.income_entry_invoiceId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.income_entry",
+        "n|sch|public",
+        "n|tbl|public.invoice",
+        "n|sch|public",
+        "n|col|public.income_entry.invoiceId",
+        "n|col|public.invoice.id",
+        "e|uniqueness|public.invoice.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "purchase"
+      ],
+      "writes": [
+        "s|fk|public.purchase.purchase_cardId_fkey",
+        "n|fk|public.purchase.purchase_cardId_fkey",
+        "e|fk|public.purchase.purchase_cardId_fkey",
+        "n|con|public.purchase.purchase_cardId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|tbl|public.card",
+        "n|sch|public",
+        "n|col|public.purchase.cardId",
+        "n|col|public.card.id",
+        "e|uniqueness|public.card.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "purchase"
+      ],
+      "writes": [
+        "s|fk|public.purchase.purchase_categoryId_fkey",
+        "n|fk|public.purchase.purchase_categoryId_fkey",
+        "e|fk|public.purchase.purchase_categoryId_fkey",
+        "n|con|public.purchase.purchase_categoryId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|tbl|public.category",
+        "n|sch|public",
+        "n|col|public.purchase.categoryId",
+        "n|col|public.category.id",
+        "e|uniqueness|public.category.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "purchase"
+      ],
+      "writes": [
+        "s|fk|public.purchase.purchase_createdById_fkey",
+        "n|fk|public.purchase.purchase_createdById_fkey",
+        "e|fk|public.purchase.purchase_createdById_fkey",
+        "n|con|public.purchase.purchase_createdById_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.purchase.createdById",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "purchase"
+      ],
+      "writes": [
+        "s|fk|public.purchase.purchase_installmentPlanId_fkey",
+        "n|fk|public.purchase.purchase_installmentPlanId_fkey",
+        "e|fk|public.purchase.purchase_installmentPlanId_fkey",
+        "n|con|public.purchase.purchase_installmentPlanId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|tbl|public.installment_plan",
+        "n|sch|public",
+        "n|col|public.purchase.installmentPlanId",
+        "n|col|public.installment_plan.id",
+        "e|uniqueness|public.installment_plan.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "purchase"
+      ],
+      "writes": [
+        "s|fk|public.purchase.purchase_invoiceId_fkey",
+        "n|fk|public.purchase.purchase_invoiceId_fkey",
+        "e|fk|public.purchase.purchase_invoiceId_fkey",
+        "n|con|public.purchase.purchase_invoiceId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|tbl|public.invoice",
+        "n|sch|public",
+        "n|col|public.purchase.invoiceId",
+        "n|col|public.invoice.id",
+        "e|uniqueness|public.invoice.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "purchase"
+      ],
+      "writes": [
+        "s|fk|public.purchase.purchase_subscriptionId_fkey",
+        "n|fk|public.purchase.purchase_subscriptionId_fkey",
+        "e|fk|public.purchase.purchase_subscriptionId_fkey",
+        "n|con|public.purchase.purchase_subscriptionId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|col|public.purchase.subscriptionId",
+        "n|col|public.subscription.id",
+        "e|uniqueness|public.subscription.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "purchase"
+      ],
+      "writes": [
+        "s|fk|public.purchase.purchase_userId_fkey",
+        "n|fk|public.purchase.purchase_userId_fkey",
+        "e|fk|public.purchase.purchase_userId_fkey",
+        "n|con|public.purchase.purchase_userId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.purchase",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.purchase.userId",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "category"
+      ],
+      "writes": [
+        "s|fk|public.category.category_createdById_fkey",
+        "n|fk|public.category.category_createdById_fkey",
+        "e|fk|public.category.category_createdById_fkey",
+        "n|con|public.category.category_createdById_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.category",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.category.createdById",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "subscription"
+      ],
+      "writes": [
+        "s|fk|public.subscription.subscription_cardId_fkey",
+        "n|fk|public.subscription.subscription_cardId_fkey",
+        "e|fk|public.subscription.subscription_cardId_fkey",
+        "n|con|public.subscription.subscription_cardId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|tbl|public.card",
+        "n|sch|public",
+        "n|col|public.subscription.cardId",
+        "n|col|public.card.id",
+        "e|uniqueness|public.card.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "subscription"
+      ],
+      "writes": [
+        "s|fk|public.subscription.subscription_categoryId_fkey",
+        "n|fk|public.subscription.subscription_categoryId_fkey",
+        "e|fk|public.subscription.subscription_categoryId_fkey",
+        "n|con|public.subscription.subscription_categoryId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|tbl|public.category",
+        "n|sch|public",
+        "n|col|public.subscription.categoryId",
+        "n|col|public.category.id",
+        "e|uniqueness|public.category.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "subscription"
+      ],
+      "writes": [
+        "s|fk|public.subscription.subscription_createdById_fkey",
+        "n|fk|public.subscription.subscription_createdById_fkey",
+        "e|fk|public.subscription.subscription_createdById_fkey",
+        "n|con|public.subscription.subscription_createdById_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.subscription.createdById",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "subscription"
+      ],
+      "writes": [
+        "s|fk|public.subscription.subscription_groupId_fkey",
+        "n|fk|public.subscription.subscription_groupId_fkey",
+        "e|fk|public.subscription.subscription_groupId_fkey",
+        "n|con|public.subscription.subscription_groupId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|tbl|public.group",
+        "n|sch|public",
+        "n|col|public.subscription.groupId",
+        "n|col|public.group.id",
+        "e|uniqueness|public.group.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "subscription"
+      ],
+      "writes": [
+        "s|fk|public.subscription.subscription_userId_fkey",
+        "n|fk|public.subscription.subscription_userId_fkey",
+        "e|fk|public.subscription.subscription_userId_fkey",
+        "n|con|public.subscription.subscription_userId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.subscription.userId",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "installment_plan"
+      ],
+      "writes": [
+        "s|fk|public.installment_plan.installment_plan_cardId_fkey",
+        "n|fk|public.installment_plan.installment_plan_cardId_fkey",
+        "e|fk|public.installment_plan.installment_plan_cardId_fkey",
+        "n|con|public.installment_plan.installment_plan_cardId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.installment_plan",
+        "n|sch|public",
+        "n|tbl|public.card",
+        "n|sch|public",
+        "n|col|public.installment_plan.cardId",
+        "n|col|public.card.id",
+        "e|uniqueness|public.card.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "installment_plan"
+      ],
+      "writes": [
+        "s|fk|public.installment_plan.installment_plan_categoryId_fkey",
+        "n|fk|public.installment_plan.installment_plan_categoryId_fkey",
+        "e|fk|public.installment_plan.installment_plan_categoryId_fkey",
+        "n|con|public.installment_plan.installment_plan_categoryId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.installment_plan",
+        "n|sch|public",
+        "n|tbl|public.category",
+        "n|sch|public",
+        "n|col|public.installment_plan.categoryId",
+        "n|col|public.category.id",
+        "e|uniqueness|public.category.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "installment_plan"
+      ],
+      "writes": [
+        "s|fk|public.installment_plan.installment_plan_createdById_fkey",
+        "n|fk|public.installment_plan.installment_plan_createdById_fkey",
+        "e|fk|public.installment_plan.installment_plan_createdById_fkey",
+        "n|con|public.installment_plan.installment_plan_createdById_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.installment_plan",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.installment_plan.createdById",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "installment_plan"
+      ],
+      "writes": [
+        "s|fk|public.installment_plan.installment_plan_groupId_fkey",
+        "n|fk|public.installment_plan.installment_plan_groupId_fkey",
+        "e|fk|public.installment_plan.installment_plan_groupId_fkey",
+        "n|con|public.installment_plan.installment_plan_groupId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.installment_plan",
+        "n|sch|public",
+        "n|tbl|public.group",
+        "n|sch|public",
+        "n|col|public.installment_plan.groupId",
+        "n|col|public.group.id",
+        "e|uniqueness|public.group.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "installment_plan"
+      ],
+      "writes": [
+        "s|fk|public.installment_plan.installment_plan_userId_fkey",
+        "n|fk|public.installment_plan.installment_plan_userId_fkey",
+        "e|fk|public.installment_plan.installment_plan_userId_fkey",
+        "n|con|public.installment_plan.installment_plan_userId_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.installment_plan",
+        "n|sch|public",
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.installment_plan.userId",
+        "n|col|public.user.id",
+        "e|uniqueness|public.user.id"
+      ]
+    }
+  ],
+  "ddl": [
+    {
+      "schema": "public",
+      "name": "account",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "card",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "category",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "group",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "group_member",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "income_entry",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "installment_plan",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "invoice",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "purchase",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "session",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "subscription",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "user",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "verification",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "group_role",
+      "values": [
+        "OWNER",
+        "MEMBER"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "invoice_status",
+      "values": [
+        "OPEN",
+        "CLOSED",
+        "PAID"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "category_type",
+      "values": [
+        "FOOD",
+        "TRANSPORT",
+        "SHOPPING",
+        "HEALTH",
+        "ENTERTAINMENT",
+        "SUBSCRIPTION",
+        "INSTALLMENT",
+        "LOAN",
+        "BILLS",
+        "OTHER"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "verification",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_member",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "description",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "verification",
+      "name": "identifier",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "description",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "expiresAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "key",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "invoiceId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "accountId",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "groupId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_member",
+      "name": "groupId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "verification",
+      "name": "value",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user",
+      "name": "email",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "token",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "providerId",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "debtorId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_member",
+      "name": "userId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "color",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "periodStart",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "amount",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "amount",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "label",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "amount",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "totalAmount",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "creditorId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_member",
+      "name": "role",
+      "type": "group_role",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'MEMBER'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "digits",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "closingDate",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "issuer",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "description",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchasedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "icon",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "chargeDay",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user",
+      "name": "emailVerified",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "installments",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "verification",
+      "name": "expiresAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "updatedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_member",
+      "name": "joinedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "categoryId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "creditorName",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user",
+      "name": "image",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "userId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "startDate",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "referenceMonth",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "closingDay",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "type",
+      "type": "category_type",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'OTHER'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "verification",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "dayOfMonth",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "receivedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "createdById",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "ownerId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "canceledAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "ipAddress",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "invoiceId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "verification",
+      "name": "updatedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "startDate",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "closingDay",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "referenceYear",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "accessToken",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "createdById",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "limit",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "refreshToken",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "cancelledAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "createdById",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "status",
+      "type": "invoice_status",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'OPEN'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "userAgent",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "cardId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "archived",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user",
+      "name": "updatedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "categoryId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "archived",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "user",
+      "name": "color",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "inviteCode",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "idToken",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "cardId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "categoryId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "userId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "paidAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "userId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "installmentPlanId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "cardId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "groupId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "groupId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "archived",
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "accessTokenExpiresAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "updatedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "installmentNumber",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "groupId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "refreshTokenExpiresAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "userId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "userId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "scope",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "subscriptionId",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "createdById",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "updatedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "updatedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "password",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "createdById",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "createdById",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "updatedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "createdAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "updatedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "updatedAt",
+      "type": "timestamp(3)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "account_issuer_accountId_key",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "issuer"
+        },
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "accountId"
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "card_groupId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "groupId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "card_ownerId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "ownerId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "category_key_key",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "key"
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "category_type_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "type"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "group_creditorId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "creditorId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "group_debtorId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "debtorId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "group_inviteCode_key",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "inviteCode"
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_member",
+      "name": "group_member_groupId_userId_key",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "groupId"
+        },
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "userId"
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_member",
+      "name": "group_member_userId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "userId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "income_entry_invoiceId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "invoiceId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "installment_plan_cardId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "cardId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "installment_plan_groupId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "groupId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "installment_plan_userId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "userId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "invoice_groupId_periodStart_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "groupId"
+        },
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "periodStart"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "invoice_groupId_referenceYear_referenceMonth_key",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "groupId"
+        },
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "referenceYear"
+        },
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "referenceMonth"
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_cardId_purchasedAt_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "cardId"
+        },
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "purchasedAt"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_categoryId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "categoryId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_installmentPlanId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "installmentPlanId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_invoiceId_installmentPlanId_key",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "invoiceId"
+        },
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "installmentPlanId"
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_invoiceId_purchasedAt_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "invoiceId"
+        },
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "purchasedAt"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_invoiceId_subscriptionId_key",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "invoiceId"
+        },
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "subscriptionId"
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_invoiceId_userId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "invoiceId"
+        },
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "userId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_subscriptionId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "subscriptionId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "session_token_key",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "token"
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "subscription_canceledAt_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "canceledAt"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "subscription_cardId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "cardId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "subscription_groupId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "groupId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "subscription_userId_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "userId"
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "user",
+      "name": "user_email_key",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null,
+          "isExpression": false,
+          "value": "email"
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "session_userId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "userId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "account_userId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "userId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "group_creditorId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "creditorId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "SET NULL",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "group_debtorId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "debtorId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "SET NULL",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "group_member",
+      "name": "group_member_groupId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "groupId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "group",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "group_member",
+      "name": "group_member_userId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "userId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "card_createdById_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "createdById"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "card_groupId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "groupId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "group",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "card_ownerId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "ownerId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "invoice_groupId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "groupId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "group",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "income_entry_createdById_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "createdById"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "income_entry_invoiceId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "invoiceId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "invoice",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_cardId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "cardId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "card",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "SET NULL",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_categoryId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "categoryId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "category",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_createdById_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "createdById"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_installmentPlanId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "installmentPlanId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "installment_plan",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "SET NULL",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_invoiceId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "invoiceId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "invoice",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_subscriptionId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "subscriptionId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "subscription",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "SET NULL",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_userId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "userId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "SET NULL",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "category_createdById_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "createdById"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "subscription_cardId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "cardId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "card",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "subscription_categoryId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "categoryId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "category",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "subscription_createdById_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "createdById"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "subscription_groupId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "groupId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "group",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "subscription_userId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "userId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "SET NULL",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "installment_plan_cardId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "cardId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "card",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "SET NULL",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "installment_plan_categoryId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "categoryId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "category",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "installment_plan_createdById_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "createdById"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "installment_plan_groupId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "groupId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "group",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "installment_plan_userId_fkey",
+      "nameExplicit": true,
+      "columns": [
+        "userId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "SET NULL",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "user",
+      "name": "user_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "session",
+      "name": "session_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "account",
+      "name": "account_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "verification",
+      "name": "verification_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "group",
+      "name": "group_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "group_member",
+      "name": "group_member_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "card",
+      "name": "card_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "invoice",
+      "name": "invoice_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "income_entry",
+      "name": "income_entry_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "purchase",
+      "name": "purchase_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "category",
+      "name": "category_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "subscription",
+      "name": "subscription_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "installment_plan",
+      "name": "installment_plan_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": true,
+      "entityType": "pks"
+    }
+  ]
+}

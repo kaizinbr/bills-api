@@ -1,9 +1,12 @@
 import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import { prisma } from "@/lib/prisma";
+import { drizzleAdapter } from "@better-auth/drizzle-adapter";
+
+import { db } from "@/db/index";
 
 export const auth = betterAuth({
-    database: prismaAdapter(prisma, { provider: "postgresql" }),
+    database: drizzleAdapter(db, {
+        provider: "pg",
+    }),
     emailAndPassword: { enabled: true },
 
     advanced: {
@@ -12,9 +15,6 @@ export const auth = betterAuth({
         },
     },
 
-    session: {
-        modelName: "Session",
-    },
     logger: {
         level: "debug", // vai logar cada passo da autenticação
     },
@@ -27,7 +27,7 @@ export const auth = betterAuth({
                   "exp://", // Trust any host of the exp:// scheme
                   "exp://**", // Trust all Expo URLs (wildcard matching)
                   "exp://192.168.*.*:*/**", // Trust 192.168.x.x IP range with any port and path
-                  "192.168.18.*:*"
+                  "192.168.18.*:*",
               ]
             : []),
     ],
