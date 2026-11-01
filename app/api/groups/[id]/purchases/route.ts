@@ -38,7 +38,7 @@ export async function GET(
                 card: { columns: { id: true, name: true, color: true } },
                 installmentPlan: {
                     columns: {
-                        id: true, description: true, amount: true, dayOfMonth: true,
+                        id: true, description: true, totalAmount: true, dayOfMonth: true,
                     },
                 },
             },
