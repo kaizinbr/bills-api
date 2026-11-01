@@ -43,6 +43,13 @@ export async function GET(
                     },
                 },
             },
+            installmentPlans: {
+                with: {
+                    category: true,
+                    card: true,
+                    purchases: true,
+                },
+            },
         },
     });
 

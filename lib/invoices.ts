@@ -307,7 +307,7 @@ export async function getOrCreateInvoice({
         });
     }
 
-    console.log("targetDate", targetDate)
+    // console.log("targetDate", targetDate)
 
     // já existe uma fatura cujo período cobre a data pedida
     if (
@@ -330,7 +330,7 @@ export async function getOrCreateInvoice({
     // data posterior: cria faturas em sequência até alcançar targetDate
     while (targetDate > lastInvoice.closingDate) {
         const previousInvoice = lastInvoice;
-    console.log("previousInvoice", previousInvoice)
+    // console.log("previousInvoice", previousInvoice)
         const periodStart = addDays(previousInvoice.closingDate, 1);
         const closingDate = nextClosingDate(periodStart, closingDay);
 

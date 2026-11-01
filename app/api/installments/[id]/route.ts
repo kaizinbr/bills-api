@@ -1,8 +1,8 @@
-// app/api/parcelado/[id]/route.ts
+// app/api/installments/[id]/route.ts
 import { NextResponse, NextRequest } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/db/index";
-import { purchase as purchaseTable } from "@/db/drizzle/schema";
+import { purchase as purchaseTable, installmentPlan as installmentTable } from "@/db/drizzle/schema";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
@@ -27,27 +27,24 @@ export async function GET(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const purchase = await db.query.purchase.findFirst({
+    const installment = await db.query.installmentPlan.findFirst({
         where: { id },
         with: {
             category: true,
             card: true,
-            subscription: true,
-            invoice: {
-                with: {
-                    group: true,
-                },
+            purchases: {
+                orderBy: { purchasedAt: "asc" },
             },
         },
     });
 
-    if (!purchase) {
+    if (!installment) {
         return NextResponse.json(
-            { error: "Purchase not found" },
+            { error: "installment not found" },
             { status: 404 },
         );
     }
-    return NextResponse.json({ purchase });
+    return NextResponse.json({ installment });
 }
 
 export async function DELETE(
@@ -60,19 +57,24 @@ export async function DELETE(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const [deletePurchase] = await db
+    const [deletePurchases] = await db
         .delete(purchaseTable)
-        .where(eq(purchaseTable.id, id))
+        .where(eq(purchaseTable.installmentPlanId, id))
         .returning();
 
-    if (!deletePurchase) {
+    const [deleteInstallment] = await db
+        .delete(installmentTable)
+        .where(eq(installmentTable.id, id))
+        .returning();
+
+    if (!deleteInstallment) {
         return NextResponse.json(
-            { error: "Purchase not found" },
+            { error: "Installment not found" },
             { status: 404 },
         );
     }
 
-    return NextResponse.json({ purchase: deletePurchase });
+    return NextResponse.json({ installment: deleteInstallment });
 }
 
 export async function PATCH(

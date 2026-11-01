@@ -9,7 +9,6 @@ import {
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 
-
 export function parseAmountInCents(value: unknown): string | null {
     if (typeof value !== "string" && typeof value !== "number") return null;
 
@@ -39,6 +38,16 @@ export async function GET(
             invoice: {
                 with: {
                     group: true,
+                },
+            },
+
+            installmentPlan: {
+                columns: {
+                    id: true,
+                    description: true,
+                    totalAmount: true,
+                    dayOfMonth: true,
+                    installments: true,
                 },
             },
         },

@@ -117,25 +117,22 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const purchase = await db.query.purchase.findMany({
+    const installments = await db.query.installmentPlan.findMany({
         with: {
             category: true,
             card: true,
-            subscription: true,
-            invoice: {
-                with: {
-                    group: true,
-                },
+            purchases: {
+                orderBy: { purchasedAt: "asc" },
             },
         },
     });
 
-    if (!purchase) {
+    if (!installments) {
         return NextResponse.json(
-            { error: "Purchase not found" },
+            { error: "installments not found" },
             { status: 404 },
         );
     }
 
-    return NextResponse.json({ purchase });
+    return NextResponse.json({ installments });
 }

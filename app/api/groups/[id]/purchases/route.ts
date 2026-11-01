@@ -36,6 +36,11 @@ export async function GET(
                     columns: { id: true, key: true, label: true, icon: true },
                 },
                 card: { columns: { id: true, name: true, color: true } },
+                installmentPlan: {
+                    columns: {
+                        id: true, description: true, amount: true, dayOfMonth: true,
+                    },
+                },
             },
         }),
         db

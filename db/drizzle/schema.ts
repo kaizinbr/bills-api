@@ -80,8 +80,9 @@ export const card = pgTable(
             .default(sql`CURRENT_TIMESTAMP`)
             .notNull(),
         updatedAt: timestamp({ precision: 3 })
-  .$defaultFn(() => new Date())
-  .$onUpdate(() => new Date()).notNull(),
+            .$defaultFn(() => new Date())
+            .$onUpdate(() => new Date())
+            .notNull(),
     },
     (table) => [
         foreignKey({
@@ -162,8 +163,9 @@ export const group = pgTable(
             .default(sql`CURRENT_TIMESTAMP`)
             .notNull(),
         updatedAt: timestamp({ precision: 3 })
-  .$defaultFn(() => new Date())
-  .$onUpdate(() => new Date()).notNull(),
+            .$defaultFn(() => new Date())
+            .$onUpdate(() => new Date())
+            .notNull(),
     },
     (table) => [
         foreignKey({
@@ -279,11 +281,12 @@ export const installmentPlan = pgTable(
         installments: integer().notNull(),
         dayOfMonth: integer().notNull(),
         startDate: timestamp({ precision: 3 })
-  .$defaultFn(() => new Date())
-  .$onUpdate(() => new Date()).notNull(),
+            .$defaultFn(() => new Date())
+            .$onUpdate(() => new Date())
+            .notNull(),
         cancelledAt: timestamp({ precision: 3 })
-  .$defaultFn(() => new Date())
-  .$onUpdate(() => new Date()),
+            .$defaultFn(() => new Date())
+            .$onUpdate(() => new Date()),
         categoryId: uuid().notNull(),
         cardId: uuid(),
         groupId: uuid().notNull(),
@@ -403,8 +406,9 @@ export const purchase = pgTable(
             .default(sql`CURRENT_TIMESTAMP`)
             .notNull(),
         updatedAt: timestamp({ precision: 3 })
-  .$defaultFn(() => new Date())
-  .$onUpdate(() => new Date()).notNull(),
+            .$defaultFn(() => new Date())
+            .$onUpdate(() => new Date())
+            .notNull(),
     },
     (table) => [
         foreignKey({
@@ -501,8 +505,9 @@ export const session = pgTable(
     {
         id: uuid().defaultRandom().primaryKey(),
         expiresAt: timestamp({ precision: 3 })
-  .$defaultFn(() => new Date())
-  .$onUpdate(() => new Date()).notNull(),
+            .$defaultFn(() => new Date())
+            .$onUpdate(() => new Date())
+            .notNull(),
         token: text().notNull(),
         createdAt: timestamp({ precision: 3 }).notNull(),
         updatedAt: timestamp({ precision: 3 }).notNull(),
@@ -535,11 +540,9 @@ export const subscription = pgTable(
         startDate: timestamp({ precision: 3 })
             .default(sql`CURRENT_TIMESTAMP`)
             .notNull(),
-        canceledAt: timestamp({ precision: 3 })
-  .$defaultFn(() => new Date())
-  .$onUpdate(() => new Date()),
+        canceledAt: timestamp({ precision: 3 }),
         categoryId: uuid().notNull(),
-        cardId: uuid().notNull(),
+        cardId: uuid(),
         groupId: uuid().notNull(),
         userId: uuid(),
         createdById: uuid().notNull(),
@@ -547,8 +550,9 @@ export const subscription = pgTable(
             .default(sql`CURRENT_TIMESTAMP`)
             .notNull(),
         updatedAt: timestamp({ precision: 3 })
-  .$defaultFn(() => new Date())
-  .$onUpdate(() => new Date()).notNull(),
+            .$defaultFn(() => new Date())
+            .$onUpdate(() => new Date())
+            .notNull(),
     },
     (table) => [
         foreignKey({
@@ -640,4 +644,3 @@ export const verification = pgTable("verification", {
         .$defaultFn(() => new Date())
         .$onUpdate(() => new Date()),
 });
-

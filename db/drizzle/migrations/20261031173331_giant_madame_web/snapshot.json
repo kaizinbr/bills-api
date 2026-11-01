@@ -1,0 +1,38 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "80252b97-eb9b-48f1-ba42-7faa4ec69ea8",
+  "prevIds": [
+    "7adacaee-ec0b-4863-9510-20ee5558a014"
+  ],
+  "footprints": [
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "subscription",
+        "cardId"
+      ],
+      "writes": [
+        "s|colprop|public.subscription.cardId.notNull"
+      ],
+      "reads": [
+        "n|tbl|public.subscription",
+        "n|sch|public",
+        "n|col|public.subscription.cardId"
+      ],
+      "sqlHash": "b0dcb27ddb2213d0"
+    }
+  ],
+  "deltas": [
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"subscription\",\"cardId\"]",
+      "set": {
+        "notNull": false
+      }
+    }
+  ]
+}

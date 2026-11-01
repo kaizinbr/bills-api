@@ -32,7 +32,16 @@ export async function POST(request: NextRequest) {
     const { cardId, categoryId, name, amountCents, chargeDay, groupId } =
         await request.json();
 
-    if (!cardId || !categoryId || !name || !amountCents || !chargeDay) {
+        console.log("POST /api/subscriptions", {
+            cardId,
+            categoryId,
+            name,
+            amountCents,
+            chargeDay,
+            groupId,
+        });
+
+    if (!categoryId || !name || !amountCents || !chargeDay) {
         return NextResponse.json(
             { error: "Campos obrigatórios faltando" },
             { status: 400 },
@@ -60,10 +69,6 @@ export async function POST(request: NextRequest) {
         .where(eq(cardTable.id, cardId))
         .limit(1);
 
-    if (!card) {
-        return NextResponse.json({ error: "Card not found" }, { status: 404 });
-    }
-
     const [subscription] = await db
         .insert(subscriptionTable)
         .values({
@@ -80,7 +85,7 @@ export async function POST(request: NextRequest) {
     // cobra imediatamente na fatura atual desse cartão, sem esperar o
     // próximo GET /groups ou a virada de período
     const currentInvoice = await getOrCreateInvoice({
-        groupId: card.groupId,
+        groupId: groupId,
         targetDate: new Date(),
     });
     console.log("currentInvoice", currentInvoice);
