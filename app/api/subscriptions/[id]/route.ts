@@ -21,7 +21,7 @@ export async function GET(
 
     const subscription = await db.query.subscription.findFirst({
         where: { id },
-        with: { category: true, card: true },
+        with: { category: true, card: true, userUserId: true },
         orderBy: { createdAt: "desc" },
     });
 
@@ -79,7 +79,7 @@ export async function PATCH(
     }
 
     const body = await request.json();
-    const { name, amount, cardId, categoryId } = body;
+    const { name, amount, cardId, categoryId, userId } = body;
 
     if (!categoryId || typeof categoryId !== "string") {
         console.log("categoryId is required");
@@ -96,6 +96,7 @@ export async function PATCH(
             amount,
             cardId,
             categoryId,
+            userId: userId ?? null,
         })
         .where(eq(subscriptionTable.id, id))
         .returning();

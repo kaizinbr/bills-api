@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { cardId, categoryId, name, amountCents, chargeDay, groupId } =
+    const { cardId, categoryId, name, amountCents, chargeDay, groupId, userId } =
         await request.json();
 
         console.log("POST /api/subscriptions", {
@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
             amountCents,
             chargeDay,
             groupId,
+            userId
         });
 
     if (!categoryId || !name || !amountCents || !chargeDay) {
@@ -79,6 +80,7 @@ export async function POST(request: NextRequest) {
             chargeDay,
             createdById: session.user.id,
             groupId,
+            userId,
         })
         .returning();
 

@@ -27,8 +27,9 @@ export async function GET(
 
     const searchParams = request.nextUrl.searchParams;
     const pageParam = searchParams.get("page");
+    const pageSizeParam = searchParams.get("pageSize");
     const page = Math.max(Number(pageParam) || 1, 1);
-    const limit = 30;
+    const limit = pageSizeParam === "all" ? 9999999 : Math.max(Number(pageSizeParam) || 30, 1);
     const offset = (page - 1) * limit;
 
     const invoice = await db.query.invoice.findFirst({
