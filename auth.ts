@@ -1,4 +1,5 @@
 import { betterAuth } from "better-auth";
+import { expo } from "@better-auth/expo";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 
 import { db } from "@/db/index";
@@ -18,6 +19,17 @@ export const auth = betterAuth({
     }),
     emailAndPassword: { enabled: true },
 
+    plugins: [expo()],
+    socialProviders: {
+        google: {
+            clientId: [
+                process.env.GOOGLE_WEB_CLIENT_ID as string,
+                process.env.GOOGLE_IOS_CLIENT_ID as string,
+                process.env.GOOGLE_ANDROID_CLIENT_ID as string,
+            ],
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+        },
+    },
     advanced: {
         database: {
             generateId: "uuid", // or "cuid", "ulid", ...etc
